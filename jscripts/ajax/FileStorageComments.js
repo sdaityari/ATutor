@@ -5,7 +5,11 @@
 
 var deleteMessage = "Are you sure you want to delete this comment?";
 var deleteTitle = "Delete Comment";
+var deleteUrl = "mods/_standard/file_storage/ajax/delete_comment.php";
 
-var confirmDeletion = function () {
-    alert('Boo-Yah!');
+var confirmDelete = function (ot, oid, file_id, id) {
+    if (confirm (deleteMessage)) {
+        //AJAX Request to ajax/delete_comment.php
+        alert('AJAX REQUEST');
+    }
 };
