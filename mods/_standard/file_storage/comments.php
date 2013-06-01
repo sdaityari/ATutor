@@ -142,7 +142,7 @@ $_GET['comment_id'] = isset($_GET['comment_id']) ? intval($_GET['comment_id']) :
 	$result = mysql_query($sql, $db);
 if ($row = mysql_fetch_assoc($result)): ?>
 	<?php do { ?>
-		<div class="input-form">
+		<div class="input-form" id="comment<?php echo $row['comment_id']; ?>">
 			<?php if (($row['member_id'] == $_SESSION['member_id']) && ($row['comment_id'] == $_GET['comment_id'])): ?>
 				<form method="post" action="mods/_standard/file_storage/comments.php<?php echo $owner_arg_prefix.'id='.$id;?>" name="form">
 				<input type="hidden" name="comment_id" value="<?php echo $row['comment_id']; ?>" />
@@ -162,7 +162,7 @@ if ($row = mysql_fetch_assoc($result)): ?>
 					<p><?php echo nl2br(htmlspecialchars($row['comment'])); ?></p>
 						<?php if ($row['member_id'] == $_SESSION['member_id'] || $current_file['member_id'] == $_SESSION['member_id']): ?>
 							<div style="text-align:right; font-size: smaller">
-								<a href="<?php echo url_rewrite('mods/_standard/file_storage/comments.php'.$owner_arg_prefix.'id='.$id.SEP.'comment_id='.$row['comment_id'].'#c'.$row['comment_id']); ?>"><?php echo _AT('edit'); ?></a> | <a href="javascript:null();" onclick="confirmDelete('<?php echo $owner_type; ?>', '<?php echo $owner_id; ?>', '<?php echo $id; ?>', '<?php echo $row['comment_id']; ?>');"><?php echo _AT('delete'); ?></a>
+								<a href="<?php echo url_rewrite('mods/_standard/file_storage/comments.php'.$owner_arg_prefix.'id='.$id.SEP.'comment_id='.$row['comment_id'].'#c'.$row['comment_id']); ?>"><?php echo _AT('edit'); ?></a> | <a href="javascript:null();" onclick="deleteComment('<?php echo $owner_type; ?>', '<?php echo $owner_id; ?>', '<?php echo $id; ?>', '<?php echo $row['comment_id']; ?>');"><?php echo _AT('delete'); ?></a>
 
 <!--<a href="mods/_standard/file_storage/delete_comment.php<?php echo $owner_arg_prefix . 'file_id='.$id.SEP; ?>id=<?php echo $row['comment_id']; ?>"><?php echo _AT('delete'); ?></a>-->
 							</div>
