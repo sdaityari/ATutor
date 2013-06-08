@@ -15,7 +15,9 @@ if (!defined('AT_INCLUDE_PATH')) {
 }
 
 /* AJAX check  */
-if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+if(!strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+    //Uncomment the following line for debugging
+    //print strtolower($_SERVER['HTTP_X_REQUESTED_WITH']);
     die('AJAX_REQUEST_NOT_PRESENT');
 }
 
