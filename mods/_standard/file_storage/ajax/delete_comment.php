@@ -15,7 +15,11 @@
 define('AT_INCLUDE_PATH', '../../../../include/');
 require(AT_INCLUDE_PATH.'vitals.inc.php');
 require(AT_INCLUDE_PATH.'../mods/_standard/file_storage/file_storage.inc.php');
-require(AT_INCLUDE_PATH.'lib/ajax.inc.php');
+include_once(AT_INCLUDE_PATH . 'lib/vital_funcs.inc.php');
+
+if (!check_ajax_request()) {
+    exit;
+}
 
 $owner_type = abs($_REQUEST['ot']);
 $owner_id   = abs($_REQUEST['oid']);
