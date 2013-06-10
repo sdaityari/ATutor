@@ -1124,17 +1124,19 @@ function debug($var, $title='') {
  * This function is used to check if an AJAX request is present.
  * @access  public
  * @author  Shaumik Daityari
+ * @date    June 09, 2013
  */
 function check_ajax_request(){
     //Uncomment the following line for debugging
     //print strtolower($_SERVER['HTTP_X_REQUESTED_WITH']);
-    $ajax_request = 'xmlhttprequest';
-    if( !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
-        strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == $ajax_request ) {
+    $server_request = $_SERVER["HTTP_X_REQUESTED_WITH"];
+    $ajax_request = "xmlhttprequest";
+    if( !empty($server_request) &&
+        strtolower($server_request) == $ajax_request ) {
 
-        return True;
+        return true;
     }
-    return False;
+    return false;
 }
 
 ?>
