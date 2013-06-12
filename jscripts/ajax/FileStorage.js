@@ -13,7 +13,8 @@ ATutor.fileStorage = ATutor.fileStorage || {};
 
     var deleteMessage = "Are you sure you want to delete this comment?",
         deleteTitle = "Delete Comment",
-        deleteUrl = "mods/_standard/file_storage/ajax/delete_comment.php";
+        deleteUrl = "mods/_standard/file_storage/ajax/delete_comment.php",
+        deleteDialog = $("#comment-delete-dialog");
 
     //Function to be called on clicking Delete for a comment
     fileStorage.deleteComment = function (ot, oid, file_id, id) {
@@ -29,7 +30,7 @@ ATutor.fileStorage = ATutor.fileStorage || {};
 
     
         var buttonOptions = {
-            "Yes":  function (){
+            "Delete Comment":  function (){
                         $.ajax({
                             type: "POST",
                             url: deleteUrl,
@@ -38,20 +39,21 @@ ATutor.fileStorage = ATutor.fileStorage || {};
                                 commentOnDelete(message, parameters);
                             }
                         });
-                        $(this).dialog("close");
+                        deleteDialog.dialog("close");
                     },
-            "No" :  function () {
-                        $(this).dialog("close");
+            "Cancel" :  function () {
+                        deleteDialog.dialog("close");
                     }
         };
 
         // Create dialog for the page if it doesn't exist
-        if ($("#comment-delete-dialog").length === 0){
+        if (deleteDialog.length === 0){
             $("body").append("<div title='" + deleteTitle + "' id='comment-delete-dialog'>" +
                     deleteMessage +"</div>");
+            deleteDialog = $("#comment-delete-dialog");
         }
 
-        $("#comment-delete-dialog").dialog({
+        deleteDialog.dialog({
             autoOpen: true,
             width: 400,
             modal: true,
@@ -63,32 +65,34 @@ ATutor.fileStorage = ATutor.fileStorage || {};
     
     //Callback function for AJAX Request
     var commentOnDelete = function (responseMessage, parameters) {
-        var ajaxResponse = "Ajax Response",
+        var ajaxResponse = "Action unsuccessful",
             accessDeniedMessage = "Access Denied",
-            unknownErrorMessage = "Unknown Error Occurred";
+            unknownErrorMessage = "Unknown Error Occurred",
+            responseDialog = $("#ajax-response-dialog");
 
         // Create dialog for the page if it doesn't exist
-        if ($("#ajax-response-dialog").length === 0){
+        if (responseDialog.length === 0){
             $("body").append("<div title='" + ajaxResponse + "' id='ajax-response-dialog'></div>");
+            responseDialog = $("#ajax-response-dialog");
         }
 
         if (responseMessage === "ACTION_COMPLETED_SUCCESSFULLY") {
             $("#comment" + parameters.id).fadeOut();
             return;
         } else if (responseMessage === "ACCESS_DENIED") {
-            $("#ajax-response-dialog").html(accessDeniedMessage);
+            responseDialog.html(accessDeniedMessage);
         } else {
-            $("#ajax-response-dialog").html(unknownErrorMessage);
+            responseDialog.html(unknownErrorMessage);
         }
 
         //Set an Ok button for the dialog box to be shown in case the comment was not deleted
         var buttonOptions = {
             "Ok" : function () {
-                $(this).dialog("close");
+                responseDialog.dialog("close");
             }
         };
 
-        $("#ajax-response-dialog").dialog({
+        responseDialog.dialog({
             autoOpen: true,
             width: 400,
             modal: true,
