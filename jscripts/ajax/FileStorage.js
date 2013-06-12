@@ -66,6 +66,7 @@ ATutor.fileStorage = ATutor.fileStorage || {};
     //Callback function for AJAX Request
     var commentOnDelete = function (responseMessage, parameters) {
         var ajaxResponse = "Action unsuccessful",
+            notFoundMessage = "Comment does not exist",
             accessDeniedMessage = "Access Denied",
             unknownErrorMessage = "Unknown Error Occurred",
             responseDialog = $("#ajax-response-dialog");
@@ -81,6 +82,8 @@ ATutor.fileStorage = ATutor.fileStorage || {};
             return;
         } else if (responseMessage === "ACCESS_DENIED") {
             responseDialog.html(accessDeniedMessage);
+        } else if (responseMessage === "PAGE_NOT_FOUND") {
+            responseDialog.html(notFoundMessage);
         } else {
             responseDialog.html(unknownErrorMessage);
         }
