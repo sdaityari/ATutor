@@ -159,10 +159,23 @@ if ($row = mysql_fetch_assoc($result)): ?>
 			<?php else: ?>
 				<div class="row">
 					<h4><?php echo get_display_name($row['member_id']); ?> - <?php echo AT_date(_AT('filemanager_date_format'), $row['date'], AT_DATE_MYSQL_DATETIME); ?></h4>
-					<p><?php echo nl2br(htmlspecialchars($row['comment'])); ?></p>
-						<?php if ($row['member_id'] == $_SESSION['member_id'] || $current_file['member_id'] == $_SESSION['member_id']): ?>
-							<div style="text-align:right; font-size: smaller">
-								<a href="<?php echo url_rewrite('mods/_standard/file_storage/comments.php'.$owner_arg_prefix.'id='.$id.SEP.'comment_id='.$row['comment_id'].'#c'.$row['comment_id']); ?>"><?php echo _AT('edit'); ?></a> | <a href="javascript:null();" onclick="ATutor.fileStorage.deleteComment('<?php echo $owner_type; ?>', '<?php echo $owner_id; ?>', '<?php echo $id; ?>', '<?php echo $row['comment_id']; ?>');"><?php echo _AT('delete'); ?></a>
+					<p id="comment-description-<?php echo $row['comment_id']; ?>"><?php echo nl2br(htmlspecialchars($row['comment'])); ?></p>
+					
+                    <?php if ($row['member_id'] == $_SESSION['member_id']): ?>
+                        <div style="width:100%; display:none;" id="edit-comment-<?php echo $row['comment_id']; ?>" >    
+                            <textarea id="textarea-<?php echo $row['comment_id']; ?>"><?php echo $row['comment']; ?></textarea>
+                            <div style="text-align:right; font-size: smaller"><a href="javascript:null();" onclick="ATutor.fileStorage.editCommentSubmit('<?php echo $owner_type; ?>', '<?php echo $owner_id; ?>', '<?php echo $id; ?>', '<?php echo $row['comment_id']; ?>');"><?php echo _AT('submit'); ?></a> | 
+                            <a href="javascript:null();" onclick="ATutor.fileStorage.editCommentHide('<?php echo $row['comment_id']; ?>');"><?php echo _AT('cancel'); ?></a>
+                            </div>
+                        </div>
+						<div style="text-align:right; font-size: smaller" id="comment-edit-delete-<?php echo $row['comment_id']; ?>">
+                        <a href="javascript:null();" onclick="ATutor.fileStorage.editCommentShow('<?php echo $row['comment_id']; ?>');"><?php echo _AT('edit') ?></a> | <a href="javascript:null();" onclick="ATutor.fileStorage.deleteComment('<?php echo $owner_type; ?>', '<?php echo $owner_id; ?>', '<?php echo $id; ?>', '<?php echo $row['comment_id']; ?>');"><?php echo _AT('delete'); ?></a>
+                        </div>
+					<?php endif; ?>
+
+                    <?php if ($row['member_id'] != $_SESSION['member_id'] && $current_file['member_id'] == $_SESSION['member_id']): ?>
+							<div style="text-align:right; font-size: smaller" id="comment-edit-delete-<?php echo $row['comment_id']; ?>">
+								<!--<a href="<?php echo url_rewrite('mods/_standard/file_storage/comments.php'.$owner_arg_prefix.'id='.$id.SEP.'comment_id='.$row['comment_id'].'#c'.$row['comment_id']); ?>"><?php echo _AT('edit'); ?></a> |--><a href="javascript:null();" onclick="ATutor.fileStorage.deleteComment('<?php echo $owner_type; ?>', '<?php echo $owner_id; ?>', '<?php echo $id; ?>', '<?php echo $row['comment_id']; ?>');"><?php echo _AT('delete'); ?></a>
 
 							</div>
 						<?php endif; ?>

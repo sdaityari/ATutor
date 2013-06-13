@@ -11,21 +11,20 @@ ATutor.fileStorage = ATutor.fileStorage || {};
 
     "use strict";
 
-    var deleteMessage = "Are you sure you want to delete this comment?",
-        deleteTitle = "Delete Comment",
-        deleteUrl = "mods/_standard/file_storage/ajax/delete_comment.php",
-        deleteDialog = $("#comment-delete-dialog");
-
     //Function to be called on clicking Delete for a comment
     fileStorage.deleteComment = function (ot, oid, file_id, id) {
-        
+        var deleteMessage = "Are you sure you want to delete this comment?",
+            deleteTitle = "Delete Comment",
+            deleteUrl = "mods/_standard/file_storage/ajax/comments.php",
+            deleteDialog = $("#comment-delete-dialog");
+       
         //Sets POST variables to be sent
         var parameters = {
             "ot" : ot,
             "oid": oid,
             "file_id": file_id,
             "id": id,
-            "submit_yes": true
+            "delete_submit": true
         };
 
     
@@ -36,7 +35,7 @@ ATutor.fileStorage = ATutor.fileStorage || {};
                             url: deleteUrl,
                             data: parameters,
                             success: function(message) {
-                                commentOnDelete(message, parameters);
+                                commentOnDelete(message, parameters.id);
                             }
                         });
                         deleteDialog.dialog("close");
@@ -64,7 +63,65 @@ ATutor.fileStorage = ATutor.fileStorage || {};
     };
     
     //Callback function for AJAX Request
-    var commentOnDelete = function (responseMessage, parameters) {
+    var commentOnDelete = function (responseMessage, id) {
+        if (responseMessage === "ACTION_COMPLETED_SUCCESSFULLY") {
+            $("#comment" + id).fadeOut();
+            return;
+        } else {
+            generateDialog(responseMessage);
+        }
+    };
+
+    //Function to be called on clicking Edit under a comment
+    fileStorage.editCommentShow = function (id) {
+        $("#edit-comment-" + id).show();
+        $("#comment-edit-delete-" + id).hide();
+        $("#comment-description-" + id).hide();
+    };
+
+    //Function to be called on clicking submit after editing a comment
+    fileStorage.editCommentSubmit = function (ot, oid, file_id, id) {
+       
+        var updateUrl = "mods/_standard/file_storage/ajax/comments.php";
+
+        //Sets POST variables to be sent
+        var parameters = {
+            "ot" : ot,
+            "oid": oid,
+            "file_id": file_id,
+            "id": id,
+            "comment": $('#textarea-' + id).val(),
+            "edit_submit": true
+        };
+        
+        $.ajax({
+            type: "POST",
+            url: updateUrl,
+            data: parameters,
+            success: function(message) {
+                commentOnEdit(message, parameters.id, parameters.comment);
+            }
+        });
+    };
+
+    //Function to be called on clicking Edit under a comment
+    fileStorage.editCommentHide = function (id) {
+        $("#comment-edit-delete-" + id).show();
+        $("#comment-description-" + id).show();
+        $("#edit-comment-" + id).hide();
+    };
+    
+    //Function to be called on successful AJAX request for comment edit
+    var commentOnEdit = function (message, id, comment) {
+        if (message === "ACTION_COMPLETED_SUCCESSFULLY") {
+            $('#comment-description-' + id).html($('<div/>').text(comment).html());
+            fileStorage.editCommentHide(id);
+        } else {
+            generateDialog(message);
+        }
+    };
+
+    var generateDialog = function (responseMessage) {
         var ajaxResponse = "Action unsuccessful",
             notFoundMessage = "Comment does not exist",
             accessDeniedMessage = "Access Denied",
@@ -76,11 +133,8 @@ ATutor.fileStorage = ATutor.fileStorage || {};
             $("body").append("<div title='" + ajaxResponse + "' id='ajax-response-dialog'></div>");
             responseDialog = $("#ajax-response-dialog");
         }
-
-        if (responseMessage === "ACTION_COMPLETED_SUCCESSFULLY") {
-            $("#comment" + parameters.id).fadeOut();
-            return;
-        } else if (responseMessage === "ACCESS_DENIED") {
+        
+        if (responseMessage === "ACCESS_DENIED") {
             responseDialog.html(accessDeniedMessage);
         } else if (responseMessage === "PAGE_NOT_FOUND") {
             responseDialog.html(notFoundMessage);
@@ -102,6 +156,8 @@ ATutor.fileStorage = ATutor.fileStorage || {};
             closeOnEscape: false,
             buttons: buttonOptions
         });
+
+
     };
 
 })(ATutor.fileStorage);

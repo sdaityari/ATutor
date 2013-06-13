@@ -35,15 +35,14 @@ if (!$comment) {
 $file = queryDB("SELECT file_id FROM %sfiles WHERE file_id = %d and owner_id = %d", array(TABLE_PREFIX, $comment['file_id'], $owner_id), true);
 
 if (!($comment['member_id'] == $_SESSION['member_id'] || $owner_id == $_SESSION['member_id']) || !$file) {
-    $msg->addError('ACCESS_DENIED');
-    header('Location: '.url_rewrite('mods/_standard/file_storage/index.php', AT_PRETTY_URL_IS_HEADER));
+    print "ACCESS_DENIED";
     exit;
 }
 
-
 $id = abs($_REQUEST['id']);
 
-if (isset($_POST['submit_yes'])) {
+if (isset($_POST['delete_submit'])) {
+    //If comment is to be deleted
 	$_POST['file_id'] = abs($_POST['file_id']);
 	$_POST['id'] = abs($_POST['id']);
 
@@ -53,6 +52,18 @@ if (isset($_POST['submit_yes'])) {
 	    echo 'ACTION_COMPLETED_SUCCESSFULLY';
 	}
 
+	exit;
+}
+
+if (isset($_POST['edit_submit'])) {
+    //If comment is to be edited
+	$comment = trim($_POST['comment']);
+    $sql = "UPDATE ".TABLE_PREFIX."files_comments SET comment='$comment', date=date WHERE member_id=$_SESSION[member_id] AND comment_id=$id";
+    $update_comment = mysql_query($sql, $db);
+//    $update_comment = queryDB("UPDATE %sfiles_comments SET comment='%s', date=date WHERE member_id=%d AND comment_id=%d", array(TABLE_PREFIX, $comment, $_SESSION["member_id"], $id));
+	if ($update_comment) {
+        echo "ACTION_COMPLETED_SUCCESSFULLY";
+    }
 	exit;
 }
 
