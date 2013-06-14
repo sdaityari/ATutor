@@ -25,44 +25,42 @@ $owner_type = abs($_REQUEST['ot']);
 $owner_id   = abs($_REQUEST['oid']);
 $owner_arg_prefix = '?ot='.$owner_type.SEP.'oid='.$owner_id. SEP;
 
-$comment = queryDB("SELECT * FROM %sfiles_comments WHERE comment_id = %d", array(TABLE_PREFIX, $_REQUEST['id']), true);
+$comment = queryDB('SELECT * FROM %sfiles_comments WHERE comment_id = %d', array(TABLE_PREFIX, $_REQUEST['id']), true);
 if (!$comment) {
     echo 'PAGE_NOT_FOUND';
     exit;
 }
 
 //Since $owner_id is a GET variable, this query is to check that the owner_id is provided correctly
-$file = queryDB("SELECT file_id FROM %sfiles WHERE file_id = %d and owner_id = %d", array(TABLE_PREFIX, $comment['file_id'], $owner_id), true);
+$file = queryDB('SELECT file_id FROM %sfiles WHERE file_id = %d and owner_id = %d', array(TABLE_PREFIX, $comment['file_id'], $owner_id), true);
 
 if (!($comment['member_id'] == $_SESSION['member_id'] || $owner_id == $_SESSION['member_id']) || !$file) {
-    print "ACCESS_DENIED";
+    print 'ACCESS_DENIED';
     exit;
 }
 
 $id = abs($_REQUEST['id']);
 
-if (isset($_POST['delete_submit'])) {
+if (isset($_POST['deleteSubmit'])) {
     //If comment is to be deleted
-	$_POST['file_id'] = abs($_POST['file_id']);
+	$_POST['fileId'] = abs($_POST['fileId']);
 	$_POST['id'] = abs($_POST['id']);
 
-    $sql = queryDB("DELETE FROM %sfiles_comments WHERE file_id= %d AND comment_id = %d", array(TABLE_PREFIX, $_REQUEST['file_id'], $_REQUEST['id']));
+    $sql = queryDB('DELETE FROM %sfiles_comments WHERE file_id= %d AND comment_id = %d', array(TABLE_PREFIX, $_REQUEST['fileId'], $_REQUEST['id']));
 	if (mysql_affected_rows($db) == 1) {
-        $update_comments = queryDB("UPDATE %sfiles SET num_comments=num_comments-1, date=date WHERE owner_type = %d AND owner_id = %d AND file_id = %d", array(TABLE_PREFIX, $owner_type, $owner_id, $_REQUEST['file_id']));
+        $update_comments = queryDB('UPDATE %sfiles SET num_comments=num_comments-1, date=date WHERE owner_type = %d AND owner_id = %d AND file_id = %d', array(TABLE_PREFIX, $owner_type, $owner_id, $_REQUEST['fileId']));
 	    echo 'ACTION_COMPLETED_SUCCESSFULLY';
 	}
 
 	exit;
 }
 
-if (isset($_POST['edit_submit'])) {
+if (isset($_POST['editSubmit'])) {
     //If comment is to be edited
 	$comment = trim($_POST['comment']);
-    $sql = "UPDATE ".TABLE_PREFIX."files_comments SET comment='$comment', date=date WHERE member_id=$_SESSION[member_id] AND comment_id=$id";
-    $update_comment = mysql_query($sql, $db);
-//    $update_comment = queryDB("UPDATE %sfiles_comments SET comment='%s', date=date WHERE member_id=%d AND comment_id=%d", array(TABLE_PREFIX, $comment, $_SESSION["member_id"], $id));
-	if ($update_comment) {
-        echo "ACTION_COMPLETED_SUCCESSFULLY";
+    $update_comment = queryDB("UPDATE %sfiles_comments SET comment='%s', date=date WHERE member_id=%d AND comment_id=%d", array(TABLE_PREFIX, $comment, $_SESSION["member_id"], $id));
+	if (mysql_affected_rows($db) == 1) {
+        echo 'ACTION_COMPLETED_SUCCESSFULLY';
     }
 	exit;
 }

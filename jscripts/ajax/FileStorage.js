@@ -12,19 +12,34 @@ ATutor.fileStorage = ATutor.fileStorage || {};
     "use strict";
 
     //Function to be called on clicking Delete for a comment
-    fileStorage.deleteComment = function (ot, oid, file_id, id) {
-        var deleteMessage = "Are you sure you want to delete this comment?",
-            deleteTitle = "Delete Comment",
-            deleteUrl = "mods/_standard/file_storage/ajax/comments.php",
-            deleteDialog = $("#comment-delete-dialog");
+    fileStorage.deleteComment = function (options) {
        
-        //Sets POST variables to be sent
+        var defaults = { 
+            deleteMessage : "Are you sure you want to delete this comment?",
+            deleteTitle : "Delete Comment",
+            deleteUrl : "mods/_standard/file_storage/ajax/comments.php"
+        };
+        
+        var deleteDialog = $("#comment-delete-dialog");
+
+        options = options || {};
+
+        options = $.extend({}, defaults, options);
+
+        /** 
+         * Sets POST variables to be sent
+         * @parameters
+         * ot: owner type
+         * oid: owner id
+         * file_id: file id (primary key of files)
+         * id: comment id (primary key of filescomments)
+         */
         var parameters = {
-            "ot" : ot,
-            "oid": oid,
-            "file_id": file_id,
-            "id": id,
-            "delete_submit": true
+            ot : options.ot,
+            oid: options.oid,
+            fileId: options.fileId,
+            id: options.id,
+            deleteSubmit: true
         };
 
     
@@ -32,7 +47,7 @@ ATutor.fileStorage = ATutor.fileStorage || {};
             "Delete Comment":  function (){
                         $.ajax({
                             type: "POST",
-                            url: deleteUrl,
+                            url: options.deleteUrl,
                             data: parameters,
                             success: function(message) {
                                 commentOnDelete(message, parameters.id);
@@ -47,8 +62,11 @@ ATutor.fileStorage = ATutor.fileStorage || {};
 
         // Create dialog for the page if it doesn't exist
         if (deleteDialog.length === 0){
-            $("body").append("<div title='" + deleteTitle + "' id='comment-delete-dialog'>" +
-                    deleteMessage +"</div>");
+            $("<div />", {
+                title: options.deleteTitle,
+                text: options.deleteMessage,
+                id: "comment-delete-dialog"
+            }).appendTo($("body"));
             deleteDialog = $("#comment-delete-dialog");
         }
 
@@ -80,23 +98,40 @@ ATutor.fileStorage = ATutor.fileStorage || {};
     };
 
     //Function to be called on clicking submit after editing a comment
-    fileStorage.editCommentSubmit = function (ot, oid, file_id, id) {
+    fileStorage.editCommentSubmit = function (options) {
        
-        var updateUrl = "mods/_standard/file_storage/ajax/comments.php";
-
-        //Sets POST variables to be sent
-        var parameters = {
-            "ot" : ot,
-            "oid": oid,
-            "file_id": file_id,
-            "id": id,
-            "comment": $('#textarea-' + id).val(),
-            "edit_submit": true
-        };
+        var defaults = { updateUrl : "mods/_standard/file_storage/ajax/comments.php" };
         
+        options = options || {};
+
+        options = $.extend({}, defaults, options);
+
+        /** 
+         * Sets POST variables to be sent
+         * @parameters
+         * ot: owner type
+         * oid: owner id
+         * file_id: file id (primary key of files)
+         * id: comment id (primary key of filescomments)
+         */
+        var parameters = {
+            ot : options.ot,
+            oid: options.oid,
+            fileId: options.file_id,
+            id: options.id,
+            comment: $("#textarea-" + options.id).val(),
+            editSubmit: true
+        };
+      
+        //Checking if the comment has been changed at all
+        if (parameters.comment === $("#comment-description-" + options.id).text()) {
+            fileStorage.editCommentHide(options.id);
+            return;
+        }
+
         $.ajax({
             type: "POST",
-            url: updateUrl,
+            url: options.updateUrl,
             data: parameters,
             success: function(message) {
                 commentOnEdit(message, parameters.id, parameters.comment);
@@ -104,7 +139,7 @@ ATutor.fileStorage = ATutor.fileStorage || {};
         });
     };
 
-    //Function to be called on clicking Edit under a comment
+    //Function to be called on clicking Cancel under a textarea
     fileStorage.editCommentHide = function (id) {
         $("#comment-edit-delete-" + id).show();
         $("#comment-description-" + id).show();
@@ -114,7 +149,7 @@ ATutor.fileStorage = ATutor.fileStorage || {};
     //Function to be called on successful AJAX request for comment edit
     var commentOnEdit = function (message, id, comment) {
         if (message === "ACTION_COMPLETED_SUCCESSFULLY") {
-            $('#comment-description-' + id).html($('<div/>').text(comment).html());
+            $("#comment-description-" + id).html($("<div/>").text(comment).html());
             fileStorage.editCommentHide(id);
         } else {
             generateDialog(message);
@@ -122,6 +157,7 @@ ATutor.fileStorage = ATutor.fileStorage || {};
     };
 
     var generateDialog = function (responseMessage) {
+        
         var ajaxResponse = "Action unsuccessful",
             notFoundMessage = "Comment does not exist",
             accessDeniedMessage = "Access Denied",
@@ -130,7 +166,10 @@ ATutor.fileStorage = ATutor.fileStorage || {};
 
         // Create dialog for the page if it doesn't exist
         if (responseDialog.length === 0){
-            $("body").append("<div title='" + ajaxResponse + "' id='ajax-response-dialog'></div>");
+            $("<div />", {
+                title: ajaxResponse,
+                id: "ajax-response-dialog"
+            }).appendTo($("body"));
             responseDialog = $("#ajax-response-dialog");
         }
         

@@ -164,12 +164,12 @@ if ($row = mysql_fetch_assoc($result)): ?>
                     <?php if ($row['member_id'] == $_SESSION['member_id']): ?>
                         <div style="width:100%; display:none;" id="edit-comment-<?php echo $row['comment_id']; ?>" >    
                             <textarea id="textarea-<?php echo $row['comment_id']; ?>"><?php echo $row['comment']; ?></textarea>
-                            <div style="text-align:right; font-size: smaller"><a href="javascript:null();" onclick="ATutor.fileStorage.editCommentSubmit('<?php echo $owner_type; ?>', '<?php echo $owner_id; ?>', '<?php echo $id; ?>', '<?php echo $row['comment_id']; ?>');"><?php echo _AT('submit'); ?></a> | 
+                            <div style="text-align:right; font-size: smaller"><a href="javascript:null();" onclick="ATutor.fileStorage.editCommentSubmit({ot: '<?php echo $owner_type; ?>', oid:'<?php echo $owner_id; ?>', fileId: '<?php echo $id; ?>', id: '<?php echo $row['comment_id']; ?>'});"><?php echo _AT('submit'); ?></a> | 
                             <a href="javascript:null();" onclick="ATutor.fileStorage.editCommentHide('<?php echo $row['comment_id']; ?>');"><?php echo _AT('cancel'); ?></a>
                             </div>
                         </div>
 						<div style="text-align:right; font-size: smaller" id="comment-edit-delete-<?php echo $row['comment_id']; ?>">
-                        <a href="javascript:null();" onclick="ATutor.fileStorage.editCommentShow('<?php echo $row['comment_id']; ?>');"><?php echo _AT('edit') ?></a> | <a href="javascript:null();" onclick="ATutor.fileStorage.deleteComment('<?php echo $owner_type; ?>', '<?php echo $owner_id; ?>', '<?php echo $id; ?>', '<?php echo $row['comment_id']; ?>');"><?php echo _AT('delete'); ?></a>
+                        <a href="javascript:null();" onclick="ATutor.fileStorage.editCommentShow('<?php echo $row['comment_id']; ?>');"><?php echo _AT('edit') ?></a> | <a href="javascript:null();" onclick="ATutor.fileStorage.deleteComment({ot: '<?php echo $owner_type; ?>', oid: '<?php echo $owner_id; ?>', fileId: '<?php echo $id; ?>', id: '<?php echo $row['comment_id']; ?>'});" ><?php echo _AT('delete'); ?></a>
                         </div>
 					<?php endif; ?>
 
