@@ -105,7 +105,7 @@ ATutor.fileStorage = ATutor.fileStorage || {};
         options = options || {};
 
         options = $.extend({}, defaults, options);
-
+        
         /** 
          * Sets POST variables to be sent
          * @parameters
@@ -113,6 +113,7 @@ ATutor.fileStorage = ATutor.fileStorage || {};
          * oid: owner id
          * file_id: file id (primary key of files)
          * id: comment id (primary key of filescomments)
+         * comment: updated value of textarea
          */
         var parameters = {
             ot : options.ot,
@@ -122,13 +123,13 @@ ATutor.fileStorage = ATutor.fileStorage || {};
             comment: $("#textarea-" + options.id).val(),
             editSubmit: true
         };
-      
+     
         //Checking if the comment has been changed at all
         if (parameters.comment === $("#comment-description-" + options.id).text()) {
             fileStorage.editCommentHide(options.id);
             return;
         }
-
+ 
         $.ajax({
             type: "POST",
             url: options.updateUrl,
@@ -162,6 +163,7 @@ ATutor.fileStorage = ATutor.fileStorage || {};
             notFoundMessage = "Comment does not exist",
             accessDeniedMessage = "Access Denied",
             unknownErrorMessage = "Unknown Error Occurred",
+            commentEmptyMessage = "Comment cannot be empty",
             responseDialog = $("#ajax-response-dialog");
 
         // Create dialog for the page if it doesn't exist
@@ -172,9 +174,11 @@ ATutor.fileStorage = ATutor.fileStorage || {};
             }).appendTo($("body"));
             responseDialog = $("#ajax-response-dialog");
         }
-        
+      
         if (responseMessage === "ACCESS_DENIED") {
             responseDialog.html(accessDeniedMessage);
+        } else if (responseMessage === "COMMENT_EMPTY") {
+            responseDialog.html(commentEmptyMessage);
         } else if (responseMessage === "PAGE_NOT_FOUND") {
             responseDialog.html(notFoundMessage);
         } else {
@@ -196,6 +200,79 @@ ATutor.fileStorage = ATutor.fileStorage || {};
             buttons: buttonOptions
         });
 
+
+    };
+
+    //Function called on clicking post in when adding new comment
+    fileStorage.addComment = function (options) {
+
+        var options = options || {};
+
+        var defaults = {
+            addUrl : "mods/_standard/file_storage/ajax/comments.php",
+            textarea : $('#comment')
+        };
+
+        options = $.extend({}, defaults, options);
+
+        //In case the comment is empty
+        if (options.textarea.val() === ''){
+            return;
+        }
+
+        /** 
+         * Sets POST variables to be sent
+         * @parameters
+         * ot: owner type
+         * oid: owner id
+         * file_id: file id (primary key of files)
+         * comment: comment id (primary key of filescomments)
+         */
+        var parameters = {
+            ot : options.ot,
+            oid: options.oid,
+            fileId: options.fileId,
+            id: options.id,
+            comment: options.textarea.val(),
+            addSubmit: true
+        };
+
+        //Sending AJAX request
+        $.ajax({
+            type: "POST",
+            url: options.addUrl,
+            data: parameters,
+            success: function(response) {
+                commentOnAdd(response);
+            }
+        });
+
+        fileStorage.cancelAddComment(options.textarea);
+    };
+
+    //Function called on clicking cancel when adding new comment
+    fileStorage.cancelAddComment = function (textarea){
+        var textarea = textarea || $("#comment");
+
+        //Reseting the text area
+        textarea.val('');
+    };
+
+    var commentOnAdd = function (response) {
+        var parsedResponse = $.parseJSON(response);
+        
+        //Checking if there were any errors
+        if (parsedResponse.message !== 'ACTION_COMPLETED_SUCCESSFULLY') {
+            generateDialog(parsedResponse.message);
+            return;
+        }
+
+        $("<div />", {
+                "class": "input-form",
+                id: "comment" + parsedResponse.id
+                }).insertBefore($('#comment-add-form'));
+
+        $("#comment" + parsedResponse.id).html(parsedResponse.html);
 
     };
 

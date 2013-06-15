@@ -192,7 +192,7 @@ if ($row = mysql_fetch_assoc($result)): ?>
 <?php endif; ?>
 
 <?php if ($_SESSION['is_guest'] == 0): ?>
-<form method="post" action="<?php echo $_SERVER['PHP_SELF'].$owner_arg_prefix; ?>id=<?php echo $id; ?>">
+<form method="post" action="<?php echo $_SERVER['PHP_SELF'].$owner_arg_prefix; ?>id=<?php echo $id; ?>" id="comment-add-form">
 <input type="hidden" name="id" value="<?php echo $id; ?>" />
 <input type="hidden" name="folder" value="<?php echo $current_file['folder_id']; ?>" />
 <div class="input-form">
@@ -202,8 +202,8 @@ if ($row = mysql_fetch_assoc($result)): ?>
 	</div>
 
 	<div class="row buttons">
-		<input type="submit" name="submit" value="<?php echo _AT('post'); ?>" />
-		<input type="submit" name="cancel" value="<?php echo _AT('cancel'); ?>" />
+		<input type="button" name="submit" onclick="ATutor.fileStorage.addComment({ot: '<?php echo $owner_type; ?>', oid:'<?php echo $owner_id; ?>', fileId: '<?php echo $id; ?>'});" value="<?php echo _AT('post'); ?>" />
+		<input type="button" name="cancel" onclick="ATutor.fileStorage.cancelAddComment();" value="<?php echo _AT('cancel'); ?>" />
 	</div>
 </div>
 </form>

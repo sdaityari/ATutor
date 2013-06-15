@@ -25,6 +25,79 @@ $owner_type = abs($_REQUEST['ot']);
 $owner_id   = abs($_REQUEST['oid']);
 $owner_arg_prefix = '?ot='.$owner_type.SEP.'oid='.$owner_id. SEP;
 
+if ($_REQUEST['addSubmit']) {
+    $comment = trim($_REQUEST['comment']);
+    $file_id = abs($_REQUEST['fileId']);
+
+    $response = array();
+
+    $file = queryDB('SELECT file_id FROM %sfiles WHERE file_id = %d', array(TABLE_PREFIX, $file_id), true);
+
+    if (!$file) {
+        $response['message'] = 'PAGE_NOT_FOUND';
+        echo json_encode($response);
+        exit;
+    }
+
+    if (!$comment) {
+        $response['message'] = 'COMMENT_EMPTY';
+        echo json_encode($response);
+        exit;
+ 
+    }
+    
+    $add_comment = queryDB('INSERT INTO %sfiles_comments VALUES (NULL, %d, %d, NOW(), "%s")', array(TABLE_PREFIX, $file_id, $_SESSION['member_id'], $comment));
+    $response['id'] = mysql_insert_id($db);
+
+	if (mysql_affected_rows($db) == 1) {
+        $update_comments = queryDB('UPDATE %sfiles SET num_comments=num_comments+1, date=date WHERE file_id = %d', array(TABLE_PREFIX, $file_id));
+        
+        $row = queryDB('SELECT * FROM %sfiles_comments WHERE comment_id = %d', array(TABLE_PREFIX, $response['id']), true);
+
+        $response['html'] = 
+        '<div class="row">'.
+            '<h4>'.
+                get_display_name($row['member_id']).' - '.
+                AT_date(_AT('filemanager_date_format'), $row['date'], AT_DATE_MYSQL_DATETIME).
+            '</h4>'.
+            '<p id="comment-description-'.$row['comment_id'].'">'.
+                nl2br(htmlspecialchars($row['comment'])).
+            '</p>'.
+            '<div style="width:100%; display:none;" id="edit-comment-'.$row['comment_id'].'" >'.
+                '<textarea id="textarea-'.$row['comment_id'].'">'.$row['comment'].'</textarea>'.
+                '<div style="text-align:right; font-size: smaller">'.
+                    '<a href="javascript:null();" onclick="ATutor.fileStorage.editCommentSubmit({'.
+                        'ot: \''.   $owner_type.'\','.
+                        'oid: \''.  $owner_id.'\','.
+                        'fileId:\''.$file_id.'\','.
+                        'id: \''.   $row['comment_id'].'\'});">'.
+                    _AT('submit').'</a> | '.
+                    '<a href="javascript:null();" onclick="ATutor.fileStorage.editCommentHide(\''.
+                        $row['comment_id'].'\');">'. _AT('cancel').
+                    '</a>'.
+                '</div>'.
+            '</div>'.
+            '<div style="text-align:right; font-size: smaller" id="comment-edit-delete-'.
+                $row['comment_id'].'">'.
+                '<a href="javascript:null();" onclick="ATutor.fileStorage.editCommentShow(\''.
+                    $row['comment_id'].'\')">'._AT('edit').
+                '</a> | '.
+                '<a href="javascript:null();" onclick="ATutor.fileStorage.deleteComment({'.
+                    'ot: \''.   $owner_type.'\','.
+                    'oid: \''.  $owner_id.'\','.
+                    'fileId:\''.$file_id.'\','.
+                    'id: \''.   $row['comment_id'].'\'});">'.
+                 _AT('delete').'</a>'.
+            '</div>'.
+        '</div>';
+        
+        $response['message'] = 'ACTION_COMPLETED_SUCCESSFULLY';
+        
+        echo json_encode($response);
+    }
+    exit;
+}
+
 $comment = queryDB('SELECT * FROM %sfiles_comments WHERE comment_id = %d', array(TABLE_PREFIX, $_REQUEST['id']), true);
 if (!$comment) {
     echo 'PAGE_NOT_FOUND';
@@ -58,6 +131,10 @@ if (isset($_POST['deleteSubmit'])) {
 if (isset($_POST['editSubmit'])) {
     //If comment is to be edited
 	$comment = trim($_POST['comment']);
+    if (!$comment) {
+        echo 'COMMENT_EMPTY';
+        exit;
+    }
     $update_comment = queryDB("UPDATE %sfiles_comments SET comment='%s', date=date WHERE member_id=%d AND comment_id=%d", array(TABLE_PREFIX, $comment, $_SESSION["member_id"], $id));
 	if (mysql_affected_rows($db) == 1) {
         echo 'ACTION_COMPLETED_SUCCESSFULLY';
