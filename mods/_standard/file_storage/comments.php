@@ -140,4 +140,5 @@ if ($row = mysql_fetch_assoc($result)): ?>
 </form>
 <?php endif; ?>
 <script type="text/javascript" src="<?php echo AT_BASE_HREF; ?>jscripts/ajax/FileStorage.js"></script>
+<script type="text/javascript" src="<?php echo AT_BASE_HREF; ?>jscripts/ajax/Functions.js"></script>
 <?php require(AT_INCLUDE_PATH.'footer.inc.php'); ?>
