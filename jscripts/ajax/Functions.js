@@ -10,7 +10,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
     ajaxFunctions.generateDialog = function (responseMessage) {
 
         var ajaxResponse = "Action unsuccessful",
-            notFoundMessage = "Comment does not exist",
+            notFoundMessage = "Content does not exist",
             accessDeniedMessage = "Access Denied",
             unknownErrorMessage = "Unknown Error Occurred",
             commentEmptyMessage = "Comment cannot be empty",

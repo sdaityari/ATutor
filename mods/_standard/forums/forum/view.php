@@ -215,6 +215,9 @@ require(AT_INCLUDE_PATH.'header.inc.php');
 	} else {
 		echo '<p><strong>'._AT('lock_no_post1').'</strong></p>';
 	}
-
+?>
+<script type="text/javascript" src="<?php echo AT_BASE_HREF; ?>jscripts/ajax/Functions.js"></script>
+<script type="text/javascript" src="<?php echo AT_BASE_HREF; ?>jscripts/ajax/Forums.js"></script>
+<?php
 require(AT_INCLUDE_PATH.'footer.inc.php');
 ?>
