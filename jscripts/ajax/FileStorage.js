@@ -7,6 +7,8 @@ var ATutor = ATutor || {};
 
 ATutor.fileStorage = ATutor.fileStorage || {};
 
+ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
+
 (function(fileStorage, generateDialog) {
 
     "use strict";
@@ -93,6 +95,7 @@ ATutor.fileStorage = ATutor.fileStorage || {};
         $("#edit-comment-" + id).show();
         $("#comment-edit-delete-" + id).hide();
         $("#comment-description-" + id).hide();
+        $("#textarea-" + id).focus();
     };
 
     //Function to be called on clicking submit after editing a comment
@@ -310,4 +313,4 @@ ATutor.fileStorage = ATutor.fileStorage || {};
 
     };
 
-})(ATutor.fileStorage, ATutor.ajax.generateDialog);
+})(ATutor.fileStorage, ATutor.ajaxFunctions.generateDialog);

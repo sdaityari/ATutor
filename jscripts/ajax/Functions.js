@@ -2,12 +2,12 @@ var ATutor = ATutor || {};
 
 ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
-(function(ajax) {
+(function(ajaxFunctions) {
 
     "use strict";
 
     //Function to generate a dialog box on getting an AJAX response
-    ajax.generateDialog = function (responseMessage) {
+    ajaxFunctions.generateDialog = function (responseMessage) {
 
         var ajaxResponse = "Action unsuccessful",
             notFoundMessage = "Comment does not exist",
@@ -53,4 +53,4 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
     };
 
-})(ATutor.ajax);
+})(ATutor.ajaxFunctions);
