@@ -20,7 +20,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
             };
 
         // Create dialog for the page if it doesn't exist
-        if (responseDialog.length === 0){
+        if (!responseDialog.length) {
             responseDialog = $("<div />", {
                 title: ajaxResponse,
                 id: responseId

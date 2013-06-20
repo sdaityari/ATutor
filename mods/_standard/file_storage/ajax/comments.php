@@ -23,7 +23,6 @@ if (!check_ajax_request()) {
 
 $owner_type = abs($_REQUEST['ot']);
 $owner_id   = abs($_REQUEST['oid']);
-$owner_arg_prefix = '?ot='.$owner_type.SEP.'oid='.$owner_id. SEP;
 
 if ($_REQUEST['addSubmit']) {
     $comment = trim($_REQUEST['comment']);
@@ -33,34 +32,29 @@ if ($_REQUEST['addSubmit']) {
 
     $file = queryDB('SELECT file_id FROM %sfiles WHERE file_id = %d', array(TABLE_PREFIX, $file_id), true);
 
-    if (!$file) {
-        $response['message'] = 'PAGE_NOT_FOUND';
+    if (!$file || !$comment) {
+        $response['message'] = (!$file) ? 'PAGE_NOT_FOUND' : 'COMMENT_EMPTY';
         echo json_encode($response);
         exit;
     }
 
-    if (!$comment) {
-        $response['message'] = 'COMMENT_EMPTY';
-        echo json_encode($response);
-        exit;
-
-    }
-
-    $add_comment = queryDB('INSERT INTO %sfiles_comments VALUES (NULL, %d, %d, NOW(), "%s")', array(TABLE_PREFIX, $file_id, $_SESSION['member_id'], $comment));
+    queryDB('INSERT INTO %sfiles_comments VALUES (NULL, %d, %d, NOW(), "%s")', array(TABLE_PREFIX, $file_id, $_SESSION['member_id'], $comment));
     $response['id'] = mysql_insert_id($db);
 
-	if (mysql_affected_rows($db) == 1) {
-        $update_comments = queryDB('UPDATE %sfiles SET num_comments=num_comments+1, date=date WHERE file_id = %d', array(TABLE_PREFIX, $file_id));
-
-        $row = queryDB('SELECT * FROM %sfiles_comments WHERE comment_id = %d', array(TABLE_PREFIX, $response['id']), true);
-
-        $response['name'] = get_display_name($row['member_id']);
-        $response['date'] = AT_date(_AT('filemanager_date_format'), $row['date'], AT_DATE_MYSQL_DATETIME);
-        $response['comment'] = nl2br(htmlspecialchars($row['comment']));
-        $response['message'] = 'ACTION_COMPLETED_SUCCESSFULLY';
-
-        echo json_encode($response);
+    if (mysql_affected_rows($db) != 1) {
+        exit;
     }
+
+    queryDB('UPDATE %sfiles SET num_comments=num_comments+1, date=date WHERE file_id = %d', array(TABLE_PREFIX, $file_id));
+
+    $row = queryDB('SELECT * FROM %sfiles_comments WHERE comment_id = %d', array(TABLE_PREFIX, $response['id']), true);
+
+    $response['name'] = get_display_name($row['member_id']);
+    $response['date'] = AT_date(_AT('filemanager_date_format'), $row['date'], AT_DATE_MYSQL_DATETIME);
+    $response['comment'] = nl2br(htmlspecialchars($row['comment']));
+    $response['message'] = 'ACTION_COMPLETED_SUCCESSFULLY';
+
+    echo json_encode($response);
     exit;
 }
 

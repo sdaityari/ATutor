@@ -9,7 +9,7 @@ ATutor.forums = ATutor.forums || {};
 
 ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
-(function(forums, generateDialog) {
+(function(forums, ajaxFunctions) {
 
     "use strict";
 
@@ -91,7 +91,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
         var redirectUrl = "mods/_standard/forums/forum/index.php?fid=" + parameters.fid;
 
         if (message !== "ACTION_COMPLETED_SUCCESSFULLY") {
-            generateDialog(message);
+            ajaxFunctions.generateDialog(message);
             return;
         }
 
@@ -109,9 +109,9 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
     var rearrangeElements = function () {
         //changing css class of existing posts
         var elements = $("li[id^='post-']");
-        for (var i = elements.length - 1; i >= 0 ; i-=1) {
+        for (var i = 0; i < elements.length; i+=1) {
             elements[i].className = (i % 2 === 0) ? "odd" : "even";
         }
     };
 
-})(ATutor.forums, ATutor.ajaxFunctions.generateDialog);
+})(ATutor.forums, ATutor.ajaxFunctions);

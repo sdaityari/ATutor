@@ -1127,8 +1127,6 @@ function debug($var, $title='') {
  * @date    June 09, 2013
  */
 function check_ajax_request(){
-    //Uncomment the following line for debugging
-    //print strtolower($_SERVER['HTTP_X_REQUESTED_WITH']);
     $server_request = $_SERVER["HTTP_X_REQUESTED_WITH"];
     $ajax_request = "xmlhttprequest";
     if( !empty($server_request) &&

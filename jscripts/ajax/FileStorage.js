@@ -9,7 +9,7 @@ ATutor.fileStorage = ATutor.fileStorage || {};
 
 ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
-(function(fileStorage, generateDialog) {
+(function(fileStorage, ajaxFunctions) {
 
     "use strict";
 
@@ -63,7 +63,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
         };
 
         // Create dialog for the page if it doesn't exist
-        if (deleteDialog.length === 0){
+        if (!deleteDialog.length) {
             deleteDialog = $("<div />", {
                 title: options.deleteTitle,
                 text: options.deleteMessage,
@@ -86,7 +86,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
             $("#comment" + id).fadeOut();
             return;
         } else {
-            generateDialog(responseMessage);
+            ajaxFunctions.generateDialog(responseMessage);
         }
     };
 
@@ -154,7 +154,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
             $("#comment-description-" + id).html($("<div/>").text(comment).html());
             fileStorage.editCommentHide(id);
         } else {
-            generateDialog(message);
+            ajaxFunctions.generateDialog(message);
         }
     };
 
@@ -218,7 +218,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
         //Checking if there were any errors
         if (parsedResponse.message !== "ACTION_COMPLETED_SUCCESSFULLY") {
-            generateDialog(parsedResponse.message);
+            ajaxFunctions.generateDialog(parsedResponse.message);
             return;
         }
 
@@ -313,4 +313,4 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
     };
 
-})(ATutor.fileStorage, ATutor.ajaxFunctions.generateDialog);
+})(ATutor.fileStorage, ATutor.ajaxFunctions);
