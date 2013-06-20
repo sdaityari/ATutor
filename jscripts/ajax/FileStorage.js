@@ -19,14 +19,15 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
         var defaults = {
             deleteMessage : "Are you sure you want to delete this comment?",
             deleteTitle : "Delete Comment",
-            deleteUrl : "mods/_standard/file_storage/ajax/comments.php"
+            deleteUrl : "mods/_standard/file_storage/ajax/comments.php",
+            deleteId : "comment-delete-dialog"
         };
-
-        var deleteDialog = $("#comment-delete-dialog");
 
         options = options || {};
 
         options = $.extend({}, defaults, options);
+
+        var deleteDialog = $("#" + options.deleteId);
 
         /**
          * Sets POST variables to be sent
@@ -63,12 +64,11 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
         // Create dialog for the page if it doesn't exist
         if (deleteDialog.length === 0){
-            $("<div />", {
+            deleteDialog = $("<div />", {
                 title: options.deleteTitle,
                 text: options.deleteMessage,
-                id: "comment-delete-dialog"
+                id: options.deleteId
             }).appendTo($("body"));
-            deleteDialog = $("#comment-delete-dialog");
         }
 
         deleteDialog.dialog({
@@ -210,14 +210,14 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
         var textarea = textarea || $("#comment");
 
         //Reseting the text area
-        textarea.val('');
+        textarea.val("");
     };
 
     var commentOnAdd = function (response, parameters) {
         var parsedResponse = $.parseJSON(response);
 
         //Checking if there were any errors
-        if (parsedResponse.message !== 'ACTION_COMPLETED_SUCCESSFULLY') {
+        if (parsedResponse.message !== "ACTION_COMPLETED_SUCCESSFULLY") {
             generateDialog(parsedResponse.message);
             return;
         }
@@ -225,7 +225,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
         var addCommentDom = $("<div />", {
                 "class": "input-form",
                 id: "comment" + parsedResponse.id
-                }).insertBefore($('#comment-add-form'));
+                }).insertBefore($("#comment-add-form"));
 
         //adding wrapper for comment
         var addCommentRow = $("<div />", {

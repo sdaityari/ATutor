@@ -10,30 +10,24 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
     ajaxFunctions.generateDialog = function (responseMessage) {
 
         var ajaxResponse = "Action unsuccessful",
-            notFoundMessage = "Content does not exist",
-            accessDeniedMessage = "Access Denied",
             unknownErrorMessage = "Unknown Error Occurred",
-            commentEmptyMessage = "Comment cannot be empty",
-            responseDialog = $("#ajax-response-dialog");
+            responseId = "ajax-response-dialog",
+            responseDialog = $("#" + responseId),
+            messages = {
+                "ACCESS_DENIED" : "Access Denied",
+                "COMMENT_EMPTY" : "Comment cannot be empty",
+                "PAGE_NOT_FOUND" : "Content does not exist"
+            };
 
         // Create dialog for the page if it doesn't exist
         if (responseDialog.length === 0){
-            $("<div />", {
+            responseDialog = $("<div />", {
                 title: ajaxResponse,
-                id: "ajax-response-dialog"
+                id: responseId
             }).appendTo($("body"));
-            responseDialog = $("#ajax-response-dialog");
         }
 
-        if (responseMessage === "ACCESS_DENIED") {
-            responseDialog.html(accessDeniedMessage);
-        } else if (responseMessage === "COMMENT_EMPTY") {
-            responseDialog.html(commentEmptyMessage);
-        } else if (responseMessage === "PAGE_NOT_FOUND") {
-            responseDialog.html(notFoundMessage);
-        } else {
-            responseDialog.html(unknownErrorMessage);
-        }
+        responseDialog.html(messages[responseMessage] || unknownErrorMessage);
 
         //Set an Ok button for the dialog box to be shown in case the comment was not deleted
         var buttonOptions = {

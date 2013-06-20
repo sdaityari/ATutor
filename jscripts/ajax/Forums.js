@@ -21,7 +21,8 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
             deleteMessageThread : "Are you sure you want to delete this thread?",
             deleteTitleReply : "Delete Reply",
             deleteTitleThread : "Delete Thread",
-            deleteUrl : "mods/_standard/forums/ajax/threads.php"
+            deleteUrl : "mods/_standard/forums/ajax/threads.php",
+            deleteId : "comment-delete-dialog"
         };
 
         options = options || {};
@@ -55,7 +56,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
         var deleteDialog = $("<div />", {
                                         title: options.deleteTitle,
                                         text: options.deleteMessage,
-                                        id: "comment-delete-dialog"
+                                        id: options.deleteId
                                     }).appendTo($("body"));
 
         //Setting button options
@@ -87,18 +88,19 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
     };
 
     var commentOnDelete = function (message, parameters) {
+        var redirectUrl = "mods/_standard/forums/forum/index.php?fid=" + parameters.fid;
+
         if (message !== "ACTION_COMPLETED_SUCCESSFULLY") {
             generateDialog(message);
             return;
         }
 
         if (parameters.ppid === "0") {
-            window.location.href = "mods/_standard/forums/forum/index.php?fid=" + parameters.fid;
+            window.location.href = redirectUrl;
             return;
         }
         //removing comment
-        var post = $("#post-" + parameters.pid);
-        post.remove();
+        $("#post-" + parameters.pid).remove();
 
         rearrangeElements();
     };
@@ -107,12 +109,8 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
     var rearrangeElements = function () {
         //changing css class of existing posts
         var elements = $("li[id^='post-']");
-        for (var i = 0; i < elements.length; i++) {
-            if (i % 2 === 0) {
-                elements[i].className = "odd";
-            } else {
-                elements[i].className = "even";
-            }
+        for (var i = elements.length - 1; i >= 0 ; i-=1) {
+            elements[i].className = (i % 2 === 0) ? "odd" : "even";
         }
     };
 
