@@ -272,7 +272,7 @@ function print_entry($row) {
 
 ?>
 
-	<li class="<?php if ($counter %2) { echo 'odd'; } else { echo 'even'; } ?>">
+	<li id="post-<?php echo $row['post_id']; ?>" class="<?php if ($counter %2) { echo 'odd'; } else { echo 'even'; } ?>">
 		<a name="<?php echo $row['post_id']; ?>"></a>
 		<div class="forum-post-author">
 			<a href="profile.php?id=<?php echo $row['member_id']; ?>" class="title"><?php echo htmlspecialchars(get_display_name($row['member_id'])); ?></a><br />
@@ -284,7 +284,8 @@ function print_entry($row) {
 			<div>
 				<div class="forum-post-ctrl">
 					<?php if (authenticate(AT_PRIV_FORUMS, AT_PRIV_RETURN)): ?>
-						<?php echo $reply_link; ?> | <a href="mods/_standard/forums/edit_post.php?fid=<?php echo $row['forum_id'].SEP.'pid='.$row['post_id']; ?>"><?php echo _AT('edit'); ?></a> | <a href="mods/_standard/forums/forum/delete_thread.php?fid=<?php echo $row['forum_id'].SEP.'pid='.$row['post_id'].SEP.'ppid='.$row['parent_id'].SEP; ?>nest=1"><?php echo _AT('delete'); ?></a>
+						<?php echo $reply_link; ?> | <a href="mods/_standard/forums/edit_post.php?fid=<?php echo $row['forum_id'].SEP.'pid='.$row['post_id']; ?>"><?php echo _AT('edit'); ?></a> |
+                        <a href="javascript:null();" onclick="ATutor.forums.deleteThread({fid: '<?php echo $row['forum_id'] ?>', pid: '<?php echo $row['post_id'] ?>', ppid: '<?php echo $row['parent_id']; ?>'});"><?php echo _AT('delete'); ?></a>
 					<?php elseif (($row['member_id'] == $_SESSION['member_id']) && (($row['udate'] + $forum_info['mins_to_edit'] * 60) > time())): ?>
 						<?php echo $reply_link; ?> | <a href="mods/_standard/forums/edit_post.php?fid=<?php echo $row['forum_id'].SEP.'pid='.$row['post_id']; ?>"><?php echo _AT('edit'); ?></a> <span>(<?php echo _AT('edit_for_minutes', round((($row['udate'] + $forum_info['mins_to_edit'] * 60) - time())/60)); ?>)</span>
 					<?php elseif ($_SESSION['valid_user'] == true): ?>
