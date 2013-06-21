@@ -1,4 +1,4 @@
-<form name="form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+<form id="words-form" name="form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 
 <table class="data" summary="" rules="cols" style="width: 90%;">
 <thead>
@@ -11,7 +11,7 @@
 </thead>
 <tfoot>
 <tr>
-	<td colspan="4"><input type="submit" name="edit" value="<?php echo _AT('edit'); ?>" /> <input type="submit" name="delete" value="<?php echo _AT('delete'); ?>" /></td>
+	<td colspan="4"><input type="submit" name="edit" value="<?php echo _AT('edit'); ?>" /> <input type="button" name="delete" value="<?php echo _AT('delete'); ?>" onclick="ATutor.glossary.deleteItem();" /></td>
 </tr>
 </tfoot>
 <tbody>
