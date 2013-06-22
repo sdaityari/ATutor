@@ -42,4 +42,47 @@ if ($_POST['deleteSubmit']) {
     exit;
 }
 
+if ($_POST['addSubmit']) {
+    $word       = trim($_POST['word']);
+    $definition = addslashes(trim($_POST['definition']));
+    //60 is defined by the sql
+    $word       = addslashes(validate_length($word, 60));
+    $response   = array();
+
+    if (!$word || !$definition) {
+        $response['message'] = 'CONTENT_EMPTY';
+        echo json_encode($response);
+        exit;
+    }
+
+    $related_term = addslashes(intval($_POST['relatedTerm']));
+
+    // Checking if term already exists
+    if (queryDB('SELECT * FROM %sglossary WHERE word=\'%s\' AND course_id=%d',
+                array(TABLE_PREFIX, $word, $_SESSION['course_id']), true)) {
+
+        $response['message'] = 'TERM_EXISTS';
+        echo json_encode($response);
+        exit;
+    }
+
+    // Checking if related term exists, else remove the related term
+    $related_word = queryDB('SELECT * FROM %sglossary WHERE word_id=%d',
+                array(TABLE_PREFIX, $related_term), true);
+    if (!$related_word) {
+
+        $related_term = 0;
+    } else {
+        $response['related'] = $related_word['word'];
+    }
+
+    queryDB('INSERT INTO %sglossary VALUES(NULL, %d, \'%s\', \'%s\', %d)',
+                array(TABLE_PREFIX, $_SESSION['course_id'], $word, $definition, $related_term));
+
+    $response['id'] = mysql_insert_id($db);
+    $response['message'] = 'ACTION_COMPLETED_SUCCESSFULLY';
+    echo json_encode($response);
+    exit;
+}
+
 ?>
