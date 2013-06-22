@@ -13,6 +13,8 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
     "use strict";
 
+    glossary.editItemFlag = false;
+
     // Function to be called on clicking Delete for a thread or a reply
     glossary.deleteItem = function () {
 
@@ -90,9 +92,13 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
         options = options || {};
 
+        if (options.related) {
+            options.id = getWordId(options.related);
+        }
+
         $("#glossary-form-name").val(options.name).focus();
         $("#glossary-form-definition").val(options.definition);
-        $("#glossary-form-related").val(options.related);
+        $("#glossary-form-related").val(options.id);
     };
 
     glossary.confirmSubmit = function () {
@@ -103,7 +109,13 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
             word : inputs[0].value,
             definition : inputs[1].value,
             relatedTerm : inputs[2].value,
-            addSubmit : true
+        }
+
+        if (!glossary.editItemFlag) {
+            parameters.addSubmit = true;
+        } else {
+            parameters.gid = glossary.editItemFlag;
+            parameters.editSubmit = true;
         }
 
         if (!parameters.word || !parameters.definition) {
@@ -128,9 +140,14 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
                 TERM_EXISTS : "The term that you added already exists"
             };
             ajaxFunctions.generateDialog(parsedResponse.message, messages);
+            glossary.hideForm();
             return;
         }
 
+        if (glossary.editItemFlag) {
+            //Removing old item
+            $('#r_'+glossary.editItemFlag).remove();
+        }
         addItemToTable($.extend({}, parameters, parsedResponse));
         glossary.hideForm();
     };
@@ -196,6 +213,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
     glossary.hideForm = function () {
         $("#glossary-form").hide();
         $("#glossary-terms").show();
+        glossary.editItemFlag = false;
     };
 
     var updateSelect = function () {
@@ -210,6 +228,38 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
             selectElement.append("<option value='" + row.getElementsByTagName("input")[0].value +
                     "'>" + row.getElementsByTagName("label")[0].innerHTML + "</option>");
         }
+    };
+
+    glossary.editItem = function () {
+        var id = $("input[name=word_id]:checked", "#words-form").val();
+
+        if (!id) {
+            return;
+        }
+
+        glossary.editItemFlag = id;
+
+        var row = document.getElementById("r_" + id).getElementsByTagName("td");
+
+        var options = {
+            name : row[1].getElementsByTagName("label")[0].innerHTML,
+            definition : row[2].innerHTML,
+            related : row[3].innerHTML
+        };
+
+        glossary.showForm(options);
+
+    };
+
+    var getWordId = function (word) {
+        var elements = $("tr[id^='r_']"),
+            length = elements.length;
+        for (var i=0; i<length; i++) {
+            if (word === elements[i].getElementsByTagName("label")[0].innerHTML) {
+                return elements[i].getElementsByTagName("input")[0].value;
+            }
+        }
+        return 0;
     };
 
 })(ATutor.glossary, ATutor.ajaxFunctions);
