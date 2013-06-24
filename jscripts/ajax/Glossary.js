@@ -74,7 +74,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
     var itemOnDelete = function (message, parameters) {
 
-        if (message !== "ACTION_COMPLETED_SUCCESSFULLY") {
+        if (message !== ajaxFunctions.successfulCode) {
             ajaxFunctions.generateDialog(message);
             return;
         }
@@ -105,10 +105,19 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
         var inputs = $("#glossary-form :input"),
             addUrl = "mods/_core/glossary/tools/ajax/items.php";
 
+        // Title, Definition, Related Term and two Submit Buttons
+        if ( inputs.length !== 5) {
+            return;
+        }
+
         var parameters = {
             word : inputs[0].value,
             definition : inputs[1].value,
             relatedTerm : inputs[2].value,
+        }
+
+        if (!parameters.word || !parameters.definition) {
+            return;
         }
 
         if (!glossary.editItemFlag) {
@@ -116,10 +125,6 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
         } else {
             parameters.gid = glossary.editItemFlag;
             parameters.editSubmit = true;
-        }
-
-        if (!parameters.word || !parameters.definition) {
-            return;
         }
 
         $.ajax({
@@ -135,7 +140,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
     var itemOnAdd = function (parsedResponse, parameters) {
 
-        if (parsedResponse.message !== "ACTION_COMPLETED_SUCCESSFULLY") {
+        if (parsedResponse.message !== ajaxFunctions.successfulCode) {
             var messages = {
                 TERM_EXISTS : "The term that you added already exists"
             };
@@ -158,14 +163,21 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
             length = elements.length,
             onMouseDownString = "document.form['m" + options.id +
                 "'].checked = true; rowselect(this);",
-            anchorTr;
+            anchorTr, element, elementLabel;
 
         for (var i = 0; i < length; i+=1) {
-            if (options.word < elements[i].getElementsByTagName("label")[0].innerHTML) {
-                anchorTr = elements[i];
+            element = elements[i];
+            elementLabel = $(element).find("label");
+
+            if (elementLabel.length === 0) {
+                break;
+            }
+            if (options.word < elementLabel[0].innerHTML) {
+                anchorTr = $(element);
                 break;
             }
         }
+
         if (anchorTr) {
             var tr = $("<tr />",{
                 id : "r_" + options.id,
@@ -219,14 +231,28 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
     var updateSelect = function () {
         var tableRows = $("tr[id^='r_']"),
             selectElement = $("#glossary-form-related"),
-            length = tableRows.length;
+            length = tableRows.length,
+            row, rowInput, rowLabel;
 
-        selectElement.html("<option value='0'></option>");
+        selectElement.html("");
+
+        $("<option />", {
+            value : 0,
+        }).appendTo(selectElement);
 
         for (var i=0; i < length; i+=1) {
-            var row = tableRows[i];
-            selectElement.append("<option value='" + row.getElementsByTagName("input")[0].value +
-                    "'>" + row.getElementsByTagName("label")[0].innerHTML + "</option>");
+            row = tableRows[i];
+            rowInput = $(row).find("input");
+            rowLabel = $(row).find("label");
+
+            if (rowInput.length !== 1 || rowLabel.length !== 1) {
+                break;
+            }
+
+            $("<option />", {
+                value : rowInput[0].value,
+                text : rowLabel[0].innerHTML
+            }).appendTo(selectElement);
         }
     };
 
@@ -239,10 +265,14 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
         glossary.editItemFlag = id;
 
-        var row = document.getElementById("r_" + id).getElementsByTagName("td");
+        var row = $("#r_" + id).find("td");
+
+        if (row.length !== 4) {
+            return;
+        }
 
         var options = {
-            name : row[1].getElementsByTagName("label")[0].innerHTML,
+            name : $(row[1]).find("label")[0].innerHTML,
             definition : row[2].innerHTML,
             related : row[3].innerHTML
         };
@@ -254,9 +284,10 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
     var getWordId = function (word) {
         var elements = $("tr[id^='r_']"),
             length = elements.length;
+
         for (var i=0; i<length; i++) {
-            if (word === elements[i].getElementsByTagName("label")[0].innerHTML) {
-                return elements[i].getElementsByTagName("input")[0].value;
+            if (word === $(elements[i]).find("label")[0].innerHTML) {
+                return $(elements[i]).find("input")[0].value;
             }
         }
         return 0;

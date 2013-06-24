@@ -90,7 +90,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
     var commentOnDelete = function (message, parameters) {
         var redirectUrl = "mods/_standard/forums/forum/index.php?fid=" + parameters.fid;
 
-        if (message !== "ACTION_COMPLETED_SUCCESSFULLY") {
+        if (message !== ajaxFunctions.successfulCode) {
             ajaxFunctions.generateDialog(message);
             return;
         }

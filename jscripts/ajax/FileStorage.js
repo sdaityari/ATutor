@@ -82,7 +82,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
     //Callback function for AJAX Request
     var commentOnDelete = function (responseMessage, id) {
-        if (responseMessage === "ACTION_COMPLETED_SUCCESSFULLY") {
+        if (responseMessage === ajaxFunctions.successfulCode) {
             $("#comment" + id).fadeOut();
             return;
         } else {
@@ -150,7 +150,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
     //Function to be called on successful AJAX request for comment edit
     var commentOnEdit = function (message, id, comment) {
-        if (message === "ACTION_COMPLETED_SUCCESSFULLY") {
+        if (message === ajaxFunctions.successfulCode) {
             $("#comment-description-" + id).html($("<div/>").text(comment).html());
             fileStorage.editCommentHide(id);
         } else {
@@ -217,7 +217,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
         var parsedResponse = $.parseJSON(response);
 
         //Checking if there were any errors
-        if (parsedResponse.message !== "ACTION_COMPLETED_SUCCESSFULLY") {
+        if (parsedResponse.message !== ajaxFunctions.successfulCode) {
             ajaxFunctions.generateDialog(parsedResponse.message);
             return;
         }
