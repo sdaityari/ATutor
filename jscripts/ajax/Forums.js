@@ -13,6 +13,10 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
     "use strict";
 
+    var css = {
+        postId : "post-"
+    };
+
     //Function to be called on clicking Delete for a thread or a reply
     forums.deleteThread = function (options) {
 
@@ -100,7 +104,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
             return;
         }
         //removing comment
-        $("#post-" + parameters.pid).remove();
+        $("#" + css.postId + parameters.pid).remove();
 
         rearrangeElements();
     };
@@ -108,7 +112,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
     //function to change css class of existing thread and replies
     var rearrangeElements = function () {
         //changing css class of existing posts
-        var elements = $("li[id^='post-']");
+        var elements = $("li[id^='" + css.postId + "']");
         for (var i = 0; i < elements.length; i+=1) {
             elements[i].className = (i % 2 === 0) ? "odd" : "even";
         }

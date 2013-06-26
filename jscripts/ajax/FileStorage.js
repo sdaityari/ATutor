@@ -13,6 +13,15 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
     "use strict";
 
+    // Add ids of comments to get the DOM elements
+    var css = {
+        commentId : "comment",
+        editCommentId : "edit-comment-",
+        editDeleteButtonsId : "comment-edit-delete-",
+        commentDescriptionId : "comment-description-",
+        textAreaId : "textarea-"
+    };
+
     //Function to be called on clicking Delete for a comment
     fileStorage.deleteComment = function (options) {
 
@@ -83,7 +92,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
     //Callback function for AJAX Request
     var commentOnDelete = function (responseMessage, id) {
         if (responseMessage === ajaxFunctions.successfulCode) {
-            $("#comment" + id).fadeOut();
+            $("#" + css.commentId + id).fadeOut();
             return;
         } else {
             ajaxFunctions.generateDialog(responseMessage);
@@ -92,10 +101,10 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
     //Function to be called on clicking Edit under a comment
     fileStorage.editCommentShow = function (id) {
-        $("#edit-comment-" + id).show();
-        $("#comment-edit-delete-" + id).hide();
-        $("#comment-description-" + id).hide();
-        $("#textarea-" + id).focus();
+        $("#" + css.editCommentId + id).show();
+        $("#" + css.editDeleteButtonsId + id).hide();
+        $("#" + css.commentDescriptionId + id).hide();
+        $("#" + css.textAreaId + id).focus();
     };
 
     //Function to be called on clicking submit after editing a comment
@@ -121,12 +130,12 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
             oid: options.oid,
             fileId: options.file_id,
             id: options.id,
-            comment: $("#textarea-" + options.id).val(),
+            comment: $("#" + css.textAreaId + options.id).val(),
             editSubmit: true
         };
 
         //Checking if the comment has been changed at all
-        if (parameters.comment === $("#comment-description-" + options.id).text()) {
+        if (parameters.comment === $("#" + css.commentDescriptionId + options.id).text()) {
             fileStorage.editCommentHide(options.id);
             return;
         }
@@ -143,15 +152,15 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
     //Function to be called on clicking Cancel under a textarea
     fileStorage.editCommentHide = function (id) {
-        $("#comment-edit-delete-" + id).show();
-        $("#comment-description-" + id).show();
-        $("#edit-comment-" + id).hide();
+        $("#" + css.editDeleteButtonsId + id).show();
+        $("#" + css.commentDescriptionId + id).show();
+        $("#" + css.editCommentId + id).hide();
     };
 
     //Function to be called on successful AJAX request for comment edit
     var commentOnEdit = function (message, id, comment) {
         if (message === ajaxFunctions.successfulCode) {
-            $("#comment-description-" + id).html($("<div/>").text(comment).html());
+            $("#" + css.commentDesciptionId + id).html($("<div/>").text(comment).html());
             fileStorage.editCommentHide(id);
         } else {
             ajaxFunctions.generateDialog(message);
@@ -240,7 +249,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
         //adding comment description
         $("<p />", {
                 html: parsedResponse.comment,
-                id: "comment-description-" + parsedResponse.id
+                id: css.commentDescriptionId + parsedResponse.id
                 }).appendTo(addCommentRow);
 
         //Setting new parameters for using in functions to edit and delete comments
@@ -259,13 +268,13 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
         //Wrapper for Edit comment textarea and buttons
         var editCommentDiv = $("<div />", {
                 style : "width:100%; display:none;",
-                id : "edit-comment-" + parsedResponse.id
+                id : css.editCommentId + parsedResponse.id
                 }).appendTo(addCommentRow);
 
         //Edit comment textarea
         $("<textarea />", {
                 text : parameters.comment,
-                id : "textarea-" + parsedResponse.id
+                id : css.textAreaId + parsedResponse.id
                 }).appendTo(editCommentDiv);
 
         //wrapper for buttons below edit textarea
@@ -293,7 +302,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
         var editDeleteButtons = $("<div />", {
                 style : alignRightStyle,
                 text : separator,
-                id : "comment-edit-delete-" + parsedResponse.id
+                id : css.editDeleteButtonsId + parsedResponse.id
                 }).appendTo(addCommentRow);
 
         //Delete comment button appended to wrapper div

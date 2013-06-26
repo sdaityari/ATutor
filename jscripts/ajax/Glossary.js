@@ -13,6 +13,15 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
     "use strict";
 
+    var css = {
+        rowId : "r_",
+        glossaryFormId : "glossary-form",
+        glossaryTermsId : "glossary-terms",
+        termNameId : "glossary-form-name",
+        termDefinitionId : "glossary-form-definition",
+        termRelatedId : "glossary-form-related",
+    };
+
     glossary.editItemFlag = false;
 
     // Function to be called on clicking Delete for a thread or a reply
@@ -79,13 +88,13 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
             return;
         }
 
-        $("#r_" + parameters.gid).remove();
+        $("#" + css.rowId + parameters.gid).remove();
 
     };
 
     glossary.showForm = function (options) {
-        $("#glossary-form").show();
-        $("#glossary-terms").hide();
+        $("#" + css.glossaryFormId).show();
+        $("#" + css.glossaryTermsId).hide();
 
         // Populate/Update the select option in the form
         updateSelect();
@@ -96,13 +105,13 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
             options.id = getWordId(options.related);
         }
 
-        $("#glossary-form-name").val(options.name).focus();
-        $("#glossary-form-definition").val(options.definition);
-        $("#glossary-form-related").val(options.id);
+        $("#" + css.termNameId).val(options.name).focus();
+        $("#" + css.termDefinitionId).val(options.definition);
+        $("#" + css.termRelatedId).val(options.id);
     };
 
     glossary.confirmSubmit = function () {
-        var inputs = $("#glossary-form :input"),
+        var inputs = $("#" + css.glossaryFormId + " :input"),
             addUrl = "mods/_core/glossary/tools/ajax/items.php";
 
         // Title, Definition, Related Term and two Submit Buttons
@@ -151,7 +160,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
         if (glossary.editItemFlag) {
             //Removing old item
-            $('#r_'+glossary.editItemFlag).remove();
+            $('#' + css.rowId + glossary.editItemFlag).remove();
         }
         addItemToTable($.extend({}, parameters, parsedResponse));
         glossary.hideForm();
@@ -159,7 +168,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
     var addItemToTable = function (options) {
 
-        var elements = $("tr[id^='r_']"),
+        var elements = $("tr[id^='" + css.rowId + "']"),
             length = elements.length,
             onMouseDownString = "document.form['m" + options.id +
                 "'].checked = true; rowselect(this);",
@@ -180,12 +189,12 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
         if (anchorTr) {
             var tr = $("<tr />",{
-                id : "r_" + options.id,
+                id : css.rowId + options.id,
                 onmousedown : onMouseDownString
             }).insertBefore(anchorTr);
         } else {
             var tr = $("<tr />",{
-                id : "r_" + options.id,
+                id : css.rowId + options.id,
                 onmousedown : onMouseDownString
             }).appendTo($("tbody"));
         }
@@ -223,14 +232,14 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
     };
 
     glossary.hideForm = function () {
-        $("#glossary-form").hide();
-        $("#glossary-terms").show();
+        $("#" + css.glossaryFormId).hide();
+        $("#" + css.glossaryTermsId).show();
         glossary.editItemFlag = false;
     };
 
     var updateSelect = function () {
-        var tableRows = $("tr[id^='r_']"),
-            selectElement = $("#glossary-form-related"),
+        var tableRows = $("tr[id^='" + css.rowId + "']"),
+            selectElement = $("#" + css.termRelatedId),
             length = tableRows.length,
             row, rowInput, rowLabel;
 
@@ -265,7 +274,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
         glossary.editItemFlag = id;
 
-        var row = $("#r_" + id).find("td");
+        var row = $("#" + css.rowId + id).find("td");
 
         if (row.length !== 4) {
             return;
@@ -282,7 +291,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
     };
 
     var getWordId = function (word) {
-        var elements = $("tr[id^='r_']"),
+        var elements = $("tr[id^='" + css.rowId + "']"),
             length = elements.length;
 
         for (var i=0; i<length; i++) {
