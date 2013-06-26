@@ -6,18 +6,24 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
     "use strict";
 
+    ajaxFunctions.successfulCode = "ACTION_COMPLETED_SUCCESSFULLY";
+
     //Function to generate a dialog box on getting an AJAX response
-    ajaxFunctions.generateDialog = function (responseMessage) {
+    ajaxFunctions.generateDialog = function (responseMessage, messages) {
 
         var ajaxResponse = "Action unsuccessful",
             unknownErrorMessage = "Unknown Error Occurred",
             responseId = "ajax-response-dialog",
             responseDialog = $("#" + responseId),
-            messages = {
+            defaults = {
                 "ACCESS_DENIED" : "Access Denied",
                 "COMMENT_EMPTY" : "Comment cannot be empty",
                 "PAGE_NOT_FOUND" : "Content does not exist"
             };
+
+        var messages = messages || {};
+
+        messages = $.extend({}, defaults, messages);
 
         // Create dialog for the page if it doesn't exist
         if (!responseDialog.length) {
