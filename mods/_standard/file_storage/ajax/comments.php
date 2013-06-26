@@ -79,9 +79,9 @@ if (isset($_POST['deleteSubmit'])) {
 	$_POST['fileId'] = abs($_POST['fileId']);
 	$_POST['id'] = abs($_POST['id']);
 
-    $sql = queryDB('DELETE FROM %sfiles_comments WHERE file_id= %d AND comment_id = %d', array(TABLE_PREFIX, $_REQUEST['fileId'], $_REQUEST['id']));
+    queryDB('DELETE FROM %sfiles_comments WHERE file_id= %d AND comment_id = %d', array(TABLE_PREFIX, $_REQUEST['fileId'], $_REQUEST['id']));
 	if (mysql_affected_rows($db) == 1) {
-        $update_comments = queryDB('UPDATE %sfiles SET num_comments=num_comments-1, date=date WHERE owner_type = %d AND owner_id = %d AND file_id = %d', array(TABLE_PREFIX, $owner_type, $owner_id, $_REQUEST['fileId']));
+        queryDB('UPDATE %sfiles SET num_comments=num_comments-1, date=date WHERE owner_type = %d AND owner_id = %d AND file_id = %d', array(TABLE_PREFIX, $owner_type, $owner_id, $_REQUEST['fileId']));
 	    echo 'ACTION_COMPLETED_SUCCESSFULLY';
 	}
 
@@ -95,7 +95,7 @@ if (isset($_POST['editSubmit'])) {
         echo 'COMMENT_EMPTY';
         exit;
     }
-    $update_comment = queryDB("UPDATE %sfiles_comments SET comment='%s', date=date WHERE member_id=%d AND comment_id=%d", array(TABLE_PREFIX, $comment, $_SESSION["member_id"], $id));
+    queryDB("UPDATE %sfiles_comments SET comment='%s', date=date WHERE member_id=%d AND comment_id=%d", array(TABLE_PREFIX, $comment, $_SESSION["member_id"], $id));
 	if (mysql_affected_rows($db) == 1) {
         echo 'ACTION_COMPLETED_SUCCESSFULLY';
     }
