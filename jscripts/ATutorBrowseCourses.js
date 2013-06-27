@@ -11,20 +11,24 @@ ATutor.browseCourses = ATutor.browseCourses || {};
         formId : "browse-courses-form",
         rowId : "row_",
         oddClass : "odd",
-        evenClass : "even"
+        evenClass : "even",
+        allWords : "all",
+        anyWord : "one"
     };
 
-    $("#" + css.formId).change(function() {
+    browseCourses.change = function() {
         showAll(); // show all elements
         updateAccess(); // hide based on accessibility
         updateText(); // hide based on search text
         changeStripes(); //change alternating classes of elements
-    });
+    };
 
     var showAll = function () {
-        var length = ATutor.courseInfo.length;
+        var elements = $("tr[id^='row_']:hidden"),
+            length = elements.length;
+
         for (var i=0; i<length; i+=1) {
-            $("#" + css.rowId + ATutor.courseInfo[i].course_id).show();
+            $(elements[i]).show();
         }
     };
 
@@ -46,14 +50,59 @@ ATutor.browseCourses = ATutor.browseCourses || {};
     };
 
     var updateText = function () {
-        return;
+        var match = $("input[name=include]:checked","#" + css.formId).val(),
+            text = $("input[name=search]","#" + css.formId).val().toLowerCase(),
+            info = ATutor.courseInfo,
+            length = info.length,
+            substrings = text.split(" "),
+            callback;
+
+        if (text.length === 0) {
+            return;
+        }
+
+        if (match === css.anyWord) {
+            callback = compareAny;
+        } else if (match === css.allWords) {
+            callback = compareAll;
+        } else {
+            return;
+        }
+
+        for (var i=0; i<length; i+=1) {
+            if (! (callback(info[i].title.toLowerCase(), substrings) ||
+                        callback(info[i].description.toLowerCase(), substrings)) ) {
+
+                $("#" + css.rowId + info[i].course_id).hide();
+            }
+        }
+    };
+
+    var compareAny = function (string, substrings) {
+        var length = substrings.length;
+        for (var i=0; i<length; i+=1) {
+            if (string.indexOf(substrings[i]) !== -1) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    var compareAll = function (string, substrings) {
+        var length = substrings.length;
+        for (var i=0; i<length; i+=1) {
+            if (string.indexOf(substrings[i]) === -1) {
+                return false;
+            }
+        }
+        return true;
     };
 
     var changeStripes = function () {
         var elements = $("tr[id^='row_']:visible"),
             length = elements.length;
         for (var i=0; i<length; i+=1) {
-            elements[i].className = (i%2 === 0)? "odd" : "even";
+            elements[i].className = (i%2 === 0)? css.oddClass : css.evenClass;
         }
     };
 

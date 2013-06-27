@@ -1,7 +1,7 @@
 <?php require(AT_INCLUDE_PATH.'header.inc.php'); ?>
 <div class="input-form" style="width:90%;">
 <fieldset class="group_form"><legend class="group_form"><?php echo _AT('filter'); ?></legend>
-	<form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" id="browse-courses-form">
+	<form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" id="browse-courses-form" onchange="ATutor.browseCourses.change();" onkeyup="ATutor.browseCourses.change();">
 		
 			<div class="row">
 				<h3><?php echo _AT('results_found', $this->num_results); ?></h3>
