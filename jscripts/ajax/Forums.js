@@ -14,7 +14,9 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
     "use strict";
 
     var css = {
-        postId : "post-"
+        postId : "post-",
+        oddClass : "odd",
+        evenClass : "even"
     };
 
     //Function to be called on clicking Delete for a thread or a reply
@@ -66,24 +68,24 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
         //Setting button options
         var buttonOptions = {
             "Delete":  function (){
-                        $.ajax({
-                            type: "POST",
-                            url: options.deleteUrl,
-                            data: parameters,
-                            success: function(message) {
-                                commentOnDelete(message, parameters);
-                            }
-                        });
-                        deleteDialog.dialog("close");
-                    },
-            "Cancel" :  function () {
-                        deleteDialog.dialog("close");
+                $.ajax({
+                    type: "POST",
+                    url: options.deleteUrl,
+                    data: parameters,
+                    success: function(message) {
+                        commentOnDelete(message, parameters);
                     }
+                });
+                deleteDialog.dialog("close");
+            },
+            "Cancel" :  function () {
+                deleteDialog.dialog("close");
+            }
         };
 
         deleteDialog.dialog({
             autoOpen: true,
-            width: 400,
+            width: ajaxFunctions.dialogWidth,
             modal: true,
             closeOnEscape: false,
             buttons: buttonOptions
@@ -112,10 +114,9 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
     //function to change css class of existing thread and replies
     var rearrangeElements = function () {
         //changing css class of existing posts
-        var elements = $("li[id^='" + css.postId + "']");
-        for (var i = 0; i < elements.length; i+=1) {
-            elements[i].className = (i % 2 === 0) ? "odd" : "even";
-        }
+        $("li[id^='" + css.postId + "']").each( function(index, value) {
+            value.className = (index % 2 === 0) ? css.oddClass : css.evenClass;
+        });
     };
 
 })(ATutor.forums, ATutor.ajaxFunctions);

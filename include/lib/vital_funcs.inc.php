@@ -1129,7 +1129,7 @@ function debug($var, $title='') {
 function check_ajax_request(){
     $server_request = $_SERVER["HTTP_X_REQUESTED_WITH"];
     $ajax_request = "xmlhttprequest";
-    return strtolower($server_request) == $ajax_request? true : false;
+    return (strtolower($server_request) == $ajax_request);
 }
 
 ?>

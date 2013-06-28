@@ -7,6 +7,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
     "use strict";
 
     ajaxFunctions.successfulCode = "ACTION_COMPLETED_SUCCESSFULLY";
+    ajaxFunctions.dialogWidth = 400;
 
     //Function to generate a dialog box on getting an AJAX response
     ajaxFunctions.generateDialog = function (responseMessage, messages) {
@@ -44,7 +45,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
         responseDialog.dialog({
             autoOpen: true,
-            width: 400,
+            width: ajaxFunctions.dialogWidth,
             modal: true,
             closeOnEscape: false,
             buttons: buttonOptions
