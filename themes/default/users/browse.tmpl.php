@@ -1,7 +1,7 @@
 <?php require(AT_INCLUDE_PATH.'header.inc.php'); ?>
 <div class="input-form" style="width:90%;">
 <fieldset class="group_form"><legend class="group_form"><?php echo _AT('filter'); ?></legend>
-	<form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+	<form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" id="browse-courses-form" onchange="ATutor.browseCourses.change();" onkeyup="ATutor.browseCourses.change();">
 		
 			<div class="row">
 				<h3><?php echo _AT('results_found', $this->num_results); ?></h3>
@@ -38,10 +38,10 @@
 				<input type="radio" name="include" value="one" id="match_one" <?php echo $this->checked_include_one; ?> /><label for="match_one"><?php echo _AT('search_any_word'); ?></label>
 			</div>
 
-			<div class="row buttons">
+<!--			<div class="row buttons">
 				<input type="submit" name="filter" value="<?php echo _AT('filter'); ?>"/>
 				<input type="submit" name="reset_filter" value="<?php echo _AT('reset_filter'); ?>"/>
-			</div>
+			</div>-->
 		
 	</form>
 </fieldset>
@@ -62,7 +62,7 @@
 ?>
 	<?php foreach ($this->courses_rows as $row){ ?>
 	    <?php  $counter++; ?>
-		 <tr class="<?php if ($counter %2) { echo 'odd'; } else { echo 'even'; } ?>">
+		 <tr class="<?php if ($counter %2) { echo 'odd'; } else { echo 'even'; } ?>" id="row_<?php echo $row['course_id']; ?>">
 		 <td>
 		
 		      <?php if ($row['icon']) { // if a course icon is available, display it here.  
@@ -122,5 +122,12 @@
 <?php } // end if ?>
 </table>
 </div>
+<script type="text/javascript">
+//<!--
+var ATutor = ATutor || {};
+ATutor.courseInfo = <?php echo json_encode($this->courses_rows) ?>;
 
+//->>
+</script>
+<script type="text/javascript" src="<?php echo AT_BASE_HREF; ?>jscripts/ATutorBrowseCourses.js">
 <?php require(AT_INCLUDE_PATH.'footer.inc.php'); ?>
