@@ -56,19 +56,19 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
         var buttonOptions = {
             "Delete Comment":  function (){
-                        $.ajax({
-                            type: "POST",
-                            url: options.deleteUrl,
-                            data: parameters,
-                            success: function(message) {
-                                commentOnDelete(message, parameters.id);
-                            }
-                        });
-                        deleteDialog.dialog("close");
-                    },
-            "Cancel" :  function () {
-                        deleteDialog.dialog("close");
+                $.ajax({
+                    type: "POST",
+                    url: options.deleteUrl,
+                    data: parameters,
+                    success: function(message) {
+                        commentOnDelete(message, parameters.id);
                     }
+                });
+                deleteDialog.dialog("close");
+            },
+            "Cancel" :  function () {
+                deleteDialog.dialog("close");
+            }
         };
 
         // Create dialog for the page if it doesn't exist
@@ -82,7 +82,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
         deleteDialog.dialog({
             autoOpen: true,
-            width: 400,
+            width: ajaxFunctions.dialogWidth,
             modal: true,
             closeOnEscape: false,
             buttons: buttonOptions
@@ -135,7 +135,9 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
         };
 
         //Checking if the comment has been changed at all
-        if (parameters.comment === $("#" + css.commentDescriptionId + options.id).text()) {
+        if (parameters.comment === $("#" + css.commentDescriptionId + options.id).text() ||
+                ! ($.trim(parameters.comment).length) ) {
+
             fileStorage.editCommentHide(options.id);
             return;
         }
@@ -160,7 +162,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
     //Function to be called on successful AJAX request for comment edit
     var commentOnEdit = function (message, id, comment) {
         if (message === ajaxFunctions.successfulCode) {
-            $("#" + css.commentDesciptionId + id).html($("<div/>").text(comment).html());
+            $("#" + css.commentDescriptionId + id).html($("<div/>").text(comment).html());
             fileStorage.editCommentHide(id);
         } else {
             ajaxFunctions.generateDialog(message);
@@ -174,13 +176,13 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
         var defaults = {
             addUrl : "mods/_standard/file_storage/ajax/comments.php",
-            textarea : $('#comment')
+            textarea : $("#" + css.commentId)
         };
 
         options = $.extend({}, defaults, options);
 
         //In case the comment is empty
-        if (options.textarea.val() === ''){
+        if (!$.trim(options.textarea.val()).length){
             return;
         }
 
@@ -232,25 +234,25 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
         }
 
         var addCommentDom = $("<div />", {
-                "class": "input-form",
-                id: "comment" + parsedResponse.id
-                }).insertBefore($("#comment-add-form"));
+            "class": "input-form",
+            id: "comment" + parsedResponse.id
+        }).insertBefore($("#comment-add-form"));
 
         //adding wrapper for comment
         var addCommentRow = $("<div />", {
-                "class": "row"
-                }).appendTo(addCommentDom);
+            "class": "row"
+        }).appendTo(addCommentDom);
 
         //adding comment heading
         $("<h4 />", {
-                text: parsedResponse.name + " - " + parsedResponse.date
-                }).appendTo(addCommentRow);
+            text: parsedResponse.name + " - " + parsedResponse.date
+        }).appendTo(addCommentRow);
 
         //adding comment description
         $("<p />", {
-                html: parsedResponse.comment,
-                id: css.commentDescriptionId + parsedResponse.id
-                }).appendTo(addCommentRow);
+            html: parsedResponse.comment,
+            id: css.commentDescriptionId + parsedResponse.id
+        }).appendTo(addCommentRow);
 
         //Setting new parameters for using in functions to edit and delete comments
         var newParameters = {
@@ -273,52 +275,52 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
         //Edit comment textarea
         $("<textarea />", {
-                text : parameters.comment,
-                id : css.textAreaId + parsedResponse.id
-                }).appendTo(editCommentDiv);
+            text : parameters.comment,
+            id : css.textAreaId + parsedResponse.id
+        }).appendTo(editCommentDiv);
 
         //wrapper for buttons below edit textarea
         var editButtons = $("<div />", {
-                style : alignRightStyle,
-                text : separator
-                }).appendTo(editCommentDiv);
+            style : alignRightStyle,
+            text : separator
+        }).appendTo(editCommentDiv);
 
         //Submit Edits button prepended to wrapper div
         $("<a />", {
-                text : "Submit",
-                href : hrefText,
-                onclick : "ATutor.fileStorage.editCommentSubmit(" +
-                    JSON.stringify(newParameters) + ");"
-            }).prependTo(editButtons);
+            text : "Submit",
+            href : hrefText,
+            onclick : "ATutor.fileStorage.editCommentSubmit(" +
+                JSON.stringify(newParameters) + ");"
+        }).prependTo(editButtons);
 
         //Cancel button appended to wrapper div
         $("<a />", {
-                text : "Cancel",
-                href : hrefText,
-                onclick : "ATutor.fileStorage.editCommentHide('" + parsedResponse.id + "');"
-            }).appendTo(editButtons);
+            text : "Cancel",
+            href : hrefText,
+            onclick : "ATutor.fileStorage.editCommentHide('" + parsedResponse.id + "');"
+        }).appendTo(editButtons);
 
         //Wrapper for Edit and Delete buttons which are shown initially
         var editDeleteButtons = $("<div />", {
-                style : alignRightStyle,
-                text : separator,
-                id : css.editDeleteButtonsId + parsedResponse.id
-                }).appendTo(addCommentRow);
+            style : alignRightStyle,
+            text : separator,
+            id : css.editDeleteButtonsId + parsedResponse.id
+        }).appendTo(addCommentRow);
 
         //Delete comment button appended to wrapper div
         $("<a />", {
-                text : "Delete",
-                href : hrefText,
-                onclick : "ATutor.fileStorage.deleteComment(" +
-                    JSON.stringify(newParameters) + ");"
-            }).appendTo(editDeleteButtons);
+            text : "Delete",
+            href : hrefText,
+            onclick : "ATutor.fileStorage.deleteComment(" +
+                JSON.stringify(newParameters) + ");"
+        }).appendTo(editDeleteButtons);
 
         //Edit button prepended to wrapper div
         $("<a />", {
-                text : "Edit",
-                href : hrefText,
-                onclick : "ATutor.fileStorage.editCommentShow('" + parsedResponse.id + "');"
-            }).prependTo(editDeleteButtons);
+            text : "Edit",
+            href : hrefText,
+            onclick : "ATutor.fileStorage.editCommentShow('" + parsedResponse.id + "');"
+        }).prependTo(editDeleteButtons);
 
     };
 
