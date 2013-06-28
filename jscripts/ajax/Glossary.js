@@ -48,32 +48,32 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
         // Setting button options
         var buttonOptions = {
             "Delete":  function (){
-                        $.ajax({
-                            type: "post",
-                            url: options.deleteUrl,
-                            data: parameters,
-                            success: function(message) {
-                                itemOnDelete(message, parameters);
-                            }
-                        });
-                        deleteDialog.dialog("close");
-                    },
-            "Cancel" :  function () {
-                        deleteDialog.dialog("close");
+                $.ajax({
+                    type: "post",
+                    url: options.deleteUrl,
+                    data: parameters,
+                    success: function(message) {
+                        itemOnDelete(message, parameters);
                     }
+                });
+                deleteDialog.dialog("close");
+            },
+            "Cancel" :  function () {
+                deleteDialog.dialog("close");
+            }
         };
 
         // Create dialog for confirmation
         var deleteDialog = $("<div />", {
-                                        title: options.deleteTitle,
-                                        text: options.deleteMessage,
-                                        id: options.deleteId
-                                    }).appendTo($("body"));
+            title: options.deleteTitle,
+            text: options.deleteMessage,
+            id: options.deleteId
+        }).appendTo($("body"));
 
 
         deleteDialog.dialog({
             autoOpen: true,
-            width: 400,
+            width: ajaxFunctions.dialogWidth,
             modal: true,
             closeOnEscape: false,
             buttons: buttonOptions
@@ -160,7 +160,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
         if (glossary.editItemFlag) {
             //Removing old item
-            $('#' + css.rowId + glossary.editItemFlag).remove();
+            $("#" + css.rowId + glossary.editItemFlag).remove();
         }
         addItemToTable($.extend({}, parameters, parsedResponse));
         glossary.hideForm();
@@ -169,23 +169,21 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
     var addItemToTable = function (options) {
 
         var elements = $("tr[id^='" + css.rowId + "']"),
-            length = elements.length,
             onMouseDownString = "document.form['m" + options.id +
                 "'].checked = true; rowselect(this);",
             anchorTr, element, elementLabel;
 
-        for (var i = 0; i < length; i+=1) {
-            element = elements[i];
-            elementLabel = $(element).find("label");
+        $.each(elements, function (index, value) {
+            elementLabel = $(value).find("label");
 
             if (elementLabel.length === 0) {
-                break;
+                return false;
             }
             if (options.word < elementLabel[0].innerHTML) {
-                anchorTr = $(element);
-                break;
+                anchorTr = $(value);
+                return false;
             }
-        }
+        });
 
         if (anchorTr) {
             var tr = $("<tr />",{
@@ -240,7 +238,6 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
     var updateSelect = function () {
         var tableRows = $("tr[id^='" + css.rowId + "']"),
             selectElement = $("#" + css.termRelatedId),
-            length = tableRows.length,
             row, rowInput, rowLabel;
 
         selectElement.html("");
@@ -249,20 +246,19 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
             value : 0,
         }).appendTo(selectElement);
 
-        for (var i=0; i < length; i+=1) {
-            row = tableRows[i];
-            rowInput = $(row).find("input");
-            rowLabel = $(row).find("label");
+        $.each(tableRows, function (index, value) {
+            rowInput = $(value).find("input");
+            rowLabel = $(value).find("label");
 
             if (rowInput.length !== 1 || rowLabel.length !== 1) {
-                break;
+                return false;
             }
 
             $("<option />", {
                 value : rowInput[0].value,
                 text : rowLabel[0].innerHTML
             }).appendTo(selectElement);
-        }
+        });
     };
 
     glossary.editItem = function () {
@@ -292,14 +288,16 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
     var getWordId = function (word) {
         var elements = $("tr[id^='" + css.rowId + "']"),
-            length = elements.length;
+            anchor = 0;
 
-        for (var i=0; i<length; i++) {
-            if (word === $(elements[i]).find("label")[0].innerHTML) {
-                return $(elements[i]).find("input")[0].value;
+        $.each(elements, function (index, value) {
+            if (word === $(value).find("label")[0].innerHTML) {
+                anchor = $(value).find("input")[0].value;
+                return false;
             }
-        }
-        return 0;
+        });
+
+        return anchor;
     };
 
 })(ATutor.glossary, ATutor.ajaxFunctions);

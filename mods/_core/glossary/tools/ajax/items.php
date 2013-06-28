@@ -44,9 +44,9 @@ if ($_POST['deleteSubmit']) {
 
 if ($_POST['addSubmit'] || $_POST['editSubmit']) {
     $word       = trim($_POST['word']);
-    $definition = addslashes(trim($_POST['definition']));
+    $definition = trim($_POST['definition']);
     //60 is defined by the sql
-    $word       = addslashes(validate_length($word, 60));
+    $word       = validate_length($word, 60);
     $response   = array();
 
     if (!$word || !$definition) {
@@ -55,7 +55,7 @@ if ($_POST['addSubmit'] || $_POST['editSubmit']) {
         exit;
     }
 
-    $related_term = addslashes(intval($_POST['relatedTerm']));
+    $related_term = intval($_POST['relatedTerm']);
 
     // Checking if related term exists, else remove the related term
     $related_word = queryDB('SELECT * FROM %sglossary WHERE word_id=%d',
