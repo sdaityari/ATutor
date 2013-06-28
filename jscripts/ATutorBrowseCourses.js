@@ -24,40 +24,33 @@ ATutor.browseCourses = ATutor.browseCourses || {};
     };
 
     var showAll = function () {
-        var elements = $("tr[id^='row_']:hidden"),
-            length = elements.length;
-
-        for (var i=0; i<length; i+=1) {
-            $(elements[i]).show();
-        }
+        $("tr[id^='row_']:hidden").each(function (index, value) {
+            $(value).show();
+        });
     };
 
     var updateAccess = function () {
         var access = $("input[name=access]:checked","#" + css.formId).val(),
-            length = ATutor.courseInfo.length,
             info;
 
-        if (access === "") {
+        if (!access.length) {
             return;
         }
 
-        for (var i=0; i<length; i+=1) {
-            info = ATutor.courseInfo[i];
-            if (access !== info.access) {
-                $("#" + css.rowId + info.course_id).hide();
+        $.each(ATutor.courseInfo, function (index, value) {
+            if (access !== value.access) {
+                $("#" + css.rowId + value.course_id).hide();
             }
-        }
+        });
     };
 
     var updateText = function () {
         var match = $("input[name=include]:checked","#" + css.formId).val(),
             text = $("input[name=search]","#" + css.formId).val().toLowerCase(),
-            info = ATutor.courseInfo,
-            length = info.length,
-            substrings = text.split(" "),
+            substrings = $.trim(text).split(" "),
             callback;
 
-        if (text.length === 0) {
+        if (!text.length) {
             return;
         }
 
@@ -69,41 +62,43 @@ ATutor.browseCourses = ATutor.browseCourses || {};
             return;
         }
 
-        for (var i=0; i<length; i+=1) {
-            if (! (callback(info[i].title.toLowerCase(), substrings) ||
-                        callback(info[i].description.toLowerCase(), substrings)) ) {
+        $.each(ATutor.courseInfo, function (index, value) {
+            if (! (callback(value.title.toLowerCase(), substrings) ||
+                        callback(value.description.toLowerCase(), substrings)) ) {
 
-                $("#" + css.rowId + info[i].course_id).hide();
+                $("#" + css.rowId + value.course_id).hide();
             }
-        }
+        });
     };
 
     var compareAny = function (string, substrings) {
-        var length = substrings.length;
-        for (var i=0; i<length; i+=1) {
-            if (string.indexOf(substrings[i]) !== -1) {
-                return true;
+        var returnValue = false;
+
+        $.each(substrings, function (index, value) {
+            if (string.indexOf(value) !== -1) {
+                returnValue = true;
+                return false;
             }
-        }
-        return false;
+        });
+        return returnValue;
     };
 
     var compareAll = function (string, substrings) {
-        var length = substrings.length;
-        for (var i=0; i<length; i+=1) {
-            if (string.indexOf(substrings[i]) === -1) {
+        var returnValue = true;
+
+        $.each(substrings, function (index, value) {
+            if (string.indexOf(value) === -1) {
+                returnValue = false;
                 return false;
             }
-        }
-        return true;
+        });
+        return returnValue;
     };
 
     var changeStripes = function () {
-        var elements = $("tr[id^='row_']:visible"),
-            length = elements.length;
-        for (var i=0; i<length; i+=1) {
-            elements[i].className = (i%2 === 0)? css.oddClass : css.evenClass;
-        }
+        $("tr[id^='row_']:visible").each( function (index, value) {
+            value.className = (index % 2 === 0)? css.oddClass : css.evenClass;
+        });
     };
 
 })(ATutor.browseCourses);
