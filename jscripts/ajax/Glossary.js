@@ -168,18 +168,16 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
 
     var addItemToTable = function (options) {
 
-        var elements = $("tr[id^='" + css.rowId + "']"),
-            onMouseDownString = "document.form['m" + options.id +
+        var onMouseDownString = "document.form['m" + options.id +
                 "'].checked = true; rowselect(this);",
             anchorTr, element, elementLabel;
 
-        $.each(elements, function (index, value) {
+        $("tr[id^='" + css.rowId + "']").each( function (index, value) {
             elementLabel = $(value).find("label");
-
             if (elementLabel.length === 0) {
-                return false;
+                return true;
             }
-            if (options.word < elementLabel[0].innerHTML) {
+            if (options.word.toLowerCase() < elementLabel[0].innerHTML.toLowerCase()) {
                 anchorTr = $(value);
                 return false;
             }
@@ -287,10 +285,9 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
     };
 
     var getWordId = function (word) {
-        var elements = $("tr[id^='" + css.rowId + "']"),
-            anchor = 0;
+        var anchor = 0;
 
-        $.each(elements, function (index, value) {
+        $("tr[id^='" + css.rowId + "']").each( function (index, value) {
             if (word === $(value).find("label")[0].innerHTML) {
                 anchor = $(value).find("input")[0].value;
                 return false;

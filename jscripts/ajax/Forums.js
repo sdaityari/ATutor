@@ -114,8 +114,7 @@ ATutor.ajaxFunctions = ATutor.ajaxFunctions || {};
     //function to change css class of existing thread and replies
     var rearrangeElements = function () {
         //changing css class of existing posts
-        var elements = $("li[id^='" + css.postId + "']");
-        $.each(elements, function(index, value) {
+        $("li[id^='" + css.postId + "']").each( function(index, value) {
             value.className = (index % 2 === 0) ? css.oddClass : css.evenClass;
         });
     };
