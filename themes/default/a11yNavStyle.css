@@ -1,0 +1,94 @@
+.a11yNav, .a11yNav ul {
+    list-style-type:none;
+    margin:0;
+    padding:0;
+}
+
+/*IE5 list fix*/
+.a11yNav .a11ySub li {
+    float:left;
+}
+
+.a11yNav .a11ySub > li {
+    float:none;
+}
+
+#a11yNavigation {
+    position:relative;
+    height:25px;
+    background:#000;
+    z-index:10;
+}
+
+.a11yNav {
+    position:absolute;
+    top:-20000px;/*firefox div transparency fix*/
+}
+
+.a11yNav a.a11yMain, .a11yNav .a11ySub {
+    top:20000px;/*firefox div transparency fix*/
+}
+
+.a11yNav .a11yLink {
+    width:100px;
+    margin-top:-10075px;
+    float:left;
+    text-align: center;
+}
+
+.a11yNav a {
+    position:relative;
+    display:block;
+    height:25px;
+    line-height:25px;
+    text-decoration:none;
+    color:#FFF;
+    z-index:10;
+}
+
+.a11yNav .a11ySub a {
+    background:#FFDC50; /* gold */
+    margin:0 -1px 0 0;
+    width:100px;
+    color: #000;
+}
+
+.a11yNav .a11ySub {
+    position:relative;
+    float:left;
+    background:#340449;
+    padding-top:25px;
+    margin-top:-25px;
+    text-align: left;
+}
+
+.a11yNav a.a11yMain {
+    width:100px;
+    height:25px;
+    line-height:25px;
+    margin-top:10075px;
+    margin-right:-99px;
+    float:left;
+}
+
+.a11yNav a.a11yMain:hover, .a11yNav a.a11yMain:focus, .a11yNav a.a11yMain:active { 
+    margin-right:0;
+    background:#340449;
+    color:#fff;
+}
+
+.a11yNav .a11ySub a:hover, .a11yNav .a11ySub a:focus, .a11yNav .a11ySub a:active {
+    margin:0 0 0 0;
+    background:#333;
+    color:#fff;
+}
+
+
+/*empty rule to fix occassional IE6 tabbing bug, one of the weirdest bug's i have seen.*/
+a, a:hover, a:active, a:focus {}
+
+/*Opera fix*/
+.a11ySub:hover {
+clear:both;
+}
+

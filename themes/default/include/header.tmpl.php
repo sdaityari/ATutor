@@ -76,6 +76,7 @@ global $system_courses, $_custom_css, $db;
 	<link rel="stylesheet" href="<?php echo $this->theme_path.'jscripts/infusion/framework/fss/css/fss-layout.css'; ?>" type="text/css" />
 	<link rel="stylesheet" href="<?php echo $this->theme_path.'themes/'.$this->theme; ?>/styles.css" type="text/css" />
 	    <link rel="stylesheet" href="<?php echo $this->theme_path.'themes/'.$this->theme; ?>/forms.css" type="text/css" />
+	    <link rel="stylesheet" href="<?php echo $this->theme_path.'themes/'.$this->theme; ?>/a11yNavStyle.css" type="text/css" />
 	<!--[if IE]>
 	  <link rel="stylesheet" href="<?php echo $this->theme_path.'themes/'.$this->theme; ?>/ie_styles.css" type="text/css" />
 	<![endif]-->
@@ -204,18 +205,34 @@ global $system_courses, $_custom_css, $db;
 
 </div>
 
-<div id="topnavlistcontainer"  role="navigation">
+<!--<div id="topnavlistcontainer"  role="navigation">-->
 <!-- the main navigation. in our case, tabs -->
-	<ul id="topnavlist">
+<div id="a11yNavigation"  role="navigation">
+	<!--<ul id="topnavlist">-->
+	<ul class="a11yNav">
 		<?php $accesscounter = 0; //initialize ?>
 		<?php foreach ($this->top_level_pages as $page): ?>
 			<?php ++$accesscounter; $accesscounter = ($accesscounter == 10 ? 0 : $accesscounter); ?>
 			<?php $accesskey_text = ($accesscounter < 10 ? 'accesskey="'.$accesscounter.'"' : ''); ?>
 			<?php $accesskey_title = ($accesscounter < 10 ? ' Alt+'.$accesscounter : ''); ?>
 			<?php if ($page['url'] == $this->current_top_level_page): ?>
-				<li><a href="<?php echo $page['url']; ?>" <?php echo $accesskey_text; ?> title="<?php echo $page['title'] . $accesskey_title; ?>" class="active"><?php echo $page['title']; ?></a></li>
+				<li class="a11yLink"><a class="a11yMain" href="<?php echo $page['url']; ?>" <?php echo $accesskey_text; ?> title="<?php echo $page['title'] . $accesskey_title; ?>" class="active"><?php echo $page['title']; ?></a>
+                <ul class="a11ySub">
+                    <li><a href="">Link1</a></li>
+                    <li><a href="">Link2</a></li>
+                    <li><a href="">Link3</a></li>
+                    <li><a href="">Link4</a></li>
+                </ul>
+            </li>
 			<?php else: ?>
-				<li><a href="<?php echo $page['url']; ?>" <?php echo $accesskey_text; ?> title="<?php echo $page['title'] . $accesskey_title; ?>"><?php echo $page['title']; ?></a></li>
+				<li class="a11yLink"><a class="a11yMain" href="<?php echo $page['url']; ?>" <?php echo $accesskey_text; ?> title="<?php echo $page['title'] . $accesskey_title; ?>"><?php echo $page['title']; ?></a>
+                <ul class="a11ySub">
+                    <li><a href="">Link1</a></li>
+                    <li><a href="">Link2</a></li>
+                    <li><a href="">Link3</a></li>
+                    <li><a href="">Link4</a></li>
+                </ul>
+            </li>
 			<?php endif; ?>
 			<?php $accesscounter = ($accesscounter == 0 ? 11 : $accesscounter); ?>
 		<?php endforeach; ?>
