@@ -210,29 +210,33 @@ global $system_courses, $_custom_css, $db;
 <div id="a11yNavigation"  role="navigation">
 	<!--<ul id="topnavlist">-->
 	<ul class="a11yNav">
-		<?php $accesscounter = 0; //initialize ?>
+		<?php $accesscounter = 0;
+            $i = 0; //initialize ?>
 		<?php foreach ($this->top_level_pages as $page): ?>
 			<?php ++$accesscounter; $accesscounter = ($accesscounter == 10 ? 0 : $accesscounter); ?>
 			<?php $accesskey_text = ($accesscounter < 10 ? 'accesskey="'.$accesscounter.'"' : ''); ?>
 			<?php $accesskey_title = ($accesscounter < 10 ? ' Alt+'.$accesscounter : ''); ?>
 			<?php if ($page['url'] == $this->current_top_level_page): ?>
 				<li class="a11yLink"><a class="a11yMain" href="<?php echo $page['url']; ?>" <?php echo $accesskey_text; ?> title="<?php echo $page['title'] . $accesskey_title; ?>" class="active"><?php echo $page['title']; ?></a>
-                <ul class="a11ySub">
-                    <li><a href="">Link1</a></li>
-                    <li><a href="">Link2</a></li>
-                    <li><a href="">Link3</a></li>
-                    <li><a href="">Link4</a></li>
-                </ul>
-            </li>
+                    <?php if ( count($this->submenu_items[$i]) > 0) { ?>
+                        <ul class="a11ySub">
+                            <?php foreach ($this->submenu_items[$i] as $item) { ?>
+                                <li><a href="<?php echo $item['url']; ?>"><?php echo $item['title']; ?></a></li>
+                            <?php } //endforeach ?>
+                        </ul>
+                    <?php } //endif ?>
+                </li>
 			<?php else: ?>
 				<li class="a11yLink"><a class="a11yMain" href="<?php echo $page['url']; ?>" <?php echo $accesskey_text; ?> title="<?php echo $page['title'] . $accesskey_title; ?>"><?php echo $page['title']; ?></a>
-                <ul class="a11ySub">
-                    <li><a href="">Link1</a></li>
-                    <li><a href="">Link2</a></li>
-                    <li><a href="">Link3</a></li>
-                    <li><a href="">Link4</a></li>
-                </ul>
-            </li>
+                    <?php if ( count($this->submenu_items[$i]) > 0) { ?>
+                        <ul class="a11ySub">
+                            <?php foreach ($this->submenu_items[$i] as $item) { ?>
+                                <li><a href="<?php echo $item['url']; ?>"><?php echo $item['title']; ?></a></li>
+                            <?php } //endforeach ?>
+                        </ul>
+                    <?php } //endif ?>
+                    <?php   $i++; ?>
+                </li>
 			<?php endif; ?>
 			<?php $accesscounter = ($accesscounter == 0 ? 11 : $accesscounter); ?>
 		<?php endforeach; ?>

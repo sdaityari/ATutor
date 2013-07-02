@@ -161,6 +161,18 @@ if (empty($_top_level_pages)) {
 		$_top_level_pages = get_main_navigation($_pages[AT_NAV_COURSE][0]);
 	}
 }
+
+$dir_deep    = substr_count(AT_INCLUDE_PATH, '..');
+$url_parts   = explode('/', $_SERVER['PHP_SELF']);
+$host_dir    = implode('/', array_slice($url_parts, 0, count($url_parts) - $dir_deep-1)).'/';
+
+$_submenu_items = array();
+$i = 0;
+while ($_top_level_pages[$i]) {
+    $_submenu_items[$i] = get_sub_navigation(str_replace($host_dir, '', $_top_level_pages[$i]['url']));
+    $i++;
+}
+
 $_sub_level_pages        = get_sub_navigation($current_page);
 
 $_current_sub_level_page = get_current_sub_navigation_page($current_page);
@@ -236,6 +248,7 @@ if (isset($_SESSION['course_id']) && $_SESSION['course_id'] > 0) {
 $savant->assign('current_top_level_page', $_current_top_level_page);
 $savant->assign('sub_level_pages', $_sub_level_pages);
 $savant->assign('current_sub_level_page', $_current_sub_level_page);
+$savant->assign('submenu_items', $_submenu_items);
 
 $savant->assign('path', $_path);
 $savant->assign('back_to_page', isset($back_to_page) ? $back_to_page : null);
