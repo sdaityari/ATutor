@@ -27,6 +27,10 @@ ATutor.browseCourses = ATutor.browseCourses || {};
         });
     };
 
+    $("#" + css.formId).bind("change keyup", function () {
+        browseCourses.change();
+    });
+
     browseCourses.change = function() {
         showAll(); // show all elements
         updateAccess(); // hide based on accessibility

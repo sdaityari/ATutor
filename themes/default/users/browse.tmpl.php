@@ -1,7 +1,7 @@
 <?php require(AT_INCLUDE_PATH.'header.inc.php'); ?>
 <div class="input-form" style="width:90%;">
 <fieldset class="group_form"><legend class="group_form"><?php echo _AT('filter'); ?></legend>
-	<form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" id="browse-courses-form" onchange="ATutor.browseCourses.change();" onkeyup="ATutor.browseCourses.change();">
+	<form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" id="browse-courses-form">
 		
 			<div class="row">
 				<h3><?php echo _AT('results_found', $this->num_results); ?></h3>
@@ -109,9 +109,9 @@
 <script type="text/javascript">
 //<!--
 var ATutor = ATutor || {};
-ATutor.courseInfo = <?php echo json_encode($this->courses_rows) ?>;
+ATutor.courseInfo = <?php echo json_encode($this->courses_rows); ?>;
 
-//->>
+//-->
 </script>
 <script type="text/javascript" src="<?php echo AT_BASE_HREF; ?>jscripts/ATutorBrowseCourses.js"></script>
 <script type="text/javascript" src="<?php echo AT_BASE_HREF; ?>jscripts/a11yAccordeon.js"></script>
