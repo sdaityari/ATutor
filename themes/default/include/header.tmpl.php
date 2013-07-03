@@ -76,6 +76,7 @@ global $system_courses, $_custom_css, $db;
 	<link rel="stylesheet" href="<?php echo $this->theme_path.'jscripts/infusion/framework/fss/css/fss-layout.css'; ?>" type="text/css" />
 	<link rel="stylesheet" href="<?php echo $this->theme_path.'themes/'.$this->theme; ?>/styles.css" type="text/css" />
 	    <link rel="stylesheet" href="<?php echo $this->theme_path.'themes/'.$this->theme; ?>/forms.css" type="text/css" />
+    <link rel="stylesheet" href="<?php echo $this->theme_path.'themes/'.$this->theme; ?>/a11yAccordeon.css" type="text/css" />
 	<!--[if IE]>
 	  <link rel="stylesheet" href="<?php echo $this->theme_path.'themes/'.$this->theme; ?>/ie_styles.css" type="text/css" />
 	<![endif]-->
