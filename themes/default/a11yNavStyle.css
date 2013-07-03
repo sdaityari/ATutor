@@ -30,7 +30,7 @@
 }
 
 .a11yNav .a11yLink {
-    width:100px;
+    width:150px;
     margin-top:-10075px;
     float:left;
     text-align: center;
@@ -49,7 +49,7 @@
 .a11yNav .a11ySub a {
     background:#FFDC50; /* gold */
     margin:0 -1px 0 0;
-    width:100px;
+    width:150px;
     color: #000;
 }
 
@@ -63,11 +63,11 @@
 }
 
 .a11yNav a.a11yMain {
-    width:100px;
+    width:150px;
     height:25px;
     line-height:25px;
     margin-top:10075px;
-    margin-right:-99px;
+    margin-right:-149px;
     float:left;
 }
 
