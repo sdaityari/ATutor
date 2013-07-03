@@ -1,94 +1,145 @@
 .a11yNav, .a11yNav ul {
-    list-style-type:none;
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
-/*IE5 list fix*/
-.a11yNav .a11ySub li {
-    float:left;
-}
-
-.a11yNav .a11ySub > li {
-    float:none;
-}
-
-#a11yNavigation {
-    position:relative;
-    height:25px;
-    background:#000;
-    z-index:10;
-}
-
+/* Top level nav */
 .a11yNav {
-    position:absolute;
-    top:-20000px;/*firefox div transparency fix*/
+    float: left;
+    margin: 20px 0;
+    background: #DDD;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#DDD), to(#999));
+    background-image: -moz-linear-gradient(top, #DDD, #999);
+
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+
+    -webkit-box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 2px rgba(0,0,0,0.1);
 }
 
-.a11yNav a.a11yMain, .a11yNav .a11ySub {
-    top:20000px;/*firefox div transparency fix*/
+/* Dropdowns */
+.a11yNav ul {
+    position: absolute;
+    top: 2.5em;
+    left: -9999px;
+    opacity: 0;
+
+    -webkit-transition: 0.1s linear opacity;
+
+    min-width: 150px;
+    background: #333;
+    background: #340449;
+    background: rgba(0,0,0,0.9);
+
+    -webkit-box-shadow: 0 3px 3px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0 3px 3px rgba(0,0,0,0.5);
+    box-shadow: 0 3px 3px rgba(0,0,0,0.5);
 }
 
-.a11yNav .a11yLink {
-    width:150px;
-    margin-top:-10075px;
-    float:left;
-    text-align: center;
+.a11yNav li {
+    float: left;
+    position: relative;
 }
 
-.a11yNav a {
-    position:relative;
-    display:block;
-    height:25px;
-    line-height:25px;
-    text-decoration:none;
-    color:#FFF;
-    z-index:10;
+/* Top level nav items */
+.a11yNav li > a {
+    float: left;
+    padding: 10px 15px;
+    border-left: 1px solid rgba(255,255,255,0.4);
+    border-right: 1px solid rgba(0,0,0,0.2);
+    color: #333;
+    font-weight: bold;
+    font-size: 14px;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.4), 0 -1px 0 rgba(0,0,0,0.2);
+    text-decoration: none;
 }
 
-.a11yNav .a11ySub a {
-    background:#FFDC50; /* gold */
-    margin:0 -1px 0 0;
-    width:150px;
-    color: #000;
+/* Top level hover state, preserve hover state when hovering dropdown  */
+.a11yNav li > a:hover,
+    .a11yNav li > a:focus,
+    .a11yNav li:focus > a,
+    .a11yNav li:hover > a {
+
+    background: #999;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#999), to(#DDD));
+    background-image: -moz-linear-gradient(top, #999, #DDD);
+    /* text shadow just makes reading more difficult in my opinion */
+    /* text-shadow: 0 1px 0 rgba(0,0,0,0.4), 0 -1px 0 rgba(255,255,255,0.2); */
+    outline: 0;
 }
 
-.a11yNav .a11ySub {
-    position:relative;
-    float:left;
-    background:#340449;
-    padding-top:25px;
-    margin-top:-25px;
-    text-align: left;
+/* Rounded corners for first top level nav item */
+.a11yNav > li:first-child > a {
+    border-left: 0;
+    -webkit-border-top-left-radius: 7px;
+    -webkit-border-bottom-left-radius: 7px;
+    -moz-border-radius-topleft: 7px;
+    -moz-border-radius-bottomleft: 7px;
+    border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
 }
 
-.a11yNav a.a11yMain {
-    width:150px;
-    height:25px;
-    line-height:25px;
-    margin-top:10075px;
-    margin-right:-149px;
-    float:left;
+/* Rounded corners for last top level nav item */
+.a11yNav > li:last-child > a {
+    border-right: 0;
+
+    -webkit-border-top-right-radius: 7px;
+    -webkit-border-bottom-right-radius: 7px;
+    -moz-border-radius-topright: 7px;
+    -moz-border-radius-bottomright: 7px;
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
 }
 
-.a11yNav a.a11yMain:hover, .a11yNav a.a11yMain:focus, .a11yNav a.a11yMain:active { 
-    margin-right:0;
-    background:#340449;
-    color:#fff;
+.a11yNav li:hover ul,
+    .a11yNav li:focus ul,
+    ul.show-menu {
+    left: 0;
+    opacity: 0.99;
 }
 
-.a11yNav .a11ySub a:hover, .a11yNav .a11ySub a:focus, .a11yNav .a11ySub a:active {
-    margin:0 0 0 0;
-    background:#333;
-    color:#fff;
+.a11yNav ul li {
+    float: none;
+    position: static;
 }
 
+.a11yNav ul a {
+    float: none;
+    display: block;
+    color: #FFF;
+    font-size: 12px;
+    text-shadow: none;
+    border: 1px solid #222;
+    border-width: 0 0 1px;
 
-/*empty rule to fix occassional IE6 tabbing bug, one of the weirdest bug's i have seen.*/
-a, a:hover, a:active, a:focus {}
-
-/*Opera fix*/
-.a11ySub:hover {
-clear:both;
+    -webkit-transition: 0.1s linear all;
 }
 
+/* Rounded corners for ul and last list item */
+.a11yNav ul,
+    .a11yNav ul li:last-child a {
+
+    border: 0;
+    -webkit-border-bottom-left-radius: 7px;
+    -webkit-border-bottom-right-radius: 7px;
+    -moz-border-radius-bottomleft: 7px;
+    -moz-border-radius-bottomright: 7px;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+}
+
+.a11yNav ul a:hover,
+    .a11yNav ul a:focus {
+
+    background: #EEE;
+    color: #333;
+    text-shadow: none;
+}
+
+p {
+    clear: both;
+}

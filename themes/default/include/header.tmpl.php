@@ -106,6 +106,7 @@ global $system_courses, $_custom_css, $db;
     <?php echo $this->custom_css; ?>
     <?php echo $this->rtl_css; ?>
     <style id="pref_style" type="text/css"></style> 
+    <script type="text/javascript" src="<?php echo $this->base_href; ?>jscripts/a11yMenu.js"></script>
 </head>
 <body onload="<?php if(isset($this->onload)){echo $this->onload;} ?>">
 <div class="page_wrapper">
@@ -207,7 +208,7 @@ global $system_courses, $_custom_css, $db;
 
 <!--<div id="topnavlistcontainer"  role="navigation">-->
 <!-- the main navigation. in our case, tabs -->
-<div id="a11yNavigation"  role="navigation">
+<div role="navigation">
 	<!--<ul id="topnavlist">-->
 	<ul class="a11yNav">
 		<?php $accesscounter = 0;
@@ -217,9 +218,9 @@ global $system_courses, $_custom_css, $db;
 			<?php $accesskey_text = ($accesscounter < 10 ? 'accesskey="'.$accesscounter.'"' : ''); ?>
 			<?php $accesskey_title = ($accesscounter < 10 ? ' Alt+'.$accesscounter : ''); ?>
 			<?php if ($page['url'] == $this->current_top_level_page): ?>
-				<li class="a11yLink"><a class="a11yMain" href="<?php echo $page['url']; ?>" <?php echo $accesskey_text; ?> title="<?php echo $page['title'] . $accesskey_title; ?>" class="active"><?php echo $page['title']; ?></a>
+				<li><a href="<?php echo $page['url']; ?>" <?php echo $accesskey_text; ?> title="<?php echo $page['title'] . $accesskey_title; ?>" class="active"><?php echo $page['title']; ?></a>
                     <?php if ( count($this->submenu_items[$i]) > 0) { ?>
-                        <ul class="a11ySub">
+                        <ul>
                             <?php foreach ($this->submenu_items[$i] as $item) { ?>
                                 <li><a href="<?php echo $item['url']; ?>"><?php echo $item['title']; ?></a></li>
                             <?php } //endforeach ?>
@@ -227,9 +228,9 @@ global $system_courses, $_custom_css, $db;
                     <?php } //endif ?>
                 </li>
 			<?php else: ?>
-				<li class="a11yLink"><a class="a11yMain" href="<?php echo $page['url']; ?>" <?php echo $accesskey_text; ?> title="<?php echo $page['title'] . $accesskey_title; ?>"><?php echo $page['title']; ?></a>
+				<li><a href="<?php echo $page['url']; ?>" <?php echo $accesskey_text; ?> title="<?php echo $page['title'] . $accesskey_title; ?>"><?php echo $page['title']; ?></a>
                     <?php if ( count($this->submenu_items[$i]) > 0) { ?>
-                        <ul class="a11ySub">
+                        <ul>
                             <?php foreach ($this->submenu_items[$i] as $item) { ?>
                                 <li><a href="<?php echo $item['url']; ?>"><?php echo $item['title']; ?></a></li>
                             <?php } //endforeach ?>
@@ -266,7 +267,7 @@ global $system_courses, $_custom_css, $db;
 		<div class="crumbcontainer" role="navigation">
 		  <div id="breadcrumbs">
 			  <?php foreach ($this->path as $page): ?>
-				  <a href="<?php echo $page['url']; ?>"><?php echo htmlspecialchars($page['title'], ENT_COMPAT, "UTF-8"); ?></a> > 
+				  <a href="<?php echo $page['url']; ?>"><?php echo htmlspecialchars($page['title'], ENT_COMPAT, "UTF-8"); ?></a> 
 			  <?php endforeach; ?> <?php echo $this->page_title; ?>
 		  </div>
 	  <?php } else { ?>
