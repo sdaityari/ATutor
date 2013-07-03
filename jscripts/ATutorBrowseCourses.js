@@ -9,22 +9,37 @@ ATutor.browseCourses = ATutor.browseCourses || {};
 (function(browseCourses) {
     var css = {
         formId : "browse-courses-form",
-        rowId : "row_",
+        rowId : "accordeon_",
         oddClass : "odd",
         evenClass : "even",
         allWords : "all",
         anyWord : "one"
     };
 
+    $(document).ready(function () {
+        showAccordeon();
+    });
+
+    var showAccordeon = function () {
+        a11yAccordeon({
+            container: ".a11yAccordeon",
+            hiddenLinkDescription: "Course Description"
+        });
+    };
+
+    $("#" + css.formId).bind("change keyup", function () {
+        browseCourses.change();
+    });
+
     browseCourses.change = function() {
         showAll(); // show all elements
         updateAccess(); // hide based on accessibility
         updateText(); // hide based on search text
-        changeStripes(); //change alternating classes of elements
+        showAccordeon();
     };
 
     var showAll = function () {
-        $("tr[id^='row_']:hidden").each(function (index, value) {
+        $("li[id^='" + css.rowId + "']:hidden").each(function (index, value) {
             $(value).show();
         });
     };
@@ -93,12 +108,6 @@ ATutor.browseCourses = ATutor.browseCourses || {};
             }
         });
         return returnValue;
-    };
-
-    var changeStripes = function () {
-        $("tr[id^='row_']:visible").each( function (index, value) {
-            value.className = (index % 2 === 0)? css.oddClass : css.evenClass;
-        });
     };
 
 })(ATutor.browseCourses);
