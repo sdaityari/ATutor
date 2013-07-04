@@ -90,17 +90,13 @@ ATutor.browseCourses = ATutor.browseCourses || {};
         });
     };
 
-    var compareStrings = function (string, substrings, isAll) {
-        var returnValue = isAll;
-
-        $.each(substrings, function (index, value) {
-            if (!(isAll ^ (string.indexOf(value) === -1))) {
-                returnValue = !returnValue;
-                return false;
+    var compareStrings = function (string, substrings, logicalAnd) {
+        for (var i=0, len=substrings.length; i<len; i+=1) {
+            if ((string.indexOf(substrings[i]) >= 0) !== logicalAnd) {
+                return !logicalAnd;
             }
-        });
-
-        return returnValue;
+        }
+        return logicalAnd;
     };
 
     var showResults = function () {
