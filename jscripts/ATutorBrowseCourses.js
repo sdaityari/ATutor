@@ -13,19 +13,19 @@ ATutor.browseCourses = ATutor.browseCourses || {};
         oddClass : "odd",
         evenClass : "even",
         allWords : "all",
-        anyWord : "one"
+        anyWord : "one",
+        resultsId : "results_found",
+        matchId : "match-buttons-row",
+        accessId : "access-row",
+        advancedSearchId : "advanced-search"
     };
 
     $(document).ready(function () {
-        showAccordeon();
-    });
-
-    var showAccordeon = function () {
         a11yAccordeon({
             container: ".a11yAccordeon",
             hiddenLinkDescription: "Course Description"
         });
-    };
+    });
 
     $("#" + css.formId).bind("change keyup", function () {
         browseCourses.change();
@@ -35,7 +35,7 @@ ATutor.browseCourses = ATutor.browseCourses || {};
         showAll(); // show all elements
         updateAccess(); // hide based on accessibility
         updateText(); // hide based on search text
-        showAccordeon();
+        showResults(); //show number of results
     };
 
     var showAll = function () {
@@ -63,51 +63,61 @@ ATutor.browseCourses = ATutor.browseCourses || {};
         var match = $("input[name=include]:checked","#" + css.formId).val(),
             text = $("input[name=search]","#" + css.formId).val().toLowerCase(),
             substrings = $.trim(text).split(" "),
-            callback;
+            isAll;
 
         if (!text.length) {
             return;
         }
 
+        /*
+         * Any Word: In case it matches any word, we return true
+         * All Words: In case it does not match any word, we return false
+         */
         if (match === css.anyWord) {
-            callback = compareAny;
+            isAll = false;
         } else if (match === css.allWords) {
-            callback = compareAll;
+            isAll = true;
         } else {
             return;
         }
 
         $.each(ATutor.courseInfo, function (index, value) {
-            if (! (callback(value.title.toLowerCase(), substrings) ||
-                        callback(value.description.toLowerCase(), substrings)) ) {
+            if (! (compareStrings(value.title.toLowerCase(), substrings, isAll) ||
+                        compareStrings(value.description.toLowerCase(), substrings, isAll)) ) {
 
                 $("#" + css.rowId + value.course_id).hide();
             }
         });
     };
 
-    var compareAny = function (string, substrings) {
-        var returnValue = false;
-
-        $.each(substrings, function (index, value) {
-            if (string.indexOf(value) !== -1) {
-                returnValue = true;
-                return false;
+    var compareStrings = function (string, substrings, logicalAnd) {
+        for (var i=0, len=substrings.length; i<len; i+=1) {
+            if ((string.indexOf(substrings[i]) >= 0) !== logicalAnd) {
+                return !logicalAnd;
             }
-        });
-        return returnValue;
+        }
+        return logicalAnd;
     };
 
-    var compareAll = function (string, substrings) {
-        var returnValue = true;
+    var showResults = function () {
+        var total = $("li[id^='" + css.rowId + "']:visible").length;
+        if (total) {
+            $("#" + css.resultsId).html("Results Found: " + total);
+        } else {
+            $("#" + css.resultsId).html("No Results Found");
+        }
+    };
 
-        $.each(substrings, function (index, value) {
-            if (string.indexOf(value) === -1) {
-                returnValue = false;
-                return false;
-            }
-        });
-        return returnValue;
+    browseCourses.toggleAdvanced = function () {
+        var advancedSearch = $("#" + css.advancedSearchId),
+            toggleStrings = {
+                show : "[+] Advanced Search",
+                hide : "[-] Advanced Search"
+            };
+
+        $(advancedSearch).html( ($(advancedSearch).html() === toggleStrings.show) ? toggleStrings.hide : toggleStrings.show );
+        $("#" + css.matchId).toggle();
+        $("#" + css.accessId).toggle();
     };
 
 })(ATutor.browseCourses);
