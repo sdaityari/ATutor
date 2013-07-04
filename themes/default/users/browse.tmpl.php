@@ -7,7 +7,7 @@
 
                 <input type="text" name="search" id="search" size="40" value="<?php if(isset($_GET['search'])){ echo htmlspecialchars($_GET['search']); } ?>" />
                 <br/>
-                <a href="javascript:null();" id="advanced-search" onclick="ATutor.browseCourses.toggleAdvanced();">[+] Show Advanced Search</a>
+                <a href="javascript:null();" id="advanced-search" onclick="ATutor.browseCourses.toggleAdvanced();">[+] Advanced Search</a>
                 <span style="display:none;" id="match-buttons-row"> <br />
                     <?php echo _AT('search_match'); ?>:
                     <input type="radio" name="include" value="all" id="match_all" <?php echo $this->checked_include_all; ?> /><label for="match_all"><?php echo _AT('search_all_words'); ?></label> 

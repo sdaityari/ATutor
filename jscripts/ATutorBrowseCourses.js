@@ -115,8 +115,8 @@ ATutor.browseCourses = ATutor.browseCourses || {};
     browseCourses.toggleAdvanced = function () {
         var advancedSearch = $("#" + css.advancedSearchId),
             toggleStrings = {
-                show : "[+] Show Advanced Search",
-                hide : "[-] Hide Advanced Search"
+                show : "[+] Advanced Search",
+                hide : "[-] Advanced Search"
             };
 
         $(advancedSearch).html( ($(advancedSearch).html() === toggleStrings.show) ? toggleStrings.hide : toggleStrings.show );
