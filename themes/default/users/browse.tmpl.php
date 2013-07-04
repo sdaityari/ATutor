@@ -2,11 +2,20 @@
 <div class="input-form" style="width:90%;">
 <fieldset class="group_form"><legend class="group_form"><?php echo _AT('filter'); ?></legend>
 	<form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" id="browse-courses-form">
-		
-			<div class="row">
-				<h3><?php echo _AT('results_found', $this->num_results); ?></h3>
+		    <div class="row">
+				<label for="search"><?php echo _AT('search'); ?> (<?php echo _AT('title').', '._AT('description'); ?>)</label><br />
+
+                <input type="text" name="search" id="search" size="40" value="<?php if(isset($_GET['search'])){ echo htmlspecialchars($_GET['search']); } ?>" />
+                <br/>
+                <a href="javascript:null();" id="advanced-search" onclick="ATutor.browseCourses.toggleAdvanced();">[+] Advanced Search</a>
+                <span style="display:none;" id="match-buttons-row"> <br />
+                    <?php echo _AT('search_match'); ?>:
+                    <input type="radio" name="include" value="all" id="match_all" <?php echo $this->checked_include_all; ?> /><label for="match_all"><?php echo _AT('search_all_words'); ?></label> 
+                    <input type="radio" name="include" value="one" id="match_one" <?php echo $this->checked_include_one; ?> /><label for="match_one"><?php echo _AT('search_any_word'); ?></label>
+                </span>
 			</div>
-			<div class="row">
+
+			<div style="display:none;" id="access-row" class="row">
 				<?php echo _AT('access'); ?><br />
 				<input type="radio" name="access" value="private" id="s1" <?php if ($_GET['access'] == 'private') { echo 'checked="checked"'; } ?> /><label for="s1"><?php echo _AT('private'); ?></label> 
 
@@ -27,16 +36,10 @@
 				</select>
 			</div>
 		<?php endif; ?>
-
 			<div class="row">
-				<label for="search"><?php echo _AT('search'); ?> (<?php echo _AT('title').', '._AT('description'); ?>)</label><br />
-
-				<input type="text" name="search" id="search" size="40" value="<?php if(isset($_GET['search'])){ echo htmlspecialchars($_GET['search']); } ?>" />
-				<br/>
-				<?php echo _AT('search_match'); ?>:
-				<input type="radio" name="include" value="all" id="match_all" <?php echo $this->checked_include_all; ?> /><label for="match_all"><?php echo _AT('search_all_words'); ?></label> 
-				<input type="radio" name="include" value="one" id="match_one" <?php echo $this->checked_include_one; ?> /><label for="match_one"><?php echo _AT('search_any_word'); ?></label>
+				<h3 id="results_found"><?php echo _AT('results_found', $this->num_results); ?></h3>
 			</div>
+
 	</form>
 </fieldset>
 </div>
@@ -49,8 +52,9 @@
             <a href="<?php echo url_rewrite('bounce.php?course='.$row['course_id'], true); ?>"><strong><?php echo htmlentities_utf8($row['title']); ?></strong></a>
         </div>
         <div class="accordeonA11yHideArea">
-            <ul>
-                <?php if ($row['icon']) { // if a course icon is available, display it here.
+            <?php if ($row['icon']) { // if a course icon is available, display it here. ?>
+            <div style="float:left; width:15%;">
+                <?php
                     $style_for_title = 'style="height: 1.5em;"';
 
                     //Check if this is a custom icon, if so, use get_course_icon.php to get it
@@ -66,10 +70,11 @@
                         $course_icon = 'images/courses/'.$row['icon'];
                     }
                 ?>
-                <li>
-                    <?php echo _AT('title'); ?>: <a href="<?php echo url_rewrite('bounce.php?course='.$row['course_id'], true); ?>"><img src="<?php echo $course_icon; ?>" class="headicon" alt="<?php echo  htmlentities_utf8($row['title']); ?>" style="float:left;margin-right:.5em;"/></a>
-                </li>
-                <?php } ?>
+                <a href="<?php echo url_rewrite('bounce.php?course='.$row['course_id'], true); ?>"><img src="<?php echo $course_icon; ?>" class="headicon" alt="<?php echo htmlentities_utf8($row['title']); ?>" style="float:left;margin-right:.5em;"/></a>
+            </div>
+                <?php } //endif ?>
+            <div style="float:left; width:85%;">
+            <ul>
                 <?php if ($row['description']): ?>
                 <li>
                     <?php echo _AT('description'); ?>:
@@ -86,7 +91,7 @@
                     </li>
                 <?php endif; ?>
                 <li>
-                    <?php echo _AT('instructor'); ?>: <a href="<?php echo _ATBASE_HREF; ?>contact_instructor.php?id=<?php echo $row['course_id']; ?>"><?php echo get_display_name($row['member_id']); ?></a>
+                    <?php echo _AT('instructor'); ?>: <a href="<?php echo AT_BASE_HREF; ?>contact_instructor.php?id=<?php echo $row['course_id']; ?>"><?php echo get_display_name($row['member_id']); ?></a>
                 </li>
 
                 <li>
@@ -100,6 +105,8 @@
                         </li>
                 <?php endif; ?>
             </ul>
+            </div>
+            <div style="clear:both;"></div>
         </div>
     </li>
 	<?php } // end foreach ?>
