@@ -91,7 +91,7 @@
                     </li>
                 <?php endif; ?>
                 <li>
-                    <?php echo _AT('instructor'); ?>: <a href="<?php echo _ATBASE_HREF; ?>contact_instructor.php?id=<?php echo $row['course_id']; ?>"><?php echo get_display_name($row['member_id']); ?></a>
+                    <?php echo _AT('instructor'); ?>: <a href="<?php echo AT_BASE_HREF; ?>contact_instructor.php?id=<?php echo $row['course_id']; ?>"><?php echo get_display_name($row['member_id']); ?></a>
                 </li>
 
                 <li>
