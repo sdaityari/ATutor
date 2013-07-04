@@ -236,9 +236,9 @@ global $system_courses, $_custom_css, $db;
                             <?php } //endforeach ?>
                         </ul>
                     <?php } //endif ?>
-                    <?php   $i++; ?>
                 </li>
 			<?php endif; ?>
+            <?php   $i++; ?>
 			<?php $accesscounter = ($accesscounter == 0 ? 11 : $accesscounter); ?>
 		<?php endforeach; ?>
 	</ul>
