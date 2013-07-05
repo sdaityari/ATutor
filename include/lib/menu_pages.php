@@ -153,13 +153,13 @@ $_pages['about.php']['title_var']  = 'about_atutor';
 $_pages['404.php']['title_var']  = '404';
 
 $_pages['help/index.php']['title_var']  = 'help';
-$_pages['help/index.php']['children'] = array_merge(array('help/accessibility.php', 'help/contact_support.php'), isset($_pages['help/index.php']['children']) ? $_pages['help/index.php']['children'] : array());
+//$_pages['help/index.php']['children'] = array_merge(array('help/accessibility.php', 'help/contact_support.php'), isset($_pages['help/index.php']['children']) ? $_pages['help/index.php']['children'] : array());
 
 $_pages['help/accessibility.php']['title_var']  = 'accessibility';
-$_pages['help/accessibility.php']['parent'] = 'help/index.php';
+//$_pages['help/accessibility.php']['parent'] = 'help/index.php';
 
 $_pages['help/contact_support.php']['title_var']  = 'contact_support';
-$_pages['help/contact_support.php']['parent'] = 'help/index.php';
+//$_pages['help/contact_support.php']['parent'] = 'help/index.php';
 
 
 $_pages['contact_instructor.php']['title_var']  = 'contact_instructor';
