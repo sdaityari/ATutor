@@ -25,9 +25,9 @@ require (AT_INCLUDE_PATH.'header.inc.php');
 <div id="subnavlistcontainer">
     <div id="subnavbacktopage"></div>
     <ul id="subnavlist">
-        <li class="active"><a href="<?php echo $current_url; ?>#basic-help"><?php echo _AT('help'); ?></a></li>
-        <li><a href="<?php echo $current_url; ?>#external-help"><?php echo _AT('external_help') ?></a></li>
-        <li><a href="<?php echo $current_url; ?>#accessibility"><?php echo _AT('accessibility') ?></a></li>
+        <li id="nav-basic" class="active"><a href="<?php echo $current_url; ?>#basic-help" onclick="ATutor.helpPage.changeActive('basic');"><?php echo _AT('help'); ?></a></li>
+        <li id="nav-external"><a href="<?php echo $current_url; ?>#external-help" onclick="ATutor.helpPage.changeActive('external');"><?php echo _AT('external_help') ?></a></li>
+        <li id="nav-accessibility"><a href="<?php echo $current_url; ?>#accessibility" onclick="ATutor.helpPage.changeActive('accessibility');"><?php echo _AT('accessibility') ?></a></li>
         <li><a href="<?php echo url_rewrite('help/contact_support.php'); ?>"><?php echo _AT('contact_support') ?></a></li>
     </ul>
 </div>
@@ -44,6 +44,7 @@ require (AT_INCLUDE_PATH.'header.inc.php');
 
             <li><a href="help/contact_support.php"><?php echo _AT('contact_support'); ?></a></li>
         </ul>
+        <div style="text-align:right; font-size: smaller"><a href="<?php echo $current_url; ?>#content">Back to Top</a></div>
     </fieldset>
 </div>
 
@@ -60,6 +61,7 @@ require (AT_INCLUDE_PATH.'header.inc.php');
             <li><a href="http://www.atutor.ca/forum/7/1.html"><?php echo _AT('tech_support_forum'); ?></a>
                 <br /><?php echo _AT('tech_support_forum_text'); ?></li>
         </ul>
+        <div style="text-align:right; font-size: smaller"><a href="<?php echo $current_url; ?>#content">Back to Top</a></div>
     </fieldset>
 </div>
 
@@ -67,7 +69,9 @@ require (AT_INCLUDE_PATH.'header.inc.php');
     <fieldset class="group_form">
         <legend class="group_form"><?php echo _AT('accessibility'); ?></legend>
         <? echo _AT('atutor_accessibility_text'); ?>
+        <div style="text-align:right; font-size: smaller"><a href="<?php echo $current_url; ?>#content">Back to Top</a></div>
      </fieldset>
 </div>
-
+<script type="text/javascript" src="<?php echo AT_BASE_HREF; ?>jscripts/infusion/lib/jquery/core/js/jquery.js" type="text/javascript"></script>
+<script type="text/javascript" src="<?php echo AT_BASE_HREF; ?>jscripts/helpPage.js"></script>
 <?php require(AT_INCLUDE_PATH.'footer.inc.php'); ?>
