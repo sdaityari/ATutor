@@ -1,10 +1,10 @@
 <?php
 /****************************************************************/
-/* ATutor                                                        */
+/* ATutor                                                       */
 /****************************************************************/
 /* Copyright (c) 2002-2010                                      */
 /* Inclusive Design Institute                                   */
-/* http://atutor.ca                                                */
+/* http://atutor.ca                                             */
 /*                                                              */
 /* This program is free software. You can redistribute it and/or*/
 /* modify it under the terms of the GNU General Public License  */
@@ -22,56 +22,56 @@ require (AT_INCLUDE_PATH.'header.inc.php');
 
 ?>
 
-<div id="subnavlistcontainer">
-    <div id="subnavbacktopage"></div>
-    <ul id="subnavlist">
-        <li id="nav-basic" class="active"><a href="<?php echo $current_url; ?>#basic-help" onclick="ATutor.helpPage.changeActive('basic');"><?php echo _AT('help'); ?></a></li>
-        <li id="nav-external"><a href="<?php echo $current_url; ?>#external-help" onclick="ATutor.helpPage.changeActive('external');"><?php echo _AT('external_help') ?></a></li>
-        <li id="nav-accessibility"><a href="<?php echo $current_url; ?>#accessibility" onclick="ATutor.helpPage.changeActive('accessibility');"><?php echo _AT('accessibility') ?></a></li>
-        <li><a href="<?php echo url_rewrite('help/contact_support.php'); ?>"><?php echo _AT('contact_support') ?></a></li>
+<link rel="stylesheet" href="<?php echo AT_BASE_HREF.'include/help.css'; ?>" type="text/css" />
+
+<div id="help-nav-list">
+    <ul id="help-subnavlist">
+        <li id="nav-basic"><a href="<?php echo $current_url; ?>#basic-help"><?php echo _AT('help'); ?></a></li>
+        <li id="nav-external"><a href="<?php echo $current_url; ?>#external-help" ><?php echo _AT('external_help') ?></a></li>
+        <li id="nav-accessibility"><a href="<?php echo $current_url; ?>#accessibility"><?php echo _AT('accessibility') ?></a></li>
+        <li id="nav-contact"><a href="<?php echo $current_url ?>#contact-support" onclick="document.form.from.focus();"><?php echo _AT('contact_support') ?></a></li>
     </ul>
 </div>
 
-<div id="basic-help" class="input-form">
-    <fieldset class="group_form">
-        <legend class="group_form"><?php echo _AT('help'); ?></legend>
-        <ul>
-            <li style="padding-bottom: 20px;"><a href="documentation/index_list.php?lang=<?php echo $_SESSION['lang']; ?>" onclick="ATutor.poptastic('<?php echo AT_BASE_HREF; ?>documentation/index_list.php?lang=<?php echo $_SESSION['lang']; ?>'); return false;" target="_new"><?php echo _AT('atutor_handbook');?></a><br />
+<div id="basic-help" class="help-row">
+    <h3><?php echo _AT('help'); ?></h3>
+    <ul>
+        <li style="padding-bottom: 20px;"><a href="documentation/index_list.php?lang=<?php echo $_SESSION['lang']; ?>" onclick="ATutor.poptastic('<?php echo AT_BASE_HREF; ?>documentation/index_list.php?lang=<?php echo $_SESSION['lang']; ?>'); return false;" target="_new"><?php echo _AT('atutor_handbook');?></a><br />
             <?php echo _AT('general_help', AT_GUIDES_PATH); ?></li>
 
-            <li style="padding-bottom: 20px;"><a href="help/accessibility.php"><?php echo _AT('accessibility_features'); ?></a>
-                <br /><?php echo _AT('accessibility_features_text'); ?></li>
+        <li style="padding-bottom: 20px;"><a href="help/accessibility.php"><?php echo _AT('accessibility_features'); ?></a>
+            <br /><?php echo _AT('accessibility_features_text'); ?></li>
 
-            <li><a href="help/contact_support.php"><?php echo _AT('contact_support'); ?></a></li>
-        </ul>
-        <div style="text-align:right; font-size: smaller"><a href="<?php echo $current_url; ?>#content">Back to Top</a></div>
-    </fieldset>
+        <li><a href="help/contact_support.php"><?php echo _AT('contact_support'); ?></a></li>
+    </ul>
+    <div style="text-align:right; font-size: smaller"><a href="<?php echo $current_url; ?>#content">Back to Top</a></div>
 </div>
 
-<div id="external-help" class="input-form">
-    <fieldset class="group_form">
-        <legend class="group_form"><?php echo _AT('external_help'); ?></legend>
-        <ul>
-            <li style="padding-bottom: 20px;"><?php echo _AT('request_services'); ?>
-                <br /><?php echo _AT('request_services_text'); ?></li>
+<div id="external-help" class="help-row">
+    <h3><?php echo _AT('external_help'); ?></h3>
+    <ul>
+        <li style="padding-bottom: 20px;"><?php echo _AT('request_services'); ?>
+            <br /><?php echo _AT('request_services_text'); ?></li>
 
-            <li style="padding-bottom: 20px;"><?php echo _AT('howto_course'); ?>
+        <li style="padding-bottom: 20px;"><?php echo _AT('howto_course'); ?>
             <br /><?php echo _AT('howto_course_text'); ?></li>
 
-            <li><a href="http://www.atutor.ca/forum/7/1.html"><?php echo _AT('tech_support_forum'); ?></a>
-                <br /><?php echo _AT('tech_support_forum_text'); ?></li>
-        </ul>
+        <li><a href="http://www.atutor.ca/forum/7/1.html"><?php echo _AT('tech_support_forum'); ?></a>
+            <br /><?php echo _AT('tech_support_forum_text'); ?></li>
+    </ul>
         <div style="text-align:right; font-size: smaller"><a href="<?php echo $current_url; ?>#content">Back to Top</a></div>
-    </fieldset>
 </div>
 
-<div id="accessibility" class="input-form">
-    <fieldset class="group_form">
-        <legend class="group_form"><?php echo _AT('accessibility'); ?></legend>
-        <? echo _AT('atutor_accessibility_text'); ?>
-        <div style="text-align:right; font-size: smaller"><a href="<?php echo $current_url; ?>#content">Back to Top</a></div>
-     </fieldset>
+<div id="accessibility" class="help-row">
+    <h3><?php echo _AT('accessibility'); ?></h3>
+    <? echo _AT('atutor_accessibility_text'); ?>
+    <div style="text-align:right; font-size: smaller"><a href="<?php echo $current_url; ?>#content">Back to Top</a></div>
 </div>
-<script type="text/javascript" src="<?php echo AT_BASE_HREF; ?>jscripts/infusion/lib/jquery/core/js/jquery.js" type="text/javascript"></script>
-<script type="text/javascript" src="<?php echo AT_BASE_HREF; ?>jscripts/helpPage.js"></script>
+
+<div id="contact-support" class="help-row">
+    <h3><?php echo _AT('contact_support'); ?></h3>
+    <? include ('contact_support.php'); ?>
+    <div style="text-align:right; font-size: smaller"><a href="<?php echo $current_url; ?>#content">Back to Top</a></div>
+</div>
+
 <?php require(AT_INCLUDE_PATH.'footer.inc.php'); ?>

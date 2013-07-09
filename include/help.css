@@ -1,0 +1,38 @@
+#help-nav-list {
+    border: .1em solid #000000;
+    margin: 1em auto;
+    text-align:center;
+    height: 2em;
+    width: 40em;
+    display: block;
+    text-transform: uppercase;
+}
+
+ul#help-subnavlist {
+    padding: 0em;
+}
+
+ul#help-subnavlist li {
+    list-style: none;
+    display: inline-block;
+    height: 1em;
+    margin: 0em 1em;
+    line-height:2em;
+}
+
+ul#help-subnavlist li a, a:visited {
+    text-decoration: none;
+}
+
+div.help-row {
+    width: 80%;
+    margin: 1em auto;
+    border: .1em solid #000000;
+    padding: 1em 1em;
+    color: #000000;
+    background-color:#ffffff;
+}
+
+div.help-row h3 {
+    margin-bottom: 0.5em;
+}
