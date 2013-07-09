@@ -1,47 +1,31 @@
 <?php require(AT_INCLUDE_PATH.'header.inc.php'); ?>
-<div class="input-form" style="width:90%;">
-<fieldset class="group_form"><legend class="group_form"><?php echo _AT('filter'); ?></legend>
-	<form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>" id="browse-courses-form">
-		    <div class="row">
-				<label for="search"><?php echo _AT('search'); ?> (<?php echo _AT('title').', '._AT('description'); ?>)</label><br />
-
-                <input type="text" name="search" id="search" size="40" value="<?php if(isset($_GET['search'])){ echo htmlspecialchars($_GET['search']); } ?>" />
-                <br/>
-                <a href="javascript:null();" id="advanced-search" onclick="ATutor.browseCourses.toggleAdvanced();">[+] Advanced Search</a>
-                <span style="display:none;" id="match-buttons-row"> <br />
-                    <?php echo _AT('search_match'); ?>:
-                    <input type="radio" name="include" value="all" id="match_all" <?php echo $this->checked_include_all; ?> /><label for="match_all"><?php echo _AT('search_all_words'); ?></label> 
-                    <input type="radio" name="include" value="one" id="match_one" <?php echo $this->checked_include_one; ?> /><label for="match_one"><?php echo _AT('search_any_word'); ?></label>
-                </span>
-			</div>
-
-			<div style="display:none;" id="access-row" class="row">
-				<?php echo _AT('access'); ?><br />
-				<input type="radio" name="access" value="private" id="s1" <?php if ($_GET['access'] == 'private') { echo 'checked="checked"'; } ?> /><label for="s1"><?php echo _AT('private'); ?></label> 
-
-				<input type="radio" name="access" value="protected" id="s2" <?php if ($_GET['access'] == 'protected') { echo 'checked="checked"'; } ?> /><label for="s2"><?php echo _AT('protected'); ?></label>
-
-				<input type="radio" name="access" value="public" id="s3" <?php if ($_GET['access'] == 'public') { echo 'checked="checked"'; } ?> /><label for="s3"><?php echo _AT('public'); ?></label>
-
-				<input type="radio" name="access" value="" id="s" <?php if ($_GET['access'] == '') { echo 'checked="checked"'; } ?> /><label for="s"><?php echo _AT('all'); ?></label>
-			</div>
-
-		<?php if ($this->has_categories): ?>
-			<div class="row">
-				<label for="category"><?php echo _AT('category'); ?></label><br/>
-				<select name="category" id="category">
-					<option value="-1">- - - <?php echo _AT('cats_all'); ?> - - -</option>
-					<option value="0" <?php if ($_GET['category'] == 0) { echo 'selected="selected"'; } ?>>- - - <?php echo _AT('cats_uncategorized'); ?> - - -</option>
-					<?php echo $this->categories_select; ?>
-				</select>
-			</div>
-		<?php endif; ?>
-			<div class="row">
-				<h3 id="results_found"><?php echo _AT('results_found', $this->num_results); ?></h3>
-			</div>
-
-	</form>
-</fieldset>
+<div style="text-align:right; font-size: smaller; padding-right:5%;">
+	<form method="get" id="browse-courses-form">
+        <input type="text" name="search" id="search" class="search-bar" size="20" /> <br />
+        <a href="javascript:null();" id="advanced-search" onclick="ATutor.browseCourses.toggleAdvanced();">[+] Advanced</a>
+        <span style="display:none;" id="match-buttons-row"> <br />
+            <?php echo _AT('search_match'); ?>:
+            <input type="radio" name="include" value="all" id="match_all" <?php echo $this->checked_include_all; ?> /><label for="match_all"><?php echo _AT('search_all_words'); ?></label> 
+            <input type="radio" name="include" value="one" id="match_one" <?php echo $this->checked_include_one; ?> /><label for="match_one"><?php echo _AT('search_any_word'); ?></label>
+        </span>
+	    <span style="display:none;" id="access-row" class="row">
+		    <br /><?php echo _AT('access'); ?>
+		    <input type="radio" name="access" value="private" id="s1" /><label for="s1"><?php echo _AT('private'); ?></label> 
+		    <input type="radio" name="access" value="protected" id="s2" /><label for="s2"><?php echo _AT('protected'); ?></label>
+		    <input type="radio" name="access" value="public" id="s3" /><label for="s3"><?php echo _AT('public'); ?></label>
+		    <input type="radio" name="access" value="" id="s" <?php if ($_GET['access'] == '') { echo 'checked="checked"'; } ?> /><label for="s"><?php echo _AT('all'); ?></label>
+	    </span>
+	    <?php if ($this->has_categories): ?>
+		    <span class="row">
+			    <label for="category"><?php echo _AT('category'); ?></label><br/>
+			    <select name="category" id="category">
+				    <option value="-1">- - - <?php echo _AT('cats_all'); ?> - - -</option>
+				    <option value="0" <?php if ($_GET['category'] == 0) { echo 'selected="selected"'; } ?>>- - - <?php echo _AT('cats_uncategorized'); ?> - - -</option>
+				    <?php echo $this->categories_select; ?>
+			    </select>
+		    </span>
+	    <?php endif; ?>
+    </form>
 </div>
 <div class="container" style="width:95%; margin:auto;">
 
@@ -111,15 +95,15 @@
     </li>
 	<?php } // end foreach ?>
 </ul>
-
+<div id="no-results-found" class="input-form" style="<?php if ($this->courses_rows) { echo 'display:none;';} ?> text-align:center;"><strong>No Results Found</strong></div>
 </div>
 <script type="text/javascript">
 //<!--
 var ATutor = ATutor || {};
 ATutor.courseInfo = <?php echo json_encode($this->courses_rows); ?>;
-
 //-->
 </script>
+<script type="text/javascript" src="<?php echo AT_BASE_HREF; ?>jscripts/infusion/lib/jquery/core/js/jquery.js"></script>
 <script type="text/javascript" src="<?php echo AT_BASE_HREF; ?>jscripts/ATutorBrowseCourses.js"></script>
 <script type="text/javascript" src="<?php echo AT_BASE_HREF; ?>jscripts/a11yAccordeon.js"></script>
 <?php require(AT_INCLUDE_PATH.'footer.inc.php'); ?>

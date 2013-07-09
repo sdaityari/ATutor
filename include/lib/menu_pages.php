@@ -173,7 +173,7 @@ $_pages['registration.php']['guide']     = 'general/?p=register.php';
 
 $_pages['browse.php']['title_var'] = 'browse_courses';
 $_pages['browse.php']['parent']    = AT_NAV_PUBLIC;
-$_pages['browse.php']['children']  = isset($_pages['browse.php']['children']) ? $_pages['browse.php']['children'] : array();
+//$_pages['browse.php']['children']  = isset($_pages['browse.php']['children']) ? $_pages['browse.php']['children'] : array();
 $_pages['browse.php']['guide']     = 'general/?p=browse_courses.php';
 
 $_pages['login.php']['title_var'] = 'login';
