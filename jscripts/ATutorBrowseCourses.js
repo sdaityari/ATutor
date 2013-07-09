@@ -17,8 +17,9 @@ ATutor.browseCourses = ATutor.browseCourses || {};
         resultsId : "results_found",
         matchId : "match-buttons-row",
         accessId : "access-row",
-        advancedSearchId : "advanced-search"
-    };
+        advancedSearchId : "advanced-search",
+        noResultsId : "no-results-found"
+    }, noResults = $("#" + css.noResultsId);
 
     $(document).ready(function () {
         a11yAccordeon({
@@ -35,7 +36,11 @@ ATutor.browseCourses = ATutor.browseCourses || {};
         showAll(); // show all elements
         updateAccess(); // hide based on accessibility
         updateText(); // hide based on search text
-        showResults(); //show number of results
+        if (!$("li[id^='" + css.rowId + "']:visible").length) {
+            $(noResults).show();
+        } else {
+            $(noResults).hide();
+        }
     };
 
     var showAll = function () {
@@ -99,20 +104,11 @@ ATutor.browseCourses = ATutor.browseCourses || {};
         return logicalAnd;
     };
 
-    var showResults = function () {
-        var total = $("li[id^='" + css.rowId + "']:visible").length;
-        if (total) {
-            $("#" + css.resultsId).html("Results Found: " + total);
-        } else {
-            $("#" + css.resultsId).html("No Results Found");
-        }
-    };
-
     browseCourses.toggleAdvanced = function () {
         var advancedSearch = $("#" + css.advancedSearchId),
             toggleStrings = {
-                show : "[+] Advanced Search",
-                hide : "[-] Advanced Search"
+                show : "[+] Advanced",
+                hide : "[-] Advanced"
             };
 
         $(advancedSearch).html( ($(advancedSearch).html() === toggleStrings.show) ? toggleStrings.hide : toggleStrings.show );

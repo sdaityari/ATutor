@@ -1732,6 +1732,12 @@ dl.browse-course dd {
 	margin-left: 26%;
 
 }
+input.search-bar{
+    background-image: url('../../mods/_standard/photos/images/search_icon.png');
+    background-repeat: no-repeat;
+    background-position: right;
+    padding-right: 1.4em;
+}
 /*  form fields grouping for WCAG 2.0 conformance*/
 fieldset.group_form{
 	width:90%;
