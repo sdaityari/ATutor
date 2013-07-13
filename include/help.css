@@ -2,10 +2,12 @@
     border: .1em solid #000000;
     margin: 1em auto;
     text-align:center;
-    height: 2em;
-    width: 40em;
+    height: 2.5em;
+    width: 45em;
     display: block;
     text-transform: uppercase;
+    border-radius: .3em;
+    moz-border-radius: .3em .3em .3em .3em;
 }
 
 ul#help-subnavlist {
@@ -16,21 +18,22 @@ ul#help-subnavlist li {
     list-style: none;
     display: inline-block;
     height: 1em;
-    margin: 0em 1em;
+    margin: 0.3em 1em;
     line-height:2em;
 }
 
 ul#help-subnavlist li a, a:visited {
-    text-decoration: none;
 }
 
 div.help-row {
+    background-color: #ffffee;
     width: 80%;
     margin: 1em auto;
     border: .1em solid #000000;
-    padding: 1em 1em;
+    padding: 2em;
     color: #000000;
-    background-color:#ffffff;
+    border-radius: .5em;
+    moz-border-radius: .5em .5em .5em .5em;
 }
 
 div.help-row h3 {
