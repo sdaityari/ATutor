@@ -33,7 +33,7 @@
 	<?php foreach ($this->courses_rows as $row){ ?>
     <li class="a11yAccordeonItem" id="accordeon_<?php echo $row['course_id']; ?>">
         <div class="a11yAccordeonItemHeader">
-            <img src="<?php echo AT_INCLUDE_PATH."../mods/_standard/photos/images/";
+            <img src="<?php echo AT_PA_BASENAME."images/";
                 if ($row['access'] == 'public') {
                     echo 'unlocked.png';
                 } else {
