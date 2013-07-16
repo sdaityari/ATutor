@@ -39,3 +39,7 @@ div.help-row {
 div.help-row h3 {
     margin-bottom: 0.5em;
 }
+
+h2.page-title{
+    display: none;
+}

@@ -34,7 +34,7 @@ require (AT_INCLUDE_PATH.'header.inc.php');
 </div>
 
 <div id="basic-help" class="help-row">
-    <h3><?php echo _AT('help'); ?></h3>
+    <h3><?php echo _AT('help_links'); ?></h3>
     <ul>
         <li style="padding-bottom: 20px;"><a href="documentation/index_list.php?lang=<?php echo $_SESSION['lang']; ?>" onclick="ATutor.poptastic('<?php echo AT_BASE_HREF; ?>documentation/index_list.php?lang=<?php echo $_SESSION['lang']; ?>'); return false;" target="_new"><?php echo _AT('atutor_handbook');?></a><br />
             <?php echo _AT('general_help', AT_GUIDES_PATH); ?></li>
