@@ -175,7 +175,7 @@ global $system_courses, $_custom_css, $db;
                 <input type="hidden" name="search" value="Search" />
                 <input type="image" style="margin-top:0.1em;" src="<?php echo AT_PA_BASENAME; ?>images/search_new.png" alt="<?php echo _AT('search');?>" />
             </form>
-            <a href="<?php echo $this->base_path; ?>search.php">Advanced</a>
+            <a href="<?php echo $this->base_path; ?>search.php"><? echo _AT('advanced'); ?></a>
 		<?php endif; ?>
 		<a href="<?php echo $this->base_path; ?>help/index.php"><?php echo _AT('help'); ?></a>	
 		</div>
