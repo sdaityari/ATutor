@@ -166,7 +166,7 @@ global $system_courses, $_custom_css, $db;
 			<a href="<?php echo $this->base_path; ?>browse.php"><?php echo _AT('browse_courses'); ?></a> 
 			<?php } ?>
             <form method="get" action="<?php echo $this->base_path; ?>search.php#search_results">
-                <input name="words" type="text" value="<?php echo $_GET['words']; ?>" />
+                <input name="words" type="text" placeholder="<?php echo _AT('search'); ?>" value="<?php echo $_GET['words']; ?>" />
                 <input type="hidden" name="search" value=1 />
                 <input type="hidden" name="include" value="all" />
                 <input type="hidden" name="find_in" value="all" />
