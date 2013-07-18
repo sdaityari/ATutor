@@ -165,14 +165,13 @@ global $system_courses, $_custom_css, $db;
 			<a href="<?php echo $this->base_path; ?>browse.php"><?php echo _AT('browse_courses'); ?></a> 
 			<?php } ?>
             <form method="get" action="<?php echo $this->base_path; ?>search.php#search_results">
-                <input name="words" type="text" placeholder="<?php echo _AT('search'); ?>" value="<?php echo $_GET['words']; ?>" />
+                <input name="words" type="text" placeholder="<?php echo _AT('search'); ?>" value="<?php echo $_GET['words']; ?>" title="<?php echo _AT('search_help'); ?>" class="search-tooltip" />
                 <input type="hidden" name="search" value=1 />
                 <input type="hidden" name="include" value="all" />
                 <input type="hidden" name="find_in" value="all" />
                 <input type="hidden" name="search_within" value="all" />
                 <input type="hidden" name="display_as" value="summaries" />
                 <input type="hidden" name="search" value="Search" />
-                <input type="image" style="margin-top:0.1em;" src="<?php echo AT_PA_BASENAME; ?>images/search_new.png" alt="<?php echo _AT('search');?>" />
             </form>
             <a href="<?php echo $this->base_path; ?>search.php"><? echo _AT('advanced'); ?></a>
 		<?php endif; ?>

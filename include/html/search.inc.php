@@ -94,52 +94,37 @@ if (isset($_GET['search']) && !$_GET['words']) {
 ?>
 
 <form method="get" action="<?php echo AT_print($_SERVER['PHP_SELF'], 'url.self'); ?>#search_results" name="form">
-<input type="hidden" name="search" value="1" />
-<div class="input-form">
-	<div class="row">
-		<span class="required" title="<?php echo _AT('required_field'); ?>">*</span><label for="keywords"><?php echo _AT('search_words'); ?></label><br />
-		<input type="text" name="words" size="30" id="keywords" value="<?php echo $_GET['words']; ?>" />
-	</div>
+    <input type="hidden" name="search" value="1" />
+    <span class="required" title="<?php echo _AT('required_field'); ?>">*</span><label for="keywords"><?php echo _AT('search_words'); ?></label>
+    <input type="text" name="words" size="30" id="keywords" value="<?php echo $_GET['words']; ?>" title="<?php echo _AT('search_help'); ?>" class="search-tooltip" /><br />
+    <a id="advanced-search-text" href="javascript:null()" onclick="ATutor.search.toggleAdvanced();">[+] Advanced</a><br />
 
-	<div class="row">
-		<?php echo _AT('search_match'); ?><br />
-		<input type="radio" name="include" value="all" id="all" <?php echo $checked_include_all; ?> /><label for="all"><?php echo _AT('search_all_words'); ?></label><br />
-		<input type="radio" name="include" value="one" id="one" <?php echo $checked_include_one; ?> /><label for="one"><?php echo _AT('search_any_word'); ?></label>
-	</div>
-	
-	<div class="row">
-		<?php echo _AT('find_results_in'); ?><br />
-				<?php if ($_SESSION['course_id'] > 0) : ?>
-					<input type="radio" name="find_in" value="this" id="f1" <?php echo $checked_find_in_course; ?> /><label for="f1"><?php echo _AT('this_course_only'); ?></label><br />
-				<?php endif; ?>
+    <span id="advanced-search" style="display:none;">
+	    <?php echo _AT('search_match'); ?>
+	    <input type="radio" name="include" value="all" id="all" <?php echo $checked_include_all; ?> /><label for="all"><?php echo _AT('search_all_words'); ?></label>
+	    <input type="radio" name="include" value="one" id="one" <?php echo $checked_include_one; ?> /><label for="one"><?php echo _AT('search_any_word'); ?></label><br />
 
-				<?php if ($_SESSION['valid_user'] && ($_SESSION['course_id'] > -1)) : ?>
-					<input type="radio" name="find_in" value="my" id="f2" <?php echo $checked_find_in_my_courses; ?> /><label for="f2"><?php echo _AT('my_enrolled_courses'); ?></label><br />
-				<?php endif; ?>
+        <?php echo _AT('find_results_in'); ?>
+        <?php if ($_SESSION['course_id'] > 0) : ?>
+        <input type="radio" name="find_in" value="this" id="f1" <?php echo $checked_find_in_course; ?> /><label for="f1"><?php echo _AT('this_course_only'); ?></label><br />
+        <?php endif; ?>
 
-				<input type="radio" name="find_in" value="all" id="f3" <?php echo $checked_find_in_all_courses; ?> /><label for="f3"><?php echo _AT('all_available_courses'); ?></label>
-	</div>
+    <?php if ($_SESSION['valid_user'] && ($_SESSION['course_id'] > -1)) : ?>
+        <input type="radio" name="find_in" value="my" id="f2" <?php echo $checked_find_in_my_courses; ?> /><label for="f2"><?php echo _AT('my_enrolled_courses'); ?></label><br />
+    <?php endif; ?>
 
-	<div class="row">
-		<?php echo _AT('search_in'); ?><br />
-			<input type="radio" name="search_within" value="all" id="sw_all" <?php echo $checked_sw_all; ?> /><label for="sw_all"><?php echo _AT('all'); ?></label>	
-			<input type="radio" name="search_within" value="content" id="sw_content" <?php echo $checked_sw_content; ?> /><label for="sw_content"><?php echo _AT('content'); ?></label>
-			<input type="radio" name="search_within" value="forums" id="sw_forums" <?php echo $checked_sw_forums; ?> /><label for="sw_forums"><?php echo _AT('forums'); ?></label>	
-	</div>
+        <input type="radio" name="find_in" value="all" id="f3" <?php echo $checked_find_in_all_courses; ?> /><label for="f3"><?php echo _AT('all_available_courses'); ?></label><br />
 
-	<div class="row">
-		<?php echo _AT('display'); ?><br />
-		<input type="radio" name="display_as" value="pages" id="d1" <?php echo $checked_display_as_pages; ?> /><label for="d1"><?php echo _AT('as_individual_content'); ?></label><br />
+        <?php echo _AT('search_in'); ?>
+        <input type="radio" name="search_within" value="all" id="sw_all" <?php echo $checked_sw_all; ?> /><label for="sw_all"><?php echo _AT('all'); ?></label>	
+        <input type="radio" name="search_within" value="content" id="sw_content" <?php echo $checked_sw_content; ?> /><label for="sw_content"><?php echo _AT('content'); ?></label>
+        <input type="radio" name="search_within" value="forums" id="sw_forums" <?php echo $checked_sw_forums; ?> /><label for="sw_forums"><?php echo _AT('forums'); ?></label><br />
 
-		<input type="radio" name="display_as" value="courses" id="d2" <?php echo $checked_display_as_courses; ?> /><label for="d2"><?php echo _AT('grouped_by_course'); ?></label><br />
-
-		<input type="radio" name="display_as" value="summaries" id="d3" <?php echo $checked_display_as_summaries; ?> /><label for="d3"><?php echo _AT('course_summaries'); ?></label><br /><br />
-	</div>
-
-	<div class="row buttons">
-		<input type="submit" name="search" value="<?php echo _AT('search'); ?>" />
-	</div>
-</div>
+        <?php echo _AT('display'); ?>
+        <input type="radio" name="display_as" value="pages" id="d1" <?php echo $checked_display_as_pages; ?> /><label for="d1"><?php echo _AT('as_individual_content'); ?></label>
+        <input type="radio" name="display_as" value="courses" id="d2" <?php echo $checked_display_as_courses; ?> /><label for="d2"><?php echo _AT('grouped_by_course'); ?></label>
+        <input type="radio" name="display_as" value="summaries" id="d3" <?php echo $checked_display_as_summaries; ?> /><label for="d3"><?php echo _AT('course_summaries'); ?></label><br /><br />
+    </span>
 </form>
 
 <?php
@@ -340,3 +325,5 @@ if (isset($_GET['search']) && isset($_GET['words'])) {
 }
 
 ?>
+
+<script type="text/javascript" src="<?php echo AT_BASE_HREF; ?>jscripts/search.js"></script>
