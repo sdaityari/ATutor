@@ -10,16 +10,21 @@ ATutor.search = ATutor.search || {};
 (function(search) {
     "use strict";
 
-    search.toggleAdvanced = function () {
-        var advancedSearch = $("#advanced-search"),
-            advancedSearchText = $("#advanced-search-text"),
-            toggleStrings = {
-                show : "[+] Advanced",
-                hide : "[-] Advanced"
-            };
+    var toggleStrings = {
+            show : "[+] Advanced",
+            hide : "[-] Advanced"
+        }, css = {
+            search : "advanced-search",
+            searchText: "advanced-search-text"
+        };
 
-        $(advancedSearchText).html( ($(advancedSearchText).html() === toggleStrings.show) ? toggleStrings.hide : toggleStrings.show );
-        $(advancedSearch).toggle();
+
+    search.toggleAdvanced = function () {
+        var advancedSearchText = $("#" + css.searchText);
+
+        advancedSearchText.html( (advancedSearchText.html() === toggleStrings.show) ? toggleStrings.hide : toggleStrings.show );
+
+        $("#" + css.search).toggle();
 
     };
 

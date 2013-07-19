@@ -39,12 +39,12 @@
     <?php require_once(AT_INCLUDE_PATH.'../jscripts/ATutor_js.php'); ?>
 //-->
 </script>
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="<?php echo AT_BASE_HREF; ?>jscripts/lib/jquery/jquery-1.10.2.min.js"></script>
+<script src="<?php echo AT_BASE_HREF; ?>jscripts/lib/jquery/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="<?php echo AT_BASE_HREF; ?>jscripts/lib/jquery/jquery-ui.css" />
 <script type="text/javascript">
 //<!--
-    $(function () {
+    $(document).ready(function () {
         $(".search-tooltip").tooltip();
     });
 //-->

@@ -96,7 +96,7 @@ if (isset($_GET['search']) && !$_GET['words']) {
 <form method="get" action="<?php echo AT_print($_SERVER['PHP_SELF'], 'url.self'); ?>#search_results" name="form">
     <input type="hidden" name="search" value="1" />
     <span class="required" title="<?php echo _AT('required_field'); ?>">*</span><label for="keywords"><?php echo _AT('search_words'); ?></label>
-    <input type="text" name="words" size="30" id="keywords" value="<?php echo $_GET['words']; ?>" title="<?php echo _AT('search_help'); ?>" class="search-tooltip" /><br />
+    <input type="text" name="words" size="30" id="keywords" placeholder="<? echo _AT('search'); ?>" value="<?php echo $_GET['words']; ?>" title="<?php echo _AT('search_help'); ?>" class="search-tooltip" /><br />
     <a id="advanced-search-text" href="javascript:null()" onclick="ATutor.search.toggleAdvanced();">[+] Advanced</a><br />
 
     <span id="advanced-search" style="display:none;">
