@@ -2385,6 +2385,8 @@ div .search_form {
 input.search-tooltip{
     background-image: url('../../mods/_standard/photos/images/search_new.png');
     background-repeat: no-repeat;
+    background-size: auto 80%;
+    background-position: 2% 15%;
     padding-left:1.5em;
     border-radius:1em !important;
     -moz-border-radius:1em 1em 1em 1em !important;
