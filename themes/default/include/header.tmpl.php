@@ -263,7 +263,7 @@ global $system_courses, $_custom_css, $db;
 
 	  <?php if (isset($_SESSION["prefs"]["PREF_SHOW_BREAD_CRUMBS"]) && $_SESSION["prefs"]["PREF_SHOW_BREAD_CRUMBS"]) { ?>
 		  <!-- the bread crumbs -->
-		<div class="rumbcontainer" role="navigation">
+		<div class="crumbcontainer" role="navigation">
 		    <div id="breadcrumbs">
                 <div id="main-breadcrumb">
                     <?php foreach ($this->path as $page): ?>
