@@ -265,10 +265,24 @@ global $system_courses, $_custom_css, $db;
 	  <?php if (isset($_SESSION["prefs"]["PREF_SHOW_BREAD_CRUMBS"]) && $_SESSION["prefs"]["PREF_SHOW_BREAD_CRUMBS"]) { ?>
 		  <!-- the bread crumbs -->
 		<div class="crumbcontainer" role="navigation">
-		  <div id="breadcrumbs">
-			  <?php foreach ($this->path as $page): ?>
-				  <a href="<?php echo $page['url']; ?>"><?php echo htmlspecialchars($page['title'], ENT_COMPAT, "UTF-8"); ?></a> 
-			  <?php endforeach; ?> <?php echo $this->page_title; ?>
+		    <div id="breadcrumbs">
+                <div id="main-breadcrumb">
+                    <?php foreach ($this->path as $page): ?>
+                        <a href="<?php echo $page['url']; ?>"><?php echo htmlspecialchars($page['title'], ENT_COMPAT, "UTF-8"); ?></a> &gt;
+                    <?php endforeach; ?>
+                </div>
+                <div id= "sub-breadcrumb">
+                    <?php for ($i=0, $count=count($this->sub_level_pages); $i<$count; $i++): ?>
+                        <?php if ($this->sub_level_pages[$i]['url'] == $this->current_sub_level_page): ?>
+                            <?php echo htmlentities_utf8($this->sub_level_pages[$i]['title']); ?>
+                        <?php else: ?>
+                            <a href="<?php echo $this->sub_level_pages[$i]['url']; ?>"><?php echo htmlentities_utf8($this->sub_level_pages[$i]['title']); ?></a>
+                        <?php endif; ?>
+                        <?php if ($i < $count-1):
+                            echo " | ";?>
+                        <?php endif; ?>
+                    <?php endfor; ?>
+                </div>
 		  </div>
 	  <?php } else { ?>
 	   <div class="crumbcontainer" style="padding-bottom:1.2em;">
@@ -350,7 +364,7 @@ global $system_courses, $_custom_css, $db;
 	</ul>
 </div> -->
 
-		<div id="subnavlistcontainer" role="navigation">
+        <!--<div id="subnavlistcontainer" role="navigation">
 			<div id="subnavbacktopage">
 			<?php if (isset($this->back_to_page)): ?>
 				<a href="<?php echo $this->back_to_page['url']; ?>">
@@ -376,7 +390,7 @@ global $system_courses, $_custom_css, $db;
 				<?php endif; ?>
 			<?php endfor; ?>
 			</ul>
-		</div>
+		</div>-->
 	<?php endif; ?>
 
 <!-- the main navigation. in our case, tabs -->
