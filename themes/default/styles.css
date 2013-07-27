@@ -535,6 +535,18 @@ div#breadcrumbs {
 	border-bottom:1px solid #B7C68B;
 	background-color: #F4F0CB;
 }
+div#main-breadcrumb {
+    float: left;
+    height: 1.5em;
+    line-height: 1.5em;
+    text-transform: uppercase;
+}
+div#sub-breadcrumb {
+    float: left;
+    height: 1.5em;
+    line-height: 1.5em;
+    padding-left: 1em;
+}
 h2.page-title {
 	clear:right;
 	margin-bottom: 10px;
