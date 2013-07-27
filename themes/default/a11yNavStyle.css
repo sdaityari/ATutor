@@ -47,10 +47,11 @@
 }
 
 .a11yNav .a11ySub a {
-    background:#FFDC50; /* gold */
+    background:#8C8571;
     margin:0 -1px 0 0;
     width:150px;
-    color: #000;
+    color: #E7E5E5;
+    text-align:center;
 }
 
 .a11yNav .a11ySub {
@@ -73,7 +74,7 @@
 
 .a11yNav a.a11yMain:hover, .a11yNav a.a11yMain:focus, .a11yNav a.a11yMain:active { 
     margin-right:0;
-    background:#340449;
+    background:#332716;
     color:#fff;
 }
 
