@@ -119,11 +119,13 @@
                 <input type="text" size="10" name="max_login" id="maximum_login_attempt" value="<?php if (!empty($_POST['max_login'])) { echo $stripslashes(htmlspecialchars($_POST['max_login'])); } else { echo $_config['max_login']; } ?>"  /> <?php echo _AT('times'); ?>
 
                 <fieldset><legend><?php echo _AT('use_captcha'); ?> </legend>(<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['use_captcha'] ? _AT('enable') : _AT('disable')); ?>)<br />
-                    <?php if (extension_loaded('gd')): ?>
-                    <input type="radio" name="use_captcha" value="1" id="use_captcha_y" <?php if($_config['use_captcha']) { echo 'checked="checked"'; }?>  /><label for="use_captcha_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="use_captcha" value="0" id="use_captcha_n" <?php if(!$_config['use_captcha']) { echo 'checked="checked"'; }?>  /><label for="use_captcha_n"><?php echo _AT('disable'); ?></label>
-                    <?php else: ?>
-                    <input type="radio" name="use_captcha" value="1" id="use_captcha_y" disabled="disabled" /><label for="use_captcha_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="use_captcha" value="0" id="use_captcha_n" checked="checked" /><label for="use_captcha_n"><?php echo _AT('disable'); ?></label>
-                    <?php endif; ?>
+                    <div class="toggle-switch">
+                        <?php if (extension_loaded('gd')): ?>
+                        <input type="radio" name="use_captcha" value="1" id="use_captcha_y" <?php if($_config['use_captcha']) { echo 'checked="checked"'; }?>  /><label for="use_captcha_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="use_captcha" value="0" id="use_captcha_n" <?php if(!$_config['use_captcha']) { echo 'checked="checked"'; }?>  /><label for="use_captcha_n"><?php echo _AT('disable'); ?></label>
+                        <?php else: ?>
+                        <input type="radio" name="use_captcha" value="1" id="use_captcha_y" disabled="disabled" /><label for="use_captcha_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="use_captcha" value="0" id="use_captcha_n" checked="checked" /><label for="use_captcha_n"><?php echo _AT('disable'); ?></label>
+                        <?php endif; ?>
+                    </div>
                 </fieldset>
 
             </div>
@@ -136,42 +138,56 @@
 
                 <fieldset>
                     <legend><?php echo _AT('allow_registration'); ?></legend> (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['allow_registration'] ? _AT('enable') : _AT('disable')); ?>)<br />
-                    <input type="radio" name="allow_registration" value="1" id="reg_y" <?php if($_config['allow_registration']) { echo 'checked="checked"'; }?>  /><label for="reg_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="allow_registration" value="0" id="reg_n" <?php if(!$_config['allow_registration']) { echo 'checked="checked"'; }?>  /><label for="reg_n"><?php echo _AT('disable'); ?></label>
+                    <div class="toggle-switch">
+                        <input type="radio" name="allow_registration" value="1" id="reg_y" <?php if($_config['allow_registration']) { echo 'checked="checked"'; }?>  /><label for="reg_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="allow_registration" value="0" id="reg_n" <?php if(!$_config['allow_registration']) { echo 'checked="checked"'; }?>  /><label for="reg_n"><?php echo _AT('disable'); ?></label>
+                    </div>
                 </fieldset>
 
                 <fieldset><legend><?php echo _AT('allow_browse'); ?> </legend>
                 (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['allow_browse'] ? _AT('enable') : _AT('disable')); ?>)<br />
-                    <input type="radio" name="allow_browse" value="1" id="browse_y" <?php if($_config['allow_browse']) { echo 'checked="checked"'; }?>  /><label for="browse_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="allow_browse" value="0" id="browse_n" <?php if(!$_config['allow_browse']) { echo 'checked="checked"'; }?>  /><label for="browse_n"><?php echo _AT('disable'); ?></label>
+                    <div class="toggle-switch">
+                        <input type="radio" name="allow_browse" value="1" id="browse_y" <?php if($_config['allow_browse']) { echo 'checked="checked"'; }?>  /><label for="browse_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="allow_browse" value="0" id="browse_n" <?php if(!$_config['allow_browse']) { echo 'checked="checked"'; }?>  /><label for="browse_n"><?php echo _AT('disable'); ?></label>
+                    </div>
                 </fieldset>
 
                 <fieldset><legend><?php echo _AT('allow_unenroll'); ?></legend>
                      (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['allow_unenroll'] ? _AT('enable') : _AT('disable')); ?>)<br />
-                    <input type="radio" name="allow_unenroll" value="1" id="ene_y" <?php if($_config['allow_unenroll']) { echo 'checked="checked"'; }?>  /><label for="ene_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="allow_unenroll" value="0" id="ene_n" <?php if(!$_config['allow_unenroll']) { echo 'checked="checked"'; }?>  /><label for="ene_n"><?php echo _AT('disable'); ?></label>
+                    <div class="toggle-switch">
+                        <input type="radio" name="allow_unenroll" value="1" id="ene_y" <?php if($_config['allow_unenroll']) { echo 'checked="checked"'; }?>  /><label for="ene_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="allow_unenroll" value="0" id="ene_n" <?php if(!$_config['allow_unenroll']) { echo 'checked="checked"'; }?>  /><label for="ene_n"><?php echo _AT('disable'); ?></label>
+                    </div>
                 </fieldset>
 
                 <fieldset>
                     <legend><?php echo _AT('require_email_confirmation'); ?></legend>
                      (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['email_confirmation'] ? _AT('enable') : _AT('disable')); ?>)<br />
-                        <input type="radio" name="email_confirmation" value="1" id="ec_y" <?php if ($_config['email_confirmation']) { echo 'checked="checked"'; }?>  /><label for="ec_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="email_confirmation" value="0" id="ec_n" <?php if(!$_config['email_confirmation']) { echo 'checked="checked"'; }?>  /><label for="ec_n"><?php echo _AT('disable'); ?></label>
+                        <div class="toggle-switch">
+                            <input type="radio" name="email_confirmation" value="1" id="ec_y" <?php if ($_config['email_confirmation']) { echo 'checked="checked"'; }?>  /><label for="ec_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="email_confirmation" value="0" id="ec_n" <?php if(!$_config['email_confirmation']) { echo 'checked="checked"'; }?>  /><label for="ec_n"><?php echo _AT('disable'); ?></label>
+                        </div>
                 </fieldset>
 
                 <fieldset><legend><?php echo _AT('allow_instructor_create_course'); ?></legend>
                  (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['disable_create'] ? _AT('disable') : _AT('enable')); ?>)<br />    
-                    <input type="radio" name="disable_create" value="0" id="create_n" <?php if(!$_config['disable_create']) { echo 'checked="checked"'; }?>  /><label for="create_n"><?php echo _AT('enable'); ?></label><input type="radio" name="disable_create" value="1" id="create_y" <?php if($_config['disable_create']) { echo 'checked="checked"'; }?>  /><label for="create_y"><?php echo _AT('disable'); ?></label> 
+                    <div class="toggle-switch">
+                        <input type="radio" name="disable_create" value="0" id="create_n" <?php if(!$_config['disable_create']) { echo 'checked="checked"'; }?>  /><label for="create_n"><?php echo _AT('enable'); ?></label><input type="radio" name="disable_create" value="1" id="create_y" <?php if($_config['disable_create']) { echo 'checked="checked"'; }?>  /><label for="create_y"><?php echo _AT('disable'); ?></label>
+                    </div>
                 </fieldset>
 
                 <fieldset>
                     <legend><?php echo _AT('course_dir_name'); ?></legend>
                      (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['course_dir_name'] ? _AT('enable') : _AT('disable')); ?>)<br />
-                        <input type="radio" name="course_dir_name" value="1" id="cdn_y" <?php if($_config['course_dir_name']) { echo 'checked="checked"'; }?> /><label for="cdn_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="course_dir_name" value="0" id="cdn_n" <?php if(!$_config['course_dir_name']) { echo 'checked="checked"'; }?>  /><label for="cdn_n"><?php echo _AT('disable'); ?></label>
+                    <div class="toggle-switch">
+                            <input type="radio" name="course_dir_name" value="1" id="cdn_y" <?php if($_config['course_dir_name']) { echo 'checked="checked"'; }?> /><label for="cdn_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="course_dir_name" value="0" id="cdn_n" <?php if(!$_config['course_dir_name']) { echo 'checked="checked"'; }?>  /><label for="cdn_n"><?php echo _AT('disable'); ?></label>
+                    </div>
                 </fieldset>
 
                 <fieldset>
                     <legend><?php echo _AT('master_list_authentication'); ?></legend>
                      (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['master_list'] ? _AT('enable') : _AT('disable')); ?>)<br />
-                    <input type="radio" name="master_list" value="1" id="ml_y" <?php if ($_config['master_list']) { echo 'checked="checked"'; }?>  /><label for="ml_y"><?php echo _AT('enable'); ?></label> 
+                    <div class="toggle-switch">
+                        <input type="radio" name="master_list" value="1" id="ml_y" <?php if ($_config['master_list']) { echo 'checked="checked"'; }?>  /><label for="ml_y"><?php echo _AT('enable'); ?></label> 
 
-                    <input type="radio" name="master_list" value="0" id="ml_n" <?php if(!$_config['master_list']) { echo 'checked="checked"'; }?>  /><label for="ml_n"><?php echo  _AT('disable'); ?></label>
+                        <input type="radio" name="master_list" value="0" id="ml_n" <?php if(!$_config['master_list']) { echo 'checked="checked"'; }?>  /><label for="ml_n"><?php echo  _AT('disable'); ?></label>
+                    </div>
                 </fieldset>
 
                 <label for="course_backups"><?php echo _AT('course_backups'); ?></label> (<?php echo _AT('default'); ?>: <?php echo $_config_defaults['course_backups']; ?>)
@@ -198,24 +214,32 @@
                 <fieldset>
                     <legend><?php echo _AT('allow_instructor_registration'); ?> </legend>
                     (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['allow_instructor_registration'] ? _AT('enable') : _AT('disable')); ?>)<br />
+                    <div class="toggle-switch">
                         <input type="radio" name="allow_instructor_registration" value="1" id="enrollreg_y" <?php if($_config['allow_instructor_registration']) { echo 'checked="checked"'; }?>  /><label for="enrollreg_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="allow_instructor_registration" value="0" id="enrollreg_n" <?php if(!$_config['allow_instructor_registration']) { echo 'checked="checked"'; }?>  /><label for="enrollreg_n"><?php echo _AT('disable'); ?></label>
+                    </div>
                 </fieldset>
 
                 <fieldset><legend><?php echo _AT('allow_instructor_requests'); ?></legend>
                  (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['allow_instructor_requests'] ? _AT('enable') : _AT('disable')); ?>)<br />
-                    <input type="radio" name="allow_instructor_requests" value="1" id="air_y" <?php if($_config['allow_instructor_requests']) { echo 'checked="checked"'; }?>  /><label for="air_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="allow_instructor_requests" value="0" id="air_n" <?php if(!$_config['allow_instructor_requests']) { echo 'checked="checked"'; }?>  /><label for="air_n"><?php echo _AT('disable'); ?></label>
+                    <div class="toggle-switch">
+                        <input type="radio" name="allow_instructor_requests" value="1" id="air_y" <?php if($_config['allow_instructor_requests']) { echo 'checked="checked"'; }?>  /><label for="air_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="allow_instructor_requests" value="0" id="air_n" <?php if(!$_config['allow_instructor_requests']) { echo 'checked="checked"'; }?>  /><label for="air_n"><?php echo _AT('disable'); ?></label>
+                    </div>
                 </fieldset>
 
                 <fieldset>
                 <legend><?php echo _AT('instructor_request_email_notification'); ?></legend>
                  (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['email_notification'] ? _AT('enable') : _AT('disable')); ?>)<br />
-                    <input type="radio" name="email_notification" value="1" id="en_y" <?php if ($_config['email_notification']) { echo 'checked="checked"'; }?>  /><label for="en_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="email_notification" value="0" id="en_n" <?php if(!$_config['email_notification']) { echo 'checked="checked"'; }?>  /><label for="en_n"><?php echo _AT('disable'); ?></label>
+                    <div class="toggle-switch">
+                        <input type="radio" name="email_notification" value="1" id="en_y" <?php if ($_config['email_notification']) { echo 'checked="checked"'; }?>  /><label for="en_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="email_notification" value="0" id="en_n" <?php if(!$_config['email_notification']) { echo 'checked="checked"'; }?>  /><label for="en_n"><?php echo _AT('disable'); ?></label>
+                    </div>
                 </fieldset>
 
                 <fieldset>
                     <legend><?php echo _AT('auto_approve_instructors'); ?></legend>
                      (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['auto_approve_instructors'] ? _AT('enable') : _AT('disable')); ?>)<br />
+                    <div class="toggle-switch">
                         <input type="radio" name="auto_approve_instructors" value="1" id="aai_y" <?php if($_config['auto_approve_instructors']) { echo 'checked="checked"'; }?>  /><label for="aai_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="auto_approve_instructors" value="0" id="aai_n" <?php if(!$_config['auto_approve_instructors']) { echo 'checked="checked"'; }?>  /><label for="aai_n"><?php echo _AT('disable'); ?></label>
+                    </div>
                 </fieldset>
 
                 <fieldset>
@@ -229,7 +253,9 @@
                 <fieldset>
                     <legend><?php echo _AT('user_contributed_notes'); ?> </legend>
                     (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['user_notes'] ? _AT('enable') : _AT('disable')); ?>)<br />
+                    <div class="toggle-switch">
                         <input type="radio" name="user_notes" value="1" id="un_y" <?php if($_config['user_notes']) { echo 'checked="checked"'; }?>  /><label for="un_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="user_notes" value="0" id="un_n" <?php if(!$_config['user_notes']) { echo 'checked="checked"'; }?>  /><label for="un_n"><?php echo _AT('disable'); ?></label>
+                    </div>
                 </fieldset>
 
             </div>
@@ -242,14 +268,18 @@
             <div class="a11yAccordeonHideArea">
 
                 <fieldset>
-                <legend><?php echo _AT('theme_specific_categories'); ?></legend>
-                 (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['theme_categories'] ? _AT('enable') : _AT('disable')); ?>)<br />
-                    <input type="radio" name="theme_categories" value="1" id="tc_y" <?php if($_config['theme_categories']) { echo 'checked="checked"'; }?>  /><label for="tc_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="theme_categories" value="0" id="tc_n" <?php if(!$_config['theme_categories']) { echo 'checked="checked"'; }?>  /><label for="tc_n"><?php echo _AT('disable'); ?></label>
+                    <legend><?php echo _AT('theme_specific_categories'); ?></legend>
+                     (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['theme_categories'] ? _AT('enable') : _AT('disable')); ?>)<br />
+                    <div class="toggle-switch">
+                        <input type="radio" name="theme_categories" value="1" id="tc_y" <?php if($_config['theme_categories']) { echo 'checked="checked"'; }?>  /><label for="tc_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="theme_categories" value="0" id="tc_n" <?php if(!$_config['theme_categories']) { echo 'checked="checked"'; }?>  /><label for="tc_n"><?php echo _AT('disable'); ?></label>
+                    </div>
                 </fieldset>
 
                 <fieldset><legend>    <?php echo _AT('show_current'); ?> </legend>
                 (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['show_current'] ? _AT('enable') : _AT('disable')); ?>)<br />
-                    <input type="radio" name="show_current" value="1" id="current_y" <?php if($_config['show_current']) { echo 'checked="checked"'; }?>  /><label for="current_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="show_current" value="0" id="current_n" <?php if(!$_config['show_current']) { echo 'checked="checked"'; }?>  /><label for="current_n"><?php echo _AT('disable'); ?></label>
+                    <div class="toggle-switch">
+                        <input type="radio" name="show_current" value="1" id="current_y" <?php if($_config['show_current']) { echo 'checked="checked"'; }?>  /><label for="current_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="show_current" value="0" id="current_n" <?php if(!$_config['show_current']) { echo 'checked="checked"'; }?>  /><label for="current_n"><?php echo _AT('disable'); ?></label>
+                    </div>
                 </fieldset>
 
                 <label for="cache"><?php echo _AT('cache_directory'); ?></label>
@@ -265,15 +295,19 @@
                 <input type="text" size="3" name="sent_msgs_ttl" id="sent_msgs_ttl" value="<?php if (!empty($_POST['sent_msgs_ttl'])) { echo intval($_POST['sent_msgs_ttl']); } else { echo $_config['sent_msgs_ttl']; } ?>"  />
 
                 <fieldset>
-                <legend><?php echo _AT('auto_check_new_version'); ?></legend>
-                 (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['check_version'] ? _AT('enable') : _AT('disable')); ?>)<br />
-                <input type="radio" name="check_version" value="1" id="cv_y" <?php if($_config['check_version']) { echo 'checked="checked"'; }?>  /><label for="cv_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="check_version" value="0" id="cv_n" <?php if(!$_config['check_version']) { echo 'checked="checked"'; }?>  /><label for="cv_n"><?php echo _AT('disable'); ?></label>
+                    <legend><?php echo _AT('auto_check_new_version'); ?></legend>
+                     (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['check_version'] ? _AT('enable') : _AT('disable')); ?>)<br />
+                    <div class="toggle-switch">
+                        <input type="radio" name="check_version" value="1" id="cv_y" <?php if($_config['check_version']) { echo 'checked="checked"'; }?>  /><label for="cv_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="check_version" value="0" id="cv_n" <?php if(!$_config['check_version']) { echo 'checked="checked"'; }?>  /><label for="cv_n"><?php echo _AT('disable'); ?></label>
+                    </div>
                 </fieldset>
 
                 <fieldset>
-                <legend><?php echo _AT('file_storage_version_control'); ?> </legend>
+                    <legend><?php echo _AT('file_storage_version_control'); ?> </legend>
                 (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['fs_versioning'] ? _AT('enable') : _AT('disable')); ?>)<br />
-                    <input type="radio" name="fs_versioning" value="1" id="cf_y" <?php if($_config['fs_versioning']) { echo 'checked="checked"'; }?>  /><label for="cf_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="fs_versioning" value="0" id="cf_n" <?php if(!$_config['fs_versioning']) { echo 'checked="checked"'; }?>  /><label for="cf_n"><?php echo _AT('disable'); ?></label>
+                    <div class="toggle-switch">
+                        <input type="radio" name="fs_versioning" value="1" id="cf_y" <?php if($_config['fs_versioning']) { echo 'checked="checked"'; }?>  /><label for="cf_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="fs_versioning" value="0" id="cf_n" <?php if(!$_config['fs_versioning']) { echo 'checked="checked"'; }?>  /><label for="cf_n"><?php echo _AT('disable'); ?></label>
+                    </div>
                 </fieldset>
 
                 <fieldset>
@@ -281,50 +315,58 @@
                     <legend><?php echo _AT('enable_mail_queue'); ?></legend>
                      (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['enable_mail_queue'] ? _AT('enable') : _AT('disable')); ?>)<br />
                     <?php echo _AT('mail_queue_cron'); ?><br />
-                    <?php if (!$_config['last_cron'] || (time() - (int) $_config['last_cron'] > 2 * 60 * 60)): ?>
-                        
-                        <input type="radio" name="enable_mail_queue" id="mq_y" value="1" disabled="disabled" /><?php echo _AT('enable'); ?> 
-                        <label for="mq_y"><?php echo _AT('enable'); ?></label> 
-                        <input type="radio" name="enable_mail_queue" value="0" id="mq_n" checked="checked" />
-                        <label for="mq_n"><?php echo _AT('disable'); ?></label>
-                    <?php else: ?>
-                
-                        <input type="radio" name="enable_mail_queue" value="1" id="mq_y" <?php if($_config['enable_mail_queue']) { echo 'checked="checked"'; }?>  />
-                        <label for="mq_y"><?php echo _AT('enable'); ?></label> 
-                        <input type="radio" name="enable_mail_queue" value="0" id="mq_n" <?php if(!$_config['enable_mail_queue']) { echo 'checked="checked"'; }?>  />
-                        <label for="mq_n"><?php echo _AT('disable'); ?></label>
-                    <?php endif; ?>
+                    <div class="toggle-switch">
+                        <?php if (!$_config['last_cron'] || (time() - (int) $_config['last_cron'] > 2 * 60 * 60)): ?>
+                            <input type="radio" name="enable_mail_queue" id="mq_y" value="1" disabled="disabled" />
+                            <label for="mq_y"><?php echo _AT('enable'); ?></label> 
+                            <input type="radio" name="enable_mail_queue" value="0" id="mq_n" checked="checked" />
+                            <label for="mq_n"><?php echo _AT('disable'); ?></label>
+                        <?php else: ?>
+                            <input type="radio" name="enable_mail_queue" value="1" id="mq_y" <?php if($_config['enable_mail_queue']) { echo 'checked="checked"'; }?>  />
+                            <label for="mq_y"><?php echo _AT('enable'); ?></label> 
+                            <input type="radio" name="enable_mail_queue" value="0" id="mq_n" <?php if(!$_config['enable_mail_queue']) { echo 'checked="checked"'; }?>  />
+                            <label for="mq_n"><?php echo _AT('disable'); ?></label>
+                        <?php endif; ?>
+                    </div>
                 </fieldset>
 
                 <fieldset>
                     <legend><?php echo _AT('auto_install_languages'); ?> </legend>
                     (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['auto_install_languages'] ? _AT('enable') : _AT('disable')); ?>)<br />
                     <?php echo _AT('auto_install_languages_cron'); ?><br />
-                    <?php if (!$_config['last_cron'] || (time() - (int) $_config['last_cron'] > 2 * 60 * 60)): ?>
-                        <input type="radio" name="auto_install_languages" id="ai_y" value="1" disabled="disabled" />
-                        <label for="ai_y"><?php echo _AT('enable'); ?> </label>
-                        <input type="radio" name="auto_install_languages" value="0" id="ai_n" checked="checked" />
-                        <label for="ai_n"><?php echo _AT('disable'); ?></label>
-                    <?php else: ?>
-                        <input type="radio" name="auto_install_languages" value="1" id="ai_y" <?php if($_config['auto_install_languages']) { echo 'checked="checked"'; }?>  /><label for="ai_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="auto_install_languages" value="0" id="ai_n" <?php if(!$_config['auto_install_languages']) { echo 'checked="checked"'; }?>  /><label for="ai_n"><?php echo _AT('disable'); ?></label>
-                    <?php endif; ?>
+                    <div class="toggle-switch">
+                        <?php if (!$_config['last_cron'] || (time() - (int) $_config['last_cron'] > 2 * 60 * 60)): ?>
+                            <input type="radio" name="auto_install_languages" id="ai_y" value="1" disabled="disabled" />
+                            <label for="ai_y"><?php echo _AT('enable'); ?> </label>
+                            <input type="radio" name="auto_install_languages" value="0" id="ai_n" checked="checked" />
+                            <label for="ai_n"><?php echo _AT('disable'); ?></label>
+                        <?php else: ?>
+                            <input type="radio" name="auto_install_languages" value="1" id="ai_y" <?php if($_config['auto_install_languages']) { echo 'checked="checked"'; }?>  /><label for="ai_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="auto_install_languages" value="0" id="ai_n" <?php if(!$_config['auto_install_languages']) { echo 'checked="checked"'; }?>  /><label for="ai_n"><?php echo _AT('disable'); ?></label>
+                        <?php endif; ?>
+                    </div>
                 </fieldset>
 
                 <fieldset>
-                <legend><?php echo _AT('pretty_url'); ?></legend>
-                 (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['pretty_url'] ? _AT('enable') : _AT('disable')); ?>)<br />
-                    <input type="radio" name="pretty_url" value="1" id="pu_y" <?php if($_config['pretty_url']) { echo 'checked="checked"'; }?> onclick="apache_mod_rewrite_toggler(true);"/><label for="pu_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="pretty_url" value="0" id="pu_n" <?php if(!$_config['pretty_url']) { echo 'checked="checked"'; }?> onclick="apache_mod_rewrite_toggler(false);"/><label for="pu_n"><?php echo _AT('disable'); ?></label>
+                    <legend><?php echo _AT('pretty_url'); ?></legend>
+                     (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['pretty_url'] ? _AT('enable') : _AT('disable')); ?>)<br />
+                     <div class="toggle-switch">
+                        <input type="radio" name="pretty_url" value="1" id="pu_y" <?php if($_config['pretty_url']) { echo 'checked="checked"'; }?> onclick="apache_mod_rewrite_toggler(true);"/><label for="pu_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="pretty_url" value="0" id="pu_n" <?php if(!$_config['pretty_url']) { echo 'checked="checked"'; }?> onclick="apache_mod_rewrite_toggler(false);"/><label for="pu_n"><?php echo _AT('disable'); ?></label>
+                    </div>
                 </fieldset>
 
                 <fieldset>
-                <legend><?php echo _AT('apache_mod_rewrite'); ?></legend>
-                    <?php if (function_exists('apache_get_modules') && in_array('mod_rewrite', apache_get_modules())): ?>
-                        <?php echo _AT('mod_rewrite'); ?> (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['apache_mod_rewrite'] ? _AT('enable') : _AT('disable')); ?>)<br />
-                        <input type="radio" name="apache_mod_rewrite" value="1" id="mr_y" <?php if($_config['apache_mod_rewrite']) { echo 'checked="checked"'; }?> /><label for="mr_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="apache_mod_rewrite" value="0" id="mr_n" <?php if(!$_config['apache_mod_rewrite']) { echo 'checked="checked"'; }?>  /><label for="mr_n"><?php echo _AT('disable'); ?></label>
-                    <?php else: ?>
-                        <?php echo _AT('mod_rewrite'); ?> (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['apache_mod_rewrite'] ? _AT('enable') : _AT('disable')); ?>)<br />
-                        <input type="radio" name="apache_mod_rewrite" value="1" id="mr_y" disabled="disabled" /><label for="mr_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="apache_mod_rewrite" value="0" id="mr_n" checked="checked" /><label for="mr_n"><?php echo _AT('disable'); ?></label>
-                    <?php endif; ?>
+                    <legend><?php echo _AT('apache_mod_rewrite'); ?></legend>
+                        <?php if (function_exists('apache_get_modules') && in_array('mod_rewrite', apache_get_modules())): ?>
+                            <?php echo _AT('mod_rewrite'); ?> (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['apache_mod_rewrite'] ? _AT('enable') : _AT('disable')); ?>)<br />
+                            <div class="toggle-switch">
+                                <input type="radio" name="apache_mod_rewrite" value="1" id="mr_y" <?php if($_config['apache_mod_rewrite']) { echo 'checked="checked"'; }?> /><label for="mr_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="apache_mod_rewrite" value="0" id="mr_n" <?php if(!$_config['apache_mod_rewrite']) { echo 'checked="checked"'; }?>  /><label for="mr_n"><?php echo _AT('disable'); ?></label>
+                            </div>
+                        <?php else: ?>
+                            <?php echo _AT('mod_rewrite'); ?> (<?php echo _AT('default'); ?>: <?php echo ($_config_defaults['apache_mod_rewrite'] ? _AT('enable') : _AT('disable')); ?>)<br />
+                            <div class="toggle-switch">
+                                <input type="radio" name="apache_mod_rewrite" value="1" id="mr_y" disabled="disabled" /><label for="mr_y"><?php echo _AT('enable'); ?></label> <input type="radio" name="apache_mod_rewrite" value="0" id="mr_n" checked="checked" /><label for="mr_n"><?php echo _AT('disable'); ?></label>
+                            </div>
+                        <?php endif; ?>
                 </fieldset>
 
             </div>
@@ -339,13 +381,20 @@
 </form>
 
 <link rel="stylesheet" href="<?php echo AT_BASE_HREF; ?>jscripts/a11yAccordeon/a11yAccordeon.css" type="text/css" />
+<link rel="stylesheet" href="<?php echo AT_BASE_HREF; ?>jscripts/toggleSwitch/toggleSwitch.css" type="text/css" />
 <script type="text/javascript" src="<?php echo AT_BASE_HREF; ?>jscripts/a11yAccordeon/a11yAccordeon.min.js"></script>
+<script type="text/javascript" src="<?php echo AT_BASE_HREF; ?>jscripts/toggleSwitch/toggleSwitch.js"></script>
 <script type="text/javascript">
 $(document).ready(function () {
     a11yAccordeon({
         container: ".a11yAccordeon",
         hiddenLinkDescription: "This contains settings",
         showSearch: true
+    });
+    createToggleSwitch({
+        color: "yellow",
+        className: "toggle-switch",
+        theme: "android"
     });
 });
 </script>
