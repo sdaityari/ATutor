@@ -6,10 +6,10 @@
 
 var createToggleSwitch = function (options) {
     var toggleSwitch = "switch",
-        toggleTheme = options.theme || "candy",
+        toggleTheme = options.theme || "ios",
         emptySpanClass = "slide-button",
         color = options.color || "yellow",
-        toggleWidth = options.width || "4em",
+        toggleWidth = options.width || "3.6em",
         toggleHeight = options.height || "1.3em",
         toggleSwitches = $("." + options.className);
 
