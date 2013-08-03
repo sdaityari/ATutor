@@ -394,7 +394,6 @@ $(document).ready(function () {
     createToggleSwitch({
         color: "yellow",
         className: "toggle-switch",
-        theme: "android"
     });
 });
 </script>

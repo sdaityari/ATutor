@@ -40,7 +40,6 @@ https://github.com/ghinda/css-toggle-switch
 	/* Don't hide the input from screen-readers and keyboard access
 	 */
 	.toggle input {
-		position: absolute;
 		opacity: 0;
 		z-index: 5;
 	}
@@ -93,7 +92,6 @@ https://github.com/ghinda/css-toggle-switch
 	}
 	
 	.switch input {
-		position: absolute;
 		opacity: 0;
 	}
 	
