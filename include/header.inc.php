@@ -167,10 +167,8 @@ $url_parts   = explode('/', $_SERVER['PHP_SELF']);
 $host_dir    = implode('/', array_slice($url_parts, 0, count($url_parts) - $dir_deep-1)).'/';
 
 $_submenu_items = array();
-$i = 0;
-while ($_top_level_pages[$i]) {
-    $_submenu_items[$i] = get_sub_navigation(str_replace($host_dir, '', $_top_level_pages[$i]['url']));
-    $i++;
+foreach ($_top_level_pages as $key => $top_level_page) {
+    $_submenu_items[$key] = get_sub_navigation(str_replace($host_dir, '', $top_level_page['url']));
 }
 
 $_sub_level_pages        = get_sub_navigation($current_page);

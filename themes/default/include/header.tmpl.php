@@ -272,10 +272,13 @@ global $system_courses, $_custom_css, $db;
                 </div>
                 <div id= "sub-breadcrumb">
                     <?php for ($i=0, $count=count($this->sub_level_pages); $i<$count; $i++): ?>
-                        <?php if ($this->sub_level_pages[$i]['url'] == $this->current_sub_level_page): ?>
-                            <?php echo htmlentities_utf8($this->sub_level_pages[$i]['title']); ?>
+                        <?php
+                            $sub_level_pages = $this->sub_level_pages[$i];
+                            if ($sub_level_pages['url'] == $this->current_sub_level_page):
+                        ?>
+                            <?php echo htmlentities_utf8($sub_level_pages['title']); ?>
                         <?php else: ?>
-                            <a href="<?php echo $this->sub_level_pages[$i]['url']; ?>"><?php echo htmlentities_utf8($this->sub_level_pages[$i]['title']); ?></a>
+                            <a href="<?php echo $sub_level_pages['url']; ?>"><?php echo htmlentities_utf8($sub_level_pages['title']); ?></a>
                         <?php endif; ?>
                         <?php if ($i < $count-1):
                             echo " | ";?>
