@@ -2388,6 +2388,16 @@ div .search_form {
 	margin-bottom: 1em;
 }
 
+input.search-tooltip{
+    background-image: url('../../mods/_standard/photos/images/search_new.png');
+    background-repeat: no-repeat;
+    background-size: auto 80%;
+    background-position: 2% 15%;
+    padding-left:1.5em;
+    border-radius:1em !important;
+    -moz-border-radius:1em 1em 1em 1em !important;
+}
+
 div .search_form .row{
 /*	background-color: #DEDEC0;*/
 		background-color: #ffffff;

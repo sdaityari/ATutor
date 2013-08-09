@@ -165,7 +165,16 @@ global $system_courses, $_custom_css, $db;
 				if(isset($_SESSION['course_id']) && $_SESSION['course_id'] > 0 && isset($_SESSION['is_guest']) && $_SESSION['is_guest'] > 0 && $_config['allow_browse'] == '1'){ ?>
 			<a href="<?php echo $this->base_path; ?>browse.php"><?php echo _AT('browse_courses'); ?></a> 
 			<?php } ?>
-			<a href="<?php echo $this->base_path; ?>search.php"><?php echo _AT('search'); ?></a> 
+            <form method="get" action="<?php echo $this->base_path; ?>search.php#search_results">
+                <input name="words" type="text" placeholder="<?php echo _AT('search'); ?>" value="<?php echo $_GET['words']; ?>" title="<?php echo _AT('search_help'); ?>" class="search-tooltip" />
+                <input type="hidden" name="search" value=1 />
+                <input type="hidden" name="include" value="all" />
+                <input type="hidden" name="find_in" value="all" />
+                <input type="hidden" name="search_within" value="all" />
+                <input type="hidden" name="display_as" value="summaries" />
+                <input type="hidden" name="search" value="Search" />
+            </form>
+            <a href="<?php echo $this->base_path; ?>search.php"><? echo _AT('advanced'); ?></a>
 		<?php endif; ?>
 		<a href="<?php echo $this->base_path; ?>help/index.php"><?php echo _AT('help'); ?></a>	
 		</div>
