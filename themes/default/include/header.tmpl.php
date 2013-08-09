@@ -76,6 +76,7 @@ global $system_courses, $_custom_css, $db;
 	<link rel="stylesheet" href="<?php echo $this->theme_path.'jscripts/infusion/framework/fss/css/fss-layout.css'; ?>" type="text/css" />
 	<link rel="stylesheet" href="<?php echo $this->theme_path.'themes/'.$this->theme; ?>/styles.css" type="text/css" />
 	    <link rel="stylesheet" href="<?php echo $this->theme_path.'themes/'.$this->theme; ?>/forms.css" type="text/css" />
+	    <link rel="stylesheet" href="<?php echo $this->theme_path.'themes/'.$this->theme; ?>/a11yNavStyle.css" type="text/css" />
 	<!--[if IE]>
 	  <link rel="stylesheet" href="<?php echo $this->theme_path.'themes/'.$this->theme; ?>/ie_styles.css" type="text/css" />
 	<![endif]-->
@@ -105,6 +106,7 @@ global $system_courses, $_custom_css, $db;
     <?php echo $this->custom_css; ?>
     <?php echo $this->rtl_css; ?>
     <style id="pref_style" type="text/css"></style> 
+    <script type="text/javascript" src="<?php echo $this->base_href; ?>jscripts/a11yMenu.js"></script>
 </head>
 <body onload="<?php if(isset($this->onload)){echo $this->onload;} ?>">
 <div class="page_wrapper">
@@ -204,19 +206,39 @@ global $system_courses, $_custom_css, $db;
 
 </div>
 
-<div id="topnavlistcontainer"  role="navigation">
+<!--<div id="topnavlistcontainer"  role="navigation">-->
 <!-- the main navigation. in our case, tabs -->
-	<ul id="topnavlist">
-		<?php $accesscounter = 0; //initialize ?>
+<div role="navigation">
+	<!--<ul id="topnavlist">-->
+	<ul class="a11yNav">
+		<?php $accesscounter = 0;
+            $i = 0; //initialize ?>
 		<?php foreach ($this->top_level_pages as $page): ?>
 			<?php ++$accesscounter; $accesscounter = ($accesscounter == 10 ? 0 : $accesscounter); ?>
 			<?php $accesskey_text = ($accesscounter < 10 ? 'accesskey="'.$accesscounter.'"' : ''); ?>
 			<?php $accesskey_title = ($accesscounter < 10 ? ' Alt+'.$accesscounter : ''); ?>
 			<?php if ($page['url'] == $this->current_top_level_page): ?>
-				<li><a href="<?php echo $page['url']; ?>" <?php echo $accesskey_text; ?> title="<?php echo $page['title'] . $accesskey_title; ?>" class="active"><?php echo $page['title']; ?></a></li>
+				<li><a href="<?php echo $page['url']; ?>" <?php echo $accesskey_text; ?> title="<?php echo $page['title'] . $accesskey_title; ?>" class="active"><?php echo $page['title']; ?></a>
+                    <?php if ( count($this->submenu_items[$i]) > 0) { ?>
+                        <ul>
+                            <?php foreach ($this->submenu_items[$i] as $item) { ?>
+                                <li><a href="<?php echo $item['url']; ?>"><?php echo $item['title']; ?></a></li>
+                            <?php } //endforeach ?>
+                        </ul>
+                    <?php } //endif ?>
+                </li>
 			<?php else: ?>
-				<li><a href="<?php echo $page['url']; ?>" <?php echo $accesskey_text; ?> title="<?php echo $page['title'] . $accesskey_title; ?>"><?php echo $page['title']; ?></a></li>
+				<li><a href="<?php echo $page['url']; ?>" <?php echo $accesskey_text; ?> title="<?php echo $page['title'] . $accesskey_title; ?>"><?php echo $page['title']; ?></a>
+                    <?php if ( count($this->submenu_items[$i]) > 0) { ?>
+                        <ul>
+                            <?php foreach ($this->submenu_items[$i] as $item) { ?>
+                                <li><a href="<?php echo $item['url']; ?>"><?php echo $item['title']; ?></a></li>
+                            <?php } //endforeach ?>
+                        </ul>
+                    <?php } //endif ?>
+                </li>
 			<?php endif; ?>
+            <?php   $i++; ?>
 			<?php $accesscounter = ($accesscounter == 0 ? 11 : $accesscounter); ?>
 		<?php endforeach; ?>
 	</ul>
@@ -243,10 +265,24 @@ global $system_courses, $_custom_css, $db;
 	  <?php if (isset($_SESSION["prefs"]["PREF_SHOW_BREAD_CRUMBS"]) && $_SESSION["prefs"]["PREF_SHOW_BREAD_CRUMBS"]) { ?>
 		  <!-- the bread crumbs -->
 		<div class="crumbcontainer" role="navigation">
-		  <div id="breadcrumbs">
-			  <?php foreach ($this->path as $page): ?>
-				  <a href="<?php echo $page['url']; ?>"><?php echo htmlspecialchars($page['title'], ENT_COMPAT, "UTF-8"); ?></a> > 
-			  <?php endforeach; ?> <?php echo $this->page_title; ?>
+		    <div id="breadcrumbs">
+                <div id="main-breadcrumb">
+                    <?php foreach ($this->path as $page): ?>
+                        <a href="<?php echo $page['url']; ?>"><?php echo htmlspecialchars($page['title'], ENT_COMPAT, "UTF-8"); ?></a> &gt;
+                    <?php endforeach; ?>
+                </div>
+                <div id= "sub-breadcrumb">
+                    <?php for ($i=0, $count=count($this->sub_level_pages); $i<$count; $i++): ?>
+                        <?php if ($this->sub_level_pages[$i]['url'] == $this->current_sub_level_page): ?>
+                            <?php echo htmlentities_utf8($this->sub_level_pages[$i]['title']); ?>
+                        <?php else: ?>
+                            <a href="<?php echo $this->sub_level_pages[$i]['url']; ?>"><?php echo htmlentities_utf8($this->sub_level_pages[$i]['title']); ?></a>
+                        <?php endif; ?>
+                        <?php if ($i < $count-1):
+                            echo " | ";?>
+                        <?php endif; ?>
+                    <?php endfor; ?>
+                </div>
 		  </div>
 	  <?php } else { ?>
 	   <div class="crumbcontainer" style="padding-bottom:1.2em;">
@@ -328,7 +364,7 @@ global $system_courses, $_custom_css, $db;
 	</ul>
 </div> -->
 
-		<div id="subnavlistcontainer" role="navigation">
+        <!--<div id="subnavlistcontainer" role="navigation">
 			<div id="subnavbacktopage">
 			<?php if (isset($this->back_to_page)): ?>
 				<a href="<?php echo $this->back_to_page['url']; ?>">
@@ -354,7 +390,7 @@ global $system_courses, $_custom_css, $db;
 				<?php endif; ?>
 			<?php endfor; ?>
 			</ul>
-		</div>
+		</div>-->
 	<?php endif; ?>
 
 <!-- the main navigation. in our case, tabs -->
