@@ -52,6 +52,7 @@
     width:150px;
     color: #E7E5E5;
     text-align:center;
+    font-size:smaller;
 }
 
 .a11yNav .a11ySub {
@@ -64,12 +65,13 @@
 }
 
 .a11yNav a.a11yMain {
-    width:150px;
+    width:149px;
     height:25px;
     line-height:25px;
     margin-top:10075px;
     margin-right:-149px;
     float:left;
+    border-right: 1px solid #fff;
 }
 
 .a11yNav a.a11yMain:hover, .a11yNav a.a11yMain:focus, .a11yNav a.a11yMain:active { 
