@@ -1,7 +1,7 @@
 <?php require(AT_INCLUDE_PATH.'header.inc.php'); ?>
 <div style="text-align:right; font-size: smaller; padding-right:5%;">
 	<form method="get" id="browse-courses-form">
-        <input type="text" name="search" id="search" class="search-bar" size="20" /> <br />
+        <input type="text" name="search" id="search" class="search-bar" placeholder="<?php echo _AT('search'); ?>" /> <br />
         <a href="javascript:null();" id="advanced-search" onclick="ATutor.browseCourses.toggleAdvanced();">[+] Advanced</a>
         <span style="display:none;" id="match-buttons-row"> <br />
             <?php echo _AT('search_match'); ?>:
@@ -29,15 +29,22 @@
 </div>
 <div class="container" style="width:95%; margin:auto;">
 
-<ul class="a11yAccordeon">
+<ul class="a11yAccordeon" style="margin-bottom:1em;">
 	<?php foreach ($this->courses_rows as $row){ ?>
     <li class="a11yAccordeonItem" id="accordeon_<?php echo $row['course_id']; ?>">
         <div class="a11yAccordeonItemHeader">
+            <img src="<?php echo AT_PA_BASENAME."images/";
+                if ($row['access'] == 'public') {
+                    echo 'unlocked.png';
+                } else {
+                    echo 'locked.png';
+                }
+            ?>" alt="<?php echo $row['access']; ?>" style="float:left; vertical-align:middle; height:1.5em;" />
             <a href="<?php echo url_rewrite('bounce.php?course='.$row['course_id'], true); ?>"><strong><?php echo htmlentities_utf8($row['title']); ?></strong></a>
         </div>
         <div class="accordeonA11yHideArea">
             <?php if ($row['icon']) { // if a course icon is available, display it here. ?>
-            <div style="float:left; width:15%;">
+            <div style="float:left; width:15%; max-width:100px;">
                 <?php
                     $style_for_title = 'style="height: 1.5em;"';
 
@@ -57,7 +64,7 @@
                 <a href="<?php echo url_rewrite('bounce.php?course='.$row['course_id'], true); ?>"><img src="<?php echo $course_icon; ?>" class="headicon" alt="<?php echo htmlentities_utf8($row['title']); ?>" style="float:left;margin-right:.5em;"/></a>
             </div>
                 <?php } //endif ?>
-            <div style="float:left; width:85%;">
+            <div style="width:85%; float:left;">
             <ul>
                 <?php if ($row['description']): ?>
                 <li>
@@ -95,7 +102,7 @@
     </li>
 	<?php } // end foreach ?>
 </ul>
-<div id="no-results-found" class="input-form" style="<?php if ($this->courses_rows) { echo 'display:none;';} ?> text-align:center;"><strong>No Results Found</strong></div>
+<div id="no-results-found" class="input-form" style="<?php if ($this->courses_rows) { echo 'display:none;';} ?> text-align:center; margin:1em;"><strong><?php echo _AT('no_results_available'); ?></strong></div>
 </div>
 <script type="text/javascript">
 //<!--
