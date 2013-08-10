@@ -12,10 +12,6 @@
 /****************************************************************/
 // $Id$
 
-//$_user_location	= 'public';
-
-//define('AT_INCLUDE_PATH', '../include/');
-//require(AT_INCLUDE_PATH.'vitals.inc.php');
 require(AT_INCLUDE_PATH."securimage/securimage.php");
     $img = new Securimage();
 if (isset($_POST['cancel'])) {
@@ -23,9 +19,6 @@ if (isset($_POST['cancel'])) {
 	header('Location: index.php');
 	exit;
 }
-
-//$onload = 'document.form.from.focus();';
-//require(AT_INCLUDE_PATH.'header.inc.php');
 
 if ($_SESSION['member_id']) {
 	$sql	= "SELECT first_name, last_name, email FROM ".TABLE_PREFIX."members WHERE member_id=$_SESSION[member_id]";
@@ -144,5 +137,3 @@ $msg->printErrors();
 	</div>
 </div>
 </form>
-
-<?php //require(AT_INCLUDE_PATH.'footer.inc.php'); ?>

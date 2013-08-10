@@ -19,6 +19,15 @@ require (AT_INCLUDE_PATH.'vitals.inc.php');
 $current_url = url_rewrite('help/index.php');
 
 require (AT_INCLUDE_PATH.'header.inc.php');
+?>
+
+<?php
+
+function print_back_to_top() {
+?>
+    <div style="text-align:right; font-size: smaller"><a href="<?php echo $current_url; ?>#content">Back to Top</a></div>
+<?php
+}
 
 ?>
 
@@ -44,7 +53,7 @@ require (AT_INCLUDE_PATH.'header.inc.php');
 
         <li><a href="help/contact_support.php"><?php echo _AT('contact_support'); ?></a></li>
     </ul>
-    <div style="text-align:right; font-size: smaller"><a href="<?php echo $current_url; ?>#content">Back to Top</a></div>
+    <?php print_back_to_top(); ?>
 </div>
 
 <div id="external-help" class="help-row">
@@ -59,19 +68,19 @@ require (AT_INCLUDE_PATH.'header.inc.php');
         <li><a href="http://www.atutor.ca/forum/7/1.html"><?php echo _AT('tech_support_forum'); ?></a>
             <br /><?php echo _AT('tech_support_forum_text'); ?></li>
     </ul>
-        <div style="text-align:right; font-size: smaller"><a href="<?php echo $current_url; ?>#content">Back to Top</a></div>
+    <?php print_back_to_top(); ?>
 </div>
 
 <div id="accessibility" class="help-row">
     <h3><?php echo _AT('accessibility'); ?></h3>
     <? echo _AT('atutor_accessibility_text'); ?>
-    <div style="text-align:right; font-size: smaller"><a href="<?php echo $current_url; ?>#content">Back to Top</a></div>
+    <?php print_back_to_top(); ?>
 </div>
 
 <div id="contact-support" class="help-row">
     <h3><?php echo _AT('contact_support'); ?></h3>
     <? include ('contact_support.php'); ?>
-    <div style="text-align:right; font-size: smaller"><a href="<?php echo $current_url; ?>#content">Back to Top</a></div>
+    <?php print_back_to_top(); ?>
 </div>
 
 <?php require(AT_INCLUDE_PATH.'footer.inc.php'); ?>
