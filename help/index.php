@@ -22,11 +22,9 @@ require (AT_INCLUDE_PATH.'header.inc.php');
 ?>
 
 <?php
-
-function print_back_to_top() {
-?>
-    <div style="text-align:right; font-size: smaller"><a href="<?php echo $current_url; ?>#content">Back to Top</a></div>
-<?php
+function print_back_to_top_link($url) {
+    $markup = '<div style="%s"><a href="%s">%s</a></div>';
+    echo vsprintf($markup, Array('text-align:right; font-size: smaller;', $url.'#content', 'Back to Top'));
 }
 
 ?>
@@ -53,7 +51,7 @@ function print_back_to_top() {
 
         <li><a href="help/contact_support.php"><?php echo _AT('contact_support'); ?></a></li>
     </ul>
-    <?php print_back_to_top(); ?>
+    <?php print_back_to_top_link($current_url); ?>
 </div>
 
 <div id="external-help" class="help-row">
@@ -68,19 +66,19 @@ function print_back_to_top() {
         <li><a href="http://www.atutor.ca/forum/7/1.html"><?php echo _AT('tech_support_forum'); ?></a>
             <br /><?php echo _AT('tech_support_forum_text'); ?></li>
     </ul>
-    <?php print_back_to_top(); ?>
+    <?php print_back_to_top_link($current_url); ?>
 </div>
 
 <div id="accessibility" class="help-row">
     <h3><?php echo _AT('accessibility'); ?></h3>
     <? echo _AT('atutor_accessibility_text'); ?>
-    <?php print_back_to_top(); ?>
+    <?php print_back_to_top_link($current_url); ?>
 </div>
 
 <div id="contact-support" class="help-row">
     <h3><?php echo _AT('contact_support'); ?></h3>
     <? include ('contact_support.php'); ?>
-    <?php print_back_to_top(); ?>
+    <?php print_back_to_top_link($current_url); ?>
 </div>
 
 <?php require(AT_INCLUDE_PATH.'footer.inc.php'); ?>
