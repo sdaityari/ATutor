@@ -22,7 +22,7 @@ ATutor.search = ATutor.search || {};
     search.toggleAdvanced = function () {
         var advancedSearchText = $("#" + css.searchText);
 
-        advancedSearchText.html( (advancedSearchText.html() === toggleStrings.show) ? toggleStrings.hide : toggleStrings.show );
+        advancedSearchText.text( (advancedSearchText.text() === toggleStrings.show) ? toggleStrings.hide : toggleStrings.show );
 
         $("#" + css.search).toggle();
 
