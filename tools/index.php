@@ -23,7 +23,7 @@ echo '<ol id="tools">';
 foreach ($keys as $module_name) {
 	$module = $module_list[$module_name];
 	if ($module->getPrivilege() && authenticate($module->getPrivilege(), AT_PRIV_RETURN) && ($parent = $module->getChildPage('tools/index.php')) && page_available($parent)) {
-		echo '<li class="top-tool"><a href="' . $parent . '">' . $module->getName() . '</a>  ';
+		echo '<li class="top-tool masonry-item"><a href="' . $parent . '">' . $module->getName() . '</a>  ';
 		if (isset($_pages[$parent]['children'])) {
 			echo '<ul class="child-top-tool">';
 			foreach ($_pages[$parent]['children'] as $child) {
@@ -37,6 +37,18 @@ foreach ($keys as $module_name) {
 	}
 }
 echo '</ol>';
+?>
 
+<link rel="stylesheet" href="<?php echo AT_BASE_HREF.'jscripts/masonry/masonry.css'; ?>" type="text/css" />
+<script type="text/javascript" src="<?php echo AT_BASE_HREF; ?>jscripts/masonry/masonry.min.js"></script>
+<script type="text/javascript">
+    var msnry = new Masonry( document.querySelector('#tools'), {
+        // options
+        columnWidth: 100,
+        itemSelector: '.child-tool'
+    });
+</script>
+
+<?php
 require(AT_INCLUDE_PATH.'footer.inc.php');
 ?>
