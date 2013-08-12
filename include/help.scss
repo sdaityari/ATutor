@@ -6,8 +6,10 @@
     -webkit-border-radius: $radius;
 }
 
+$black: #000000;
+
 div#help-nav-list {
-    @include give_outline(#000000, 0.3em);
+    @include give_outline($black, 0.3em);
     text-align:center;
     height: 2.5em;
     width: 45em;
@@ -27,7 +29,7 @@ ul#help-subnavlist {
 }
 
 div.help-row {
-    @include give_outline(#000000, 0.5em);
+    @include give_outline($black, 0.5em);
     background-color: #ffffee;
     width: 80%;
     padding: 2em;
