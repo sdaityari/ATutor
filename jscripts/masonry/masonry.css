@@ -1,3 +1,18 @@
-.masonry-item {
-    width:10em;
-}
+.masonry-tools {
+  width: 100%; }
+
+.masonry-box {
+  width: 15em;
+  border: 0.1em solid black;
+  margin-bottom: 1em;
+  text-align: center; }
+
+.masonry-title {
+  background-color: #cfcfcf;
+  text-transform: uppercase; }
+
+ul.masonry-links {
+  padding: 0; }
+  ul.masonry-links li {
+    list-style-type: none;
+    display: list-item; }

@@ -1,0 +1,26 @@
+$border-color: #000000;
+$header-background-color: #cfcfcf;
+
+.masonry-tools{
+    width: 100%;
+}
+
+.masonry-box {
+    width: 15em;
+    border: 0.1em solid $border-color;
+    margin-bottom:1em;
+    text-align: center;
+}
+
+.masonry-title{
+    background-color: $header-background-color;
+    text-transform: uppercase;
+}
+
+ul.masonry-links{
+    padding: 0;
+    li{
+        list-style-type: none;
+        display: list-item;
+    }
+}
