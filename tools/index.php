@@ -42,11 +42,13 @@ echo '</div>';
 <link rel="stylesheet" href="<?php echo AT_BASE_HREF.'jscripts/masonry/masonry.css'; ?>" type="text/css" />
 <script type="text/javascript" src="<?php echo AT_BASE_HREF; ?>jscripts/masonry/masonry.min.js"></script>
 <script type="text/javascript">
-    var msnry = new Masonry( document.querySelector('#masonry-tools'), {
-        // options
-        itemSelector: '.masonry-box',
-        gutter: 10
-    });
+    window.onload = function () {
+        var msnry = new Masonry( document.querySelector('#masonry-tools'), {
+            // options
+            itemSelector: '.masonry-box',
+            gutter: 10
+        });
+    };
 </script>
 
 <?php

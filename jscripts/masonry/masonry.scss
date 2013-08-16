@@ -6,8 +6,11 @@ $header-background-color: #cfcfcf;
 }
 
 .masonry-box {
-    width: 15em;
+    width: 17em;
     border: 0.1em solid $border-color;
+    border-radius: 0.3em;
+    -moz-border-radius: 0.3em;
+    -webkit-border-radius: 0.3em;
     margin-bottom:1em;
     text-align: center;
 }
@@ -15,10 +18,11 @@ $header-background-color: #cfcfcf;
 .masonry-title{
     background-color: $header-background-color;
     text-transform: uppercase;
+    padding: 0.3em 1em;
 }
 
 ul.masonry-links{
-    padding: 0;
+    padding: 0.3em 1em;
     li{
         list-style-type: none;
         display: list-item;
