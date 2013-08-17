@@ -8,10 +8,11 @@
   -moz-border-radius: 0.3em;
   -webkit-border-radius: 0.3em;
   margin-bottom: 1em;
-  text-align: center; }
+  text-align: center;
+  background-color: #fbfaef; }
 
 .masonry-title {
-  background-color: #cfcfcf;
+  background-color: #e1ddbd;
   text-transform: uppercase;
   padding: 0.3em 1em; }
 

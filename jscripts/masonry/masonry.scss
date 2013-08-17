@@ -1,5 +1,6 @@
 $border-color: #000000;
-$header-background-color: #cfcfcf;
+$header-background-color: #e1ddbd;
+$masonry-background-color: #fbfaef;
 
 .masonry-tools{
     width: 100%;
@@ -13,6 +14,7 @@ $header-background-color: #cfcfcf;
     -webkit-border-radius: 0.3em;
     margin-bottom:1em;
     text-align: center;
+    background-color: $masonry-background-color;
 }
 
 .masonry-title{
