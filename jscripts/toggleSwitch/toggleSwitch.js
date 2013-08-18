@@ -22,6 +22,10 @@ var createToggleSwitch = function (options) {
             var inputs = toggleSwitch.find("input"),
                 anchor = inputs[0].checked ? inputs[1] : inputs[0];
 
+            if (inputs[0].disabled || inputs[1].disabled) {
+                return;
+            }
+
             $(anchor).prop("checked", true);
         });
 
@@ -34,6 +38,10 @@ var createToggleSwitch = function (options) {
             } else if (event.keyCode === 39) {
                 anchor = inputs[1];
             } else {
+                return;
+            }
+
+            if (inputs[0].disabled || inputs[1].disabled) {
                 return;
             }
 
