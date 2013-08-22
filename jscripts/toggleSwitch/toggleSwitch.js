@@ -15,21 +15,24 @@ var createToggleSwitch = function (options) {
         var toggleSwitch = $(toggleSwitch),
             inputs = toggleSwitch.find("input"),
             disabledSwitchClass = "disabled-switch",
-            grayscaleSwitchClass = "grayscale-switch";
+            grayscaleSwitchClass = "grayscale-switch",
+            enableInput, disableInput;
+
+        if (inputs.length !== 2) {
+            return false;
+        } else {
+            enableInput = inputs[0];
+            disableInput = inputs[1];
+        }
 
         $("<span />",{
             "class": emptySpanClass
         }).appendTo(toggleSwitch);
 
-        toggleSwitch.click(function () {
-            var anchor = inputs[0].checked ? inputs[1] : inputs[0];
+        toggleSwitch.click(function (event) {
+            var anchor = enableInput.checked ? disableInput : enableInput;
 
-            if (inputs[0].disabled || inputs[1].disabled) {
-                return;
-            }
-
-            $(anchor).prop("checked", true);
-
+            changeRadioButtonSelection(event, anchor, enableInput, disableInput);
             changeLookOfRadioButtons(inputs, toggleSwitch);
         });
 
@@ -37,28 +40,33 @@ var createToggleSwitch = function (options) {
             var anchor;
 
             if (event.keyCode === 37) {
-                anchor = inputs[0];
+                anchor = enableInput;
             } else if (event.keyCode === 39) {
-                anchor = inputs[1];
+                anchor = disableInput;
             } else {
                 return;
             }
 
-            if (inputs[0].disabled || inputs[1].disabled) {
-                return;
-            }
-
             event.preventDefault();
-
-            $(anchor).prop("checked", true);
-
+            changeRadioButtonSelection(event, anchor, enableInput, disableInput);
             changeLookOfRadioButtons(inputs, toggleSwitch);
         });
 
+        //changes the selected radio button
+        var changeRadioButtonSelection = function (event, anchor, enable, disable) {
+            if (enable.disabled || disable.disabled) {
+                return;
+            }
+            $(anchor).prop("checked", true);
+        };
+
+        // Adds grayscale class if switch is off, makes it translucent if disabled
         var changeLookOfRadioButtons = function (inputs, toggleSwitch) {
 
-            toggleSwitch.removeClass(disabledSwitchClass);
-            toggleSwitch.removeClass(grayscaleSwitchClass);
+            toggleSwitch.removeClass(disabledSwitchClass + " " + grayscaleSwitchClass);
+
+            // inputs[0] - EnableInput, inputs[1] - disableInput
+            // the check for inputs.length !== 2 is implemented above
 
             if (inputs[0].disabled || inputs[1].disabled) {
                 toggleSwitch.addClass(disabledSwitchClass);
@@ -70,7 +78,6 @@ var createToggleSwitch = function (options) {
         };
 
         changeLookOfRadioButtons(inputs, toggleSwitch);
-
     });
     toggleSwitches.addClass(toggleSwitchClass + " " + toggleTheme + " " + color);
 
