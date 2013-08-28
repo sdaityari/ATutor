@@ -14,15 +14,24 @@ var createToggleSwitch = function (options) {
     $.each(toggleSwitches, function (index, toggleSwitch) {
         var toggleSwitch = $(toggleSwitch),
             inputs = toggleSwitch.find("input"),
+            labels = toggleSwitch.find("label"),
             disabledSwitchClass = "disabled-switch",
             grayscaleSwitchClass = "grayscale-switch",
+            onText = "ON",
+            offText = "OFF",
+            rightLabelClass = "right-label",
+            leftLabelClass = "left-label",
             enableInput, disableInput;
 
-        if (inputs.length !== 2) {
+        if (inputs.length !== 2 || labels.length !== 2) {
             return false;
         } else {
             enableInput = inputs[0];
             disableInput = inputs[1];
+            labels[0].innerHTML = offText;
+            labels[0].className = leftLabelClass;
+            labels[1].innerHTML = onText;
+            labels[1].className = rightLabelClass;
         }
 
         $("<span />",{

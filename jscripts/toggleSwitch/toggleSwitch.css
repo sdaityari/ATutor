@@ -425,16 +425,21 @@ https://github.com/ghinda/css-toggle-switch
 	}
 
     .toggle-switch{
-        width: 3em;
-        height: 1em;
-        float:left;
-        margin-left:1em;
+        width: 6em;
+        height: 1.4em;
+        float:right;
+        margin-right:20em;
     }
 
     .toggle-switch label{
-        opacity: 0;
+        /*opacity: 0;*/
+        line-height: 1.5em;
+        margin:0;
     }
 
+    .toggle-switch input{
+        opacity:0;
+    }
     .disabled-switch {
         opacity:0.5;
     }
@@ -444,5 +449,16 @@ https://github.com/ghinda/css-toggle-switch
         -webkit-filter: grayscale(100%);
         -moz-filter: grayscale(100%);
     }
+
+    .toggle-switch .left-label {
+        margin-left: -1.8em;
+        padding-right: 0.3em;
+    }
+
+    .toggle-switch .right-label {
+        margin-left: -1.3em;
+        /*padding-left: 0.3em;*/
+    }
+
 
 }
