@@ -1,0 +1,17 @@
+/* Basic functions common to all scss/sass files */
+html, body {
+  height: 100%; }
+
+/*
+   See colour combo at
+http://www.colorcombos.com/color-schemes/294/ColorCombo294.html
+#B7C68B, #F4F0CB, #DED29E, #B3A580, #685642
+*/
+.site-name {
+  font-size: small;
+  font-weight: bold;
+  color: gray;
+  white-space: nowrap;
+  float: left;
+  margin-left: 0.8em;
+  padding-left: 1em; }

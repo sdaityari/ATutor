@@ -1,0 +1,11 @@
+/* Basic functions common to all scss/sass files */
+
+html,body{
+	height:100%;
+}
+
+@mixin side($direction, $margin, $padding) {
+    float: #{$direction};
+    margin-#{$direction}: $margin;
+    padding-#{$direction}: $padding;
+}
