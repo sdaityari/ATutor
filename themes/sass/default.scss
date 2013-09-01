@@ -12,6 +12,14 @@ $orange-yellow: #DED29E;
 $yellow-orange: #B3A580;
 $brown: #685642;
 
+$teal: #003333;
+$dark-blue: #3F2670;
+$maroon-red: #A50707;
+
+@mixin font-family () {
+    font-family: Verdana, Helevetica, Arial, sans-serif;
+}
+
 .site-name{
     font-size:small;
     font-weight:bold;
@@ -19,3 +27,472 @@ $brown: #685642;
     white-space:nowrap;
     @include side(left, .8em, 1em);
 }
+
+h1#site-name-lrg {
+    @include side(left, 1em, 0);
+    margin-top: -.5em;
+}
+
+/* main body attributes STARTED HERE */
+body {
+    @include font-family();
+    font-size:.8em;
+    margin:0px;
+    background-color: $white;
+    color: $teal;
+}
+
+.page_wrapper{
+    width:99%;
+    @include get-margin(0, auto, 0, auto);
+    background-color: $white;
+    @include shadow(.1em, .1em, .1em, $green-yellow);
+    background-position: 0% 0%;
+    background-repeat: repeat-x;
+    background-size:auto auto;
+    border:1px solid #685642;
+}
+
+p {
+    margin: 0.5em 0em 1em 0em;
+    text-align: justify;
+    line-height: 150%;
+
+    a {
+        text-decoration: underline;
+    }
+
+    a:visited {
+        @include set-link-color($dark-blue, transparent)
+    }
+
+    a:active {
+        @include set-link-color($maroon-red, transparent)
+    }
+
+    .toc {
+        @include font-family();
+        background-color: #E9F4F3;
+        padding: .6em;
+        margin-bottom: .6em;
+        margin-top: 0em;
+        margin-left: 1em;
+        margin-right: 3em;
+        border: 1px #ACCFCC solid;
+    }
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #545454;
+    font: 100% Verdana, Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    margin: 0;
+    padding-top: 0.5em;
+}
+
+@include set-heading-sizes(160% 150% 130% 120% 100%);
+
+.h2{
+    .sidebox {
+	    font-size: 110%;
+    }
+    .box {
+	    font-size: 110%;
+    }
+}
+
+ul {
+    @include font-family();
+    @include zero-margins();
+
+    .folder {
+        @include empty-list-style();
+        margin:0em;
+        padding:0em;
+    }
+}
+
+li {
+    @include font-family();
+    @include zero-margins();
+
+    .folders {
+        list-style: disc url(../../images/folder.gif) outside;
+        @extend li;
+    }
+
+    .folders .disabled {
+        color: #B8AE9C;
+    }
+}
+
+/* link attributes */
+a {
+    a:link, a:visited  {
+        color: #1A4A72;
+    }
+
+    a:active {
+        color: #932318;
+    }
+
+    a:hover {
+        color: #932318;
+        color: $white;
+    }
+
+    .dropdown-title {
+        color: white;
+        font-weight: normal;
+        text-decoration: none;
+    }
+}
+
+.left{
+    @include side(left, 0, 0);
+}
+
+.tableborder {
+	border: 1px #595241 solid;
+}
+
+.button {
+    @include set-link-color(#FFFDE0, #B3A580);
+    @include border(.3em, .3em, .3em, .3em);
+    font-weight: normal;
+    border:  #AAA  solid 1px;
+    .button:focus, .button:hover {
+        background-color: #685642;
+        border:1px solid #DED29E;
+    }
+    .button:active {
+        @include set-link-color(#F4F0CB, #685642);
+    }
+}
+
+.button2 {
+    @include font-family();
+    background-color: #B3A580;
+    .button2:focus {
+        @include set-link-color(#F4F0CB, #685642);
+        border:  #ACCFCC  solid 1px;
+    }
+}
+
+small.date {
+    @include font-family();
+    color: #595241;
+    margin {
+        bottom: 0px;
+        top: 0px;
+        left: 5px;
+        right: 0px;
+    }
+    font-size:1em;
+}
+
+hr {
+    @include set-link-color(#ACCFCC, $white);
+    height: 1px;
+}
+
+.editorsmallbox {
+    @include font-family();
+    background-color: #E9F4F3;
+    padding: 2px;
+    padding-right: 3px;
+    border: 1px #ACCFCC solid;
+}
+
+.editorlargebox {
+    @include font-family();
+    background-color: #E9F4F3;
+    margin-left:1em;
+    padding {
+        left: .2em;
+        right: .5em;
+        top: .5em;
+        bottom: .4em;
+    }
+    border: 1px #ACCFCC solid;
+}
+
+
+select.dropdown {
+    @include font-family();
+}
+
+.highlight, a.highlight {
+    @include set-link-color($white, #5B8E88);
+}
+
+.center{
+    text-align: center;
+}
+
+/* edit content tabs */
+.buttontab {
+    @include reset-outline();
+    @include tabs();
+    color:#555;
+    background-color: $white;
+    font-weight:500;
+    selected {
+        @include font-family();
+        @include tabs();
+        border:0;
+        padding-left: 3px;
+        padding-right: 3px;
+        background-color: $white;
+        margin: 0px;
+        padding:0em 1em 0em;
+        text-decoration:underline;
+        width:12%;
+    }
+}
+
+.tab {
+    @include tabs();
+    border-top: 1px solid #DED29E;
+    border-left: 1px solid #DED29E;
+    border-right: 1px solid #DED29E;
+    border-bottom:0;
+    width:13%;
+    padding:0;
+    margin:0;
+    a:link, a:hover{
+        @include set-link-color($black, $white);
+    }
+}
+
+.etab a:visited {
+    @include set-link-color($black, $white);
+}
+
+td.selected{
+    @include tabs();
+    width:13%;
+    background-color: $white;
+    border-top: 1px #B8AE9C solid;
+    border-left: 1px #B8AE9C solid;
+    border-right: 1px #B8AE9C solid;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.econtainer{
+    background-color: #FFFAF0;
+    border:1px #6F7172 solid;
+    margin-left:.5em;
+}
+
+.etabself {
+    background-color: #6F7172;
+    text-align: center;
+    font-weight: bold;
+    padding: 2px;
+}
+
+.unsaved {
+    @include set-link-color($red, #FFFDE0);
+	font-weight: bold;
+    input[type="submit"]{
+        @include set-link-color(#F4F0CB, #B3A580);
+        border:2px solid red;
+    }
+}
+
+.saved {
+    background-color: #FFFDE0;
+    margin: 10px;
+}
+
+/* the side menu */
+/* the side menu heading */
+td.dropdown-heading {
+    @include set-link-color(#595241, #F4F0CB);
+    border: 1px solid #DED29E;
+    font-weight: bold;
+    padding: 2px;
+    a, a:hover, a:visited {
+        text-decoration: none;
+    }
+    .closed {
+        border-bottom: 1px solid #ECFEEA;
+    }
+}
+
+/* the side menu content */
+td.dropdown {
+    @include set-link-color($black, $white);
+    padding: 2px;
+    border-left: 1px solid #F4F0CB;
+    border-right: 1px solid #F4F0CB;
+    border-bottom: 1px solid #F4F0CB;
+    font-weight: normal;
+    a, a:visited  {
+        color: #595241;
+        text-decoration: none;
+    }
+    a:hover {
+        color: #595241;
+        text-decoration: underline;
+    }
+    .cell {
+        border-bottom: 0px;
+    }
+    strong {
+        color: #2A6C28;
+    }
+}
+
+/* added for 1.4.2: */
+.results {
+    padding-left: 20px;
+}
+
+h5.search-results {
+    @include set-link-color(#595241, #F7F3ED);
+    padding: 1px;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    margin-left: 5px;
+}
+
+small.search-info {
+    color: #595241;
+}
+
+p.search-description {
+    @include set-link-color(#595241, #FFFCE5);
+}
+
+.test-box {
+    @include set-link-color(#595241, #F7F3ED);
+	border-left: 1px solid #595241;
+	border-right: 1px solid #595241;
+	border-top: 1px solid #595241;
+	font-weight: bold;
+	padding: 2px;
+}
+/***************************************************************/
+
+table.tabbed-table {
+    width: 100%;
+    border:1px black solid;
+    th#left-empty-tab {
+        background-color: transparent;
+        width: 15px;
+        border-bottom: 1px solid #B8AE9C;
+    }
+    th#right-empty-tab {
+        @extend th#left-empty-tab;
+        text-align: right;
+        width: 400px;
+        padding-right: 5px;
+    }
+    th#right-empty-tab a {
+        text-decoration: underline;
+    }
+    th.tab-spacer {
+        @extend th#left-empty-tab;
+        width: 5px;
+    }
+
+    th.tab {
+        padding-top: 2px;
+        padding-bottom: 2px;
+        width: 110px;
+        background-color: #E9F4F3;
+        border: 1px solid #B8AE9C;
+    }
+    th.tab:hover {
+        background-color: #ACCFCC;
+    }
+    th.tab a:focus {
+        color: white;
+    }
+    th.selected {
+        padding-top: 2px;
+        padding-bottom: 2px;
+        width: 110px;
+        background-color: #ACCFCC;
+        border-left: 1px solid #B8AE9C;
+        border-top: 1px solid #B8AE9C;
+        border-right: 1px solid #B8AE9C;
+    }
+    a,  a:visited,  a:hover {
+        color: black;
+        text-decoration: none;
+    }
+}
+
+a#my-start-page {
+	padding: 2px;
+	padding-left: 15px;
+	background-repeat: no-repeat;
+	background-position: 2px 5px;
+}
+
+a#back-to {
+    padding-left: 20px;
+    background-image: url(images/back.gif);
+    background-repeat: no-repeat;
+    background-position: 0px 0px;
+}
+
+div#breadcrumbs {
+    /* The path bar, including breadcrumbs and add to favorites */
+    clear:both;
+    font-size: 0.85em;
+    padding-left:.5em;
+    margin-top:-.3em;
+    margin-left:-.2em;
+    padding: 0em 0em .2em .2em;
+    float:left;
+    width:99.8%;
+    border-bottom:1px solid #B7C68B;
+    background-color: #F4F0CB;
+}
+
+h2.page-title {
+    clear:right;
+    margin-bottom: 10px;
+    padding:0px;
+}
+
+h1 {
+    margin-bottom: 5px;
+}
+
+h3#help-title {
+    margin-left: 5px;
+    margin-right: 5px;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    padding: 1px;
+    background-color: #F7F3ED;
+}
+
+div#help {
+    @extend h3#help-title;
+    border-bottom: 1px solid black;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    font-size: small;
+}
+
+
+.line {
+    border-bottom: 1px solid black;
+}
+
+div#help p {
+    @include reset-outline();
+}
+
+div#toctoggle {
+    @include side(left, 0, 10px);
+}
+
