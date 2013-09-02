@@ -496,3 +496,433 @@ div#toctoggle {
     @include side(left, 0, 10px);
 }
 
+h1#section-title {
+    @include side(left, 0, 1em);
+    margin-top:-.5em;
+}
+
+div#bypass-links{
+    width:3px;
+}
+
+div#top-links {
+    @include side(right, 5px, 20px);
+    clear:both;
+    margin-top:0em;
+    a:link, a:visited {
+        text-decoration:none;
+        margin-left:.5em;
+        margin-right:.5em;
+    }
+    a:focus {
+        @include set-link-color($black, #F6EAD6);
+    }
+}
+
+#top-links-jump{
+	float:left;
+	white-space:nowrap;
+	margin-top:-1em;
+	background-color:#F4F0CB;
+	padding-right:.5em;
+}
+
+#top-links-text{
+    @extend #top-links-jump;
+    float:right;
+    clear:right;
+    margin-left: 2em;
+    border:thin solid #DED29E;
+    @include border(.3em, .3em, .3em, .3em);
+}
+
+a#editor-link {
+    background-color: #F7F3ED;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 15px;
+    padding-right: 8px;
+    border: 1px solid #DED29E;
+    font-weight: normal;
+    text-decoration: none;
+    a#editor-link:hover {
+        background-color: #F7F3ED;
+        border: 1px solid #B8AE9C;
+    }
+    .off {
+        background-image: url(images/pen.gif);
+        background-repeat: no-repeat;
+        background-position: 0px 2px;
+    }
+
+    .on {
+        @extend .off;
+        background-image: url(images/pen2.gif);
+    }
+}
+
+/* for data tables */
+
+table.data {
+    border: 1px solid #685642;
+    width: 98%; 
+    margin-left: auto; 
+    margin-right: auto;
+    @include border(.5em, .5em, .5em, .5em);
+    padding:.2em;
+    th {
+        background-color: #DED29E;
+        padding: 3px;
+        white-space: nowrap;
+        a {
+            color: #595241;
+            padding-right: 15px;
+            margin-right: 15px;
+            background-image: url('images/sort.png');
+            background-repeat: no-repeat;
+            background-position: right;
+        }
+    }
+    tbody {
+        border-top: 1px solid #B8AE9C;
+        border-bottom: 1px solid #B8AE9C;
+        th {
+            text-align: left;
+            background-color: #DED29E;
+            cursor: auto;
+        }
+        tr:hover {
+            background-color: #F4F0CB;
+            cursor: pointer;
+        }
+
+        tr.selected {
+            background-color: #E9F4F3;
+            cursor: auto;
+        }
+    }
+    td {
+        padding: 3px;
+    }
+    tfoot {
+        background-color: #DED29E;
+        tr:first-child td {
+            padding: 5px;
+            background-image: url('images/arrow_ltr.gif');
+            background-repeat: no-repeat;
+            background-position: 4px 5px;
+            padding-left: 40px;
+        }
+        /*buttons*/
+        input {
+            @include set-link-color(#F4F0CB, #685642);
+            font-weight: normal;
+            border:  #685642  solid 1px;
+        }
+        input:focus, input:hover {
+            @include set-link-color(#685642, #F4F0CB);
+            border:  #685642  solid 1px;
+        }
+    }
+
+    .static tfoot td, .static tfoot tr:first-child td {
+        border-top: 1px solid #B8AE9C;
+        padding: 5px;
+        background-image: none;
+        padding-left: 0px;
+    }
+
+    /* used for static tables with no form elements: */
+    .static tbody tr:hover {
+        background-color: transparent;
+        cursor: auto;
+    }
+
+}
+
+/* course browser: */
+div#browse {
+    margin-left: auto; 
+    margin-right: auto; 
+    width: 80%;
+}
+
+div.browse-selected {
+    background-image: url('images/side_arrow.gif'); 
+    background-repeat: no-repeat; 
+    padding-left: 9px; 
+    background-position: center left;
+}
+
+div.browse-unselected {
+    padding-left: 9px; 
+}
+
+ul.browse-list {
+    list-style: none;
+    padding:0px;
+}
+
+/* feedback /errors */
+div#error {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #DD0000;
+    padding: 5px;
+    background-color: #E49E7A;
+    color:  #000000;
+    background-color: #F69E94;
+    padding-left: 25px;
+    font-weight: bold;
+    @include border(.5em, .5em, .5em, .5em);
+    h4 {
+        color: black;
+        margin-left: 0px;
+    }
+    a{
+        color:red;
+        text-decoration:underline;
+    }
+    ul li{
+        margin-top: 5px;
+    }
+}
+
+div#error ul, div#feedback ul, div#help ul {
+	position: relative;
+	list-style: none;
+	margin-left: 0px;
+	padding-left: 0px;
+	list-style-type:none;
+}
+
+div#feedback {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #17B506;
+    padding: 5px;
+    background-color: #B7C68B;
+    color: #000000;
+    font-weight: bold;
+    @include border(.5em, .5em, .5em, .5em);
+}
+
+div#help {
+    @extend div#feedback;
+    border: 1px solid #ACCFCC;
+    background-color: #E9F4F3;
+}
+
+div#info {
+    @extend div#feedback;
+    border: 1px solid #B8AE9C;
+    background-color: #B8D0E8;
+    a{
+        color:red;
+        text-decoration:underline;
+    }
+}
+
+div#warning {
+    @extend div#feedback;
+    border: 1px solid #FF8400;
+    padding: 5px;
+    background-color: #FFF6ED;
+}
+acronym {
+    cursor: help;
+}
+
+div.news {
+    p {
+        margin-left: 10px;
+    }
+    span.date {
+        font-family: Verdana, Helevetica, Arial, sans-serif;
+        color: #B8AE9C;	
+    }
+}
+
+/* home page links */
+div.home-link {
+    padding: 2px;
+    float: left;
+    text-align: center;
+    margin: 2px;
+    width: 120px;
+    height: 90px;
+    div.home-link:hover {
+        padding: 1px;
+        background-color: #F7F3ED;
+        border: 1px solid #afafaf;
+    }
+    a {
+        text-decoration: none;
+        font-weight: bold;
+    }
+    img {
+        border: 0px;
+    }
+}
+
+/* sequence links */
+div.sequence-links {
+    @include side(right, 5px, 0);
+	margin-top: 10px;
+	padding-top:7px;
+    a {
+        text-decoration: none;
+    }
+}
+
+div.dropdown {
+    width: 200px;
+    padding: 2px;
+    background-color: white;
+    color: black;
+    border-left: 1px solid #ECFEEA;
+    border-right: 1px solid #ECFEEA;
+    border-bottom: 1px solid #ECFEEA;
+    font-weight: normal;
+}
+
+div.dropdown-heading {
+    background-color: #ACCFCC;
+    color: #595241;
+    border-left: 1px solid #ECFEEA;
+    border-right: 1px solid #ECFEEA;
+    border-top: 1px solid #ECFEEA;
+    font-weight: bold;
+    padding: 2px;
+}
+
+.required {
+    font-weight: bold;
+    color: red;
+    padding-right: 2px;
+}
+
+div#content_text {
+    margin-left: 5px;
+}
+
+form {
+    clear: none;
+    display:inline;
+}
+
+optgroup {
+    font-size: small;
+}
+
+/* packing */
+div.paging {
+    width: 100%;
+    text-align: center;
+    margin: 0.5em auto;
+    ul {
+        list-style: none;
+        display: inline;
+        padding: 0px;
+        border: 1px solid #000;
+    }
+    li { 
+        display: inline; 
+        padding-left: 2px; 
+        padding-right: 2px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        a {
+            text-decoration: none;
+            padding-left: 4px;
+            padding-right: 4px;
+            border-left: 1px solid white;
+            border-right: 1px solid white;
+            a:hover, a.current {
+                background-color: #DED29E;
+                border-left: 1px solid #000;
+                border-right: 1px solid #000;
+            }
+        }
+    }
+}
+
+#header{
+    background-repeat: repeatx;
+    background-image: url('images/atutor_head.jpg');
+    height:4em;
+    margin-bottom:-2em;
+    padding-bottom: 2em;
+    a {
+        font-weight:600i;
+        a:hover {
+            color: #595241;
+            background-color: #F7F3ED;
+        }
+    }
+}
+
+#tl_corner{
+    background-image:url(images/tl_corner.gif);
+    background-position: top left;
+    background-repeat: no-repeat;
+    padding:0;
+}
+
+div.top {
+    /* Top space */
+    background-color: #595241;
+    color: #FFF;
+    margin: 0;
+    padding: 0;
+    padding-top:9px;
+}
+div.tabs {
+    /* Navigational Plone Tabs(tm), implemented by customizing the a tag - they are surprisingly elegant. The power of CSS runs strong in these :) */
+    background-color: transparent;
+    border-collapse: collapse;
+    border-bottom: 1px solid #B8AE9C;
+    padding: 0.5em 0em 0em 2em;
+    white-space: nowrap;
+    a {
+        /* The normal, unselected tabs. They are all links */
+        border-color: #B8AE9C;
+        border-width: 1px; 
+        border-style: solid solid none solid;
+        color: #595241;
+        height: 1.2em;
+        margin-right: 0.5em;
+        padding: 0em 2em 0em;
+        .selected {
+            /* The selected tab. There's only one of this */
+            background-color: white;
+            border-bottom: #B8AE9C 1px solid;
+            color: #595241;
+            font-weight: normal;
+        }
+        a:hover, a.active {
+            background-color: #B8AE9C;
+            border-bottom: 1px solid #B8AE9C;
+            color: white;
+        }
+    }
+}
+
+.contentbox{
+	@include border(0em, 0em, .5em, .5em);
+}
+
+.headingbox{
+    @include border(.5em, .5em, 0em, 0em);
+    a {
+        color: #A50707;
+        text-decoration:underline;
+    }
+}
+
