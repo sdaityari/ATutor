@@ -811,3 +811,163 @@ div.tabs {
   .headingbox a {
     color: #A50707;
     text-decoration: underline; }
+
+h2.box, h4.box {
+  font-size: 0.85em;
+  padding: 2px;
+  padding: .2em;
+  border-top: 1px solid #B7C68B;
+  border-left: 1px solid #B7C68B;
+  border-right: 1px solid #B7C68B;
+  border-bottom: 1px solid #F4F0CB; }
+
+h4.box {
+  border-radius: 0.5em 0.5em 0em 0em;
+  -moz-border-radius: 0.5em, 0.5em, 0em, 0em;
+  -webkit-border-radius: 0.5em, 0.5em, 0em, 0em;
+  border-top: 1px solid #F4F0CB;
+  border-left: 1px solid #F4F0CB;
+  border-right: 1px solid #F4F0CB;
+  border-bottom: 1px solid #F4F0CB; }
+
+div.box {
+  padding: .5em;
+  background-color: #F4F0CB;
+  color: black;
+  font-size: 0.85em;
+  font-weight: normal;
+  border-left: 1px solid #B7C68B;
+  border-right: 1px solid #B7C68B;
+  border-bottom: 1px solid #B7C68B;
+  border-radius: 0em 0em 0.5em 0.5em;
+  -moz-border-radius: 0em, 0em, 0.5em, 0.5em;
+  -webkit-border-radius: 0em, 0em, 0.5em, 0.5em; }
+  div.box a:link {
+    text-decoration: none; }
+  div.box a:visited {
+    color: #2A6C28;
+    text-decoration: none; }
+  div.box a:hover {
+    text-decoration: underline; }
+  div.box a.close {
+    float: right;
+    text-transform: none;
+    border-left: 1pt solid #B8AE9C;
+    padding: 0em 0.2em; }
+  div.box h1, div.box h2, div.box h3, div.box h4 {
+    margin: 0;
+    padding: 0; }
+  div.box .even {
+    background-color: #F7F3ED; }
+  div.box .odd {
+    background-color: transparent; }
+  div.box .content {
+    padding: 1em;
+    /*  font-size:  1em;*/ }
+
+.boxDetails {
+  text-align: right; }
+
+h5.box {
+  background-color: #6F7172;
+  border: 1px solid #B8AE9C;
+  border-style: solid solid none solid;
+  color: Black;
+  padding: 0em 1em 0em 1em;
+  display: inline;
+  font-size: 1em;
+  height: 1em; }
+
+/* users/index.php */
+div.course {
+  position: relative;
+  width: 25em;
+  height: 10.5em;
+  border: #cccccc 1px solid;
+  background-color: #F7F7F7;
+  float: left;
+  margin: 3px;
+  padding: 5px; }
+  div.course .break {
+    clear: left; }
+  div.course h2 {
+    border: 0px;
+    font-weight: normal;
+    font-size: large; }
+  div.course div.course:hover {
+    background-color: #FBF4E9;
+    border: #B8AE9C 1px solid; }
+  div.course img.icon {
+    float: left;
+    margin: 2px;
+    height: 6.8em;
+    width: 6.8em;
+    margin-right: 5px; }
+  div.course div.shortcuts a {
+    text-align: right;
+    text-decoration: none;
+    clear: left;
+    vertical-align: middle; }
+
+img.headicon {
+  float: left;
+  margin-top: .5em;
+  margin-left: .5em;
+  margin-right: .5em;
+  height: 6.45em;
+  width: 6.45em;
+  vertical-align: top;
+  text-align: right;
+  border: 1px solid white; }
+
+div#alternatives_shortcuts {
+  border-radius: 0.5em 0.5em 0.5em 0.5em;
+  -moz-border-radius: 0.5em, 0.5em, 0.5em, 0.5em;
+  -webkit-border-radius: 0.5em, 0.5em, 0.5em, 0.5em;
+  float: right;
+  margin: -2em 5pt;
+  border: 1px solid #F4F0CB;
+  padding-top: .2em;
+  padding-left: .2em;
+  padding-right: .2em; }
+
+fieldset#shortcuts {
+  float: right;
+  background-color: #FEFDEF;
+  border: 1pt solid #B8AE9C;
+  margin: -5pt 5pt 5pt 5pt;
+  padding-right: 10pt;
+  padding-bottom: 5pt;
+  padding-left: 10pt; }
+
+fieldset {
+  margin-bottom: 10pt;
+  border-radius: .5em .5em .5em .5em;
+  -moz-border-radius: .5em .5em .5em .5em;
+  padding: 0.2em; }
+
+div#shortcuts {
+  border-left: thin solid #B7C68B;
+  border-right: thin solid #B7C68B;
+  border-bottom: thin solid #B7C68B;
+  border-radius: 0em 0em 0.5em 0.5em;
+  -moz-border-radius: 0em, 0em, 0.5em, 0.5em;
+  -webkit-border-radius: 0em, 0em, 0.5em, 0.5em;
+  float: right;
+  margin-right: 2em;
+  padding: .1em; }
+  div#shortcuts legend {
+    border-radius: 0.5em 0.5em 0.5em 0.5em;
+    -moz-border-radius: 0.5em, 0.5em, 0.5em, 0.5em;
+    -webkit-border-radius: 0.5em, 0.5em, 0.5em, 0.5em;
+    padding: 0.2em; }
+  div#shortcuts ul {
+    float: right;
+    margin-bottom: 0em;
+    margin-left: 0em;
+    list-style-type: none;
+    padding-left: 0em; }
+  div#shortcuts li, div#shortcuts li .folders, li div#shortcuts .folders {
+    display: inline; }
+    div#shortcuts li li a, li div#shortcuts .folders li a, div#shortcuts li .folders a, li div#shortcuts .folders .folders a {
+      height: 1.3em; }
