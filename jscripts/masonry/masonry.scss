@@ -1,0 +1,32 @@
+$border-color: #000000;
+$header-background-color: #e1ddbd;
+$masonry-background-color: #fbfaef;
+
+.masonry-tools{
+    width: 100%;
+}
+
+.masonry-box {
+    width: 17em;
+    border: 0.1em solid $border-color;
+    border-radius: 0.3em;
+    -moz-border-radius: 0.3em;
+    -webkit-border-radius: 0.3em;
+    margin-bottom:1em;
+    text-align: center;
+    background-color: $masonry-background-color;
+}
+
+.masonry-title{
+    background-color: $header-background-color;
+    text-transform: uppercase;
+    padding: 0.3em 1em;
+}
+
+ul.masonry-links{
+    padding: 0.3em 1em;
+    li{
+        list-style-type: none;
+        display: list-item;
+    }
+}
