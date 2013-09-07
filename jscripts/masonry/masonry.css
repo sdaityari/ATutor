@@ -1,0 +1,23 @@
+.masonry-tools {
+  width: 100%; }
+
+.masonry-box {
+  width: 17em;
+  border: 0.1em solid black;
+  border-radius: 0.3em;
+  -moz-border-radius: 0.3em;
+  -webkit-border-radius: 0.3em;
+  margin-bottom: 1em;
+  text-align: center;
+  background-color: #fbfaef; }
+
+.masonry-title {
+  background-color: #e1ddbd;
+  text-transform: uppercase;
+  padding: 0.3em 1em; }
+
+ul.masonry-links {
+  padding: 0.3em 1em; }
+  ul.masonry-links li {
+    list-style-type: none;
+    display: list-item; }
