@@ -39,6 +39,16 @@
     <?php require_once(AT_INCLUDE_PATH.'../jscripts/ATutor_js.php'); ?>
 //-->
 </script>
+<script src="<?php echo AT_BASE_HREF; ?>jscripts/lib/jquery/jquery-1.10.2.min.js"></script>
+<script src="<?php echo AT_BASE_HREF; ?>jscripts/lib/jquery/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="<?php echo AT_BASE_HREF; ?>jscripts/lib/jquery/jquery-ui.css" />
+<script type="text/javascript">
+//<!--
+    $(document).ready(function () {
+        $(".search-tooltip").tooltip();
+    });
+//-->
+</script>
 <div class="logo">
       <a href="http://www.atutor.ca/"><img src="<?php echo $this->base_path; ?>images/AT_Logo_1_sm.png"  alt="ATutor Logo" style="border:none;" /></a>
 </div>

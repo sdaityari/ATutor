@@ -80,7 +80,6 @@ function queryDB($query, $params=array(), $oneRow = false, $sanitize = true, $ca
 
     $sql = create_sql($query, $params, $sanitize);
     return execute_sql($sql, $oneRow, $callback_func, $array_type);
-
 }
 
 function sqlout($sql){
@@ -164,6 +163,7 @@ function execute_sql($sql, $oneRow, $callback_func, $array_type){
         $msg->addError($displayErrorMessage);
     }
 }
+
 function queryDBresult($sql, $params = array(), $sanitize = true){
         global $db;
         $sql = create_sql($sql, $params, $sanitize);

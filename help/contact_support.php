@@ -12,10 +12,10 @@
 /****************************************************************/
 // $Id$
 
-$_user_location	= 'public';
+//$_user_location	= 'public';
 
-define('AT_INCLUDE_PATH', '../include/');
-require(AT_INCLUDE_PATH.'vitals.inc.php');
+//define('AT_INCLUDE_PATH', '../include/');
+//require(AT_INCLUDE_PATH.'vitals.inc.php');
 require(AT_INCLUDE_PATH."securimage/securimage.php");
     $img = new Securimage();
 if (isset($_POST['cancel'])) {
@@ -24,8 +24,8 @@ if (isset($_POST['cancel'])) {
 	exit;
 }
 
-$onload = 'document.form.from.focus();';
-require(AT_INCLUDE_PATH.'header.inc.php');
+//$onload = 'document.form.from.focus();';
+//require(AT_INCLUDE_PATH.'header.inc.php');
 
 if ($_SESSION['member_id']) {
 	$sql	= "SELECT first_name, last_name, email FROM %smembers WHERE member_id=%d";
@@ -105,7 +105,7 @@ if (isset($_POST['submit'])) {
 
 $msg->printErrors();
 ?>
-<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" name="form">
+<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>#contact-support" name="form">
 <div class="input-form">
 	<div class="row">
 		<span class="required" title="<?php echo _AT('required_field'); ?>">*</span><label for="from"><?php echo _AT('from_name'); ?></label><br />
@@ -145,4 +145,4 @@ $msg->printErrors();
 </div>
 </form>
 
-<?php require(AT_INCLUDE_PATH.'footer.inc.php'); ?>
+<?php //require(AT_INCLUDE_PATH.'footer.inc.php'); ?>

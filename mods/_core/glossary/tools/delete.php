@@ -11,6 +11,11 @@
 /* as published by the Free Software Foundation.							*/
 /****************************************************************************/
 
+/* XXX: This file will be depricated soon. Please use the Ajax functions that
+ * have been defined in jscripts/ajax/Glossary.js and check their usage in the
+ * default theme to add it to your theme.
+ */
+
 define('AT_INCLUDE_PATH', '../../../../include/');
 require(AT_INCLUDE_PATH.'vitals.inc.php');
 
