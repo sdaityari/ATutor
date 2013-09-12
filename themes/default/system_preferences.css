@@ -20,15 +20,18 @@ ul#subnavlist {
     border-width: 0;
     list-style: none;
     display: inline-block;
-    height: 1em;
     margin: 0.3em 1em;
     line-height: 2em; }
+    ul#subnavlist li:hover {
+      /* clearing all previous styles */
+      border-width: 0;
+      background-color: transparent; }
     ul#subnavlist li.active {
       /* clearing all previous styles */
       border-width: 0;
       font-weight: normal;
       background-color: transparent; }
-    ul#subnavlist li a:hover {
+    ul#subnavlist li a:hover, ul#subnavlist li a:active {
       /* clearing all previous styles */
       background-color: transparent;
       text-decoration: underline;

@@ -28,9 +28,13 @@ ul#subnavlist {
 
         list-style: none;
         display: inline-block;
-        height: 1em;
         margin: 0.3em 1em;
         line-height:2em;
+        &:hover{
+            /* clearing all previous styles */
+            border-width:0;
+            background-color:transparent;
+        }
         &.active {
             /* clearing all previous styles */
             border-width: 0;
@@ -38,7 +42,7 @@ ul#subnavlist {
             background-color: transparent;
         }
         a {
-            &:hover{
+            &:hover, &:active{
                 /* clearing all previous styles */
                 background-color:transparent;
                 text-decoration:underline;
