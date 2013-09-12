@@ -358,6 +358,9 @@
     </div>
 </form>
 
+<!-- System Preferences sub nav list override css -->
+<link rel="stylesheet" href="<?php echo $this->theme_path.'themes/'.$this->theme; ?>/system_preferences.css" type="text/css" />
+
 <link rel="stylesheet" href="<?php echo AT_BASE_HREF; ?>jscripts/a11yAccordeon/a11yAccordeon.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo AT_BASE_HREF; ?>jscripts/toggleSwitch/toggleSwitch.css" type="text/css" />
 <script type="text/javascript" src="<?php echo AT_BASE_HREF; ?>jscripts/a11yAccordeon/a11yAccordeon.min.js"></script>

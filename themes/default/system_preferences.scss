@@ -1,0 +1,49 @@
+@mixin give_outline($color, $radius) {
+    margin: 1em auto;
+    border: .1em solid $color;
+    border-radius: $radius;
+    -moz-border-radius: $radius;
+    -webkit-border-radius: $radius;
+}
+
+$black: #000000;
+
+div#subnavlistcontainer {
+    @include give_outline($black, 0.3em);
+    text-align:center;
+    min-height: 2.5em;
+    max-height: 5em;
+    height: auto;
+/*    width: 45em;*/
+    display: block;
+    text-transform: uppercase;
+}
+
+ul#subnavlist {
+    padding: 0em;
+    li {
+        /* clearing all previous styles */
+        background-color: transparent;
+        border-width: 0;
+
+        list-style: none;
+        display: inline-block;
+        height: 1em;
+        margin: 0.3em 1em;
+        line-height:2em;
+        &.active {
+            /* clearing all previous styles */
+            border-width: 0;
+            font-weight:normal;
+            background-color: transparent;
+        }
+        a {
+            &:hover{
+                /* clearing all previous styles */
+                background-color:transparent;
+                text-decoration:underline;
+                border-width:0;
+            }
+        }
+    }
+}

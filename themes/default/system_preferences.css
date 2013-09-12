@@ -1,0 +1,35 @@
+div#subnavlistcontainer {
+  margin: 1em auto;
+  border: 0.1em solid black;
+  border-radius: 0.3em;
+  -moz-border-radius: 0.3em;
+  -webkit-border-radius: 0.3em;
+  text-align: center;
+  min-height: 2.5em;
+  max-height: 5em;
+  height: auto;
+  /*    width: 45em;*/
+  display: block;
+  text-transform: uppercase; }
+
+ul#subnavlist {
+  padding: 0em; }
+  ul#subnavlist li {
+    /* clearing all previous styles */
+    background-color: transparent;
+    border-width: 0;
+    list-style: none;
+    display: inline-block;
+    height: 1em;
+    margin: 0.3em 1em;
+    line-height: 2em; }
+    ul#subnavlist li.active {
+      /* clearing all previous styles */
+      border-width: 0;
+      font-weight: normal;
+      background-color: transparent; }
+    ul#subnavlist li a:hover {
+      /* clearing all previous styles */
+      background-color: transparent;
+      text-decoration: underline;
+      border-width: 0; }
