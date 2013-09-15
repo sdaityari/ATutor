@@ -44,7 +44,7 @@ body {
 
 .page_wrapper{
     width:99%;
-    @include get-margin(0, auto, 0, auto);
+    margin: 0 auto;
     background-color: $white;
     @include shadow(.1em, .1em, .1em, $green-yellow);
     background-position: 0% 0%;
@@ -119,24 +119,24 @@ li {
     .folders {
         list-style: disc url(../../images/folder.gif) outside;
         @extend li;
+        .disabled {
+            color: #B8AE9C;
+        }
     }
 
-    .folders .disabled {
-        color: #B8AE9C;
-    }
 }
 
 /* link attributes */
 a {
-    a:link, a:visited  {
+    &:link, &:visited  {
         color: #1A4A72;
     }
 
-    a:active {
+    &:active {
         color: #932318;
     }
 
-    a:hover {
+    &:hover {
         color: #932318;
         color: $white;
     }
@@ -161,11 +161,11 @@ a {
     @include border(.3em, .3em, .3em, .3em);
     font-weight: normal;
     border:  #AAA  solid 1px;
-    .button:focus, .button:hover {
+    &:focus, &:hover {
         background-color: #685642;
         border:1px solid #DED29E;
     }
-    .button:active {
+    &:active {
         @include set-link-color(#F4F0CB, #685642);
     }
 }
@@ -173,7 +173,7 @@ a {
 .button2 {
     @include font-family();
     background-color: #B3A580;
-    .button2:focus {
+    &:focus {
         @include set-link-color(#F4F0CB, #685642);
         border:  #ACCFCC  solid 1px;
     }
@@ -509,13 +509,15 @@ div#top-links {
     @include side(right, 5px, 20px);
     clear:both;
     margin-top:0em;
-    a:link, a:visited {
-        text-decoration:none;
-        margin-left:.5em;
-        margin-right:.5em;
-    }
-    a:focus {
-        @include set-link-color($black, #F6EAD6);
+    a {
+        &:link, &:visited {
+            text-decoration:none;
+            margin-left:.5em;
+            margin-right:.5em;
+        }
+        &:focus {
+            @include set-link-color($black, #F6EAD6);
+        }
     }
 }
 
@@ -545,7 +547,7 @@ a#editor-link {
     border: 1px solid #DED29E;
     font-weight: normal;
     text-decoration: none;
-    a#editor-link:hover {
+    &:hover {
         background-color: #F7F3ED;
         border: 1px solid #B8AE9C;
     }
@@ -587,15 +589,16 @@ table.data {
         border-top: 1px solid #B8AE9C;
         border-bottom: 1px solid #B8AE9C;
         th {
-            text-align: left;
-            background-color: #DED29E;
-            cursor: auto;
+            &{
+                text-align: left;
+                background-color: #DED29E;
+                cursor: auto;
+            }
+            &:hover {
+                background-color: #F4F0CB;
+                cursor: pointer;
+            }
         }
-        tr:hover {
-            background-color: #F4F0CB;
-            cursor: pointer;
-        }
-
         tr.selected {
             background-color: #E9F4F3;
             cursor: auto;
@@ -618,10 +621,10 @@ table.data {
             @include set-link-color(#F4F0CB, #685642);
             font-weight: normal;
             border:  #685642  solid 1px;
-        }
-        input:focus, input:hover {
-            @include set-link-color(#685642, #F4F0CB);
-            border:  #685642  solid 1px;
+            &:focus, &:hover {
+                @include set-link-color(#685642, #F4F0CB);
+                border:  #685642  solid 1px;
+            }
         }
     }
 
@@ -844,7 +847,7 @@ div.paging {
             padding-right: 4px;
             border-left: 1px solid white;
             border-right: 1px solid white;
-            a:hover, a.current {
+            &:hover, &.current {
                 background-color: #DED29E;
                 border-left: 1px solid #000;
                 border-right: 1px solid #000;
@@ -861,7 +864,7 @@ div.paging {
     padding-bottom: 2em;
     a {
         font-weight:600i;
-        a:hover {
+        &:hover {
             color: #595241;
             background-color: #F7F3ED;
         }
@@ -906,7 +909,7 @@ div.tabs {
             color: #595241;
             font-weight: normal;
         }
-        a:hover, a.active {
+        &:hover, &.active {
             background-color: #B8AE9C;
             border-bottom: 1px solid #B8AE9C;
             color: white;
@@ -955,21 +958,23 @@ div.box {
     border-right:1px solid #B7C68B;
     border-bottom:1px solid #B7C68B;
     @include border(0em, 0em, .5em, .5em);
-    a:link {
-        text-decoration: none;
-    }
-    a:visited {
-        color: #2A6C28;
-        text-decoration: none;
-    }
-    a:hover {
-        text-decoration: underline;
-    }
-    a.close {
-        float: right;
-        text-transform: none;
-        border-left: 1pt solid #B8AE9C;
-        padding: 0em 0.2em;
+    a {
+        &:link {
+            text-decoration: none;
+        }
+        &:visited {
+            color: #2A6C28;
+            text-decoration: none;
+        }
+        &:hover {
+            text-decoration: underline;
+        }
+        &.close {
+            float: right;
+            text-transform: none;
+            border-left: 1pt solid #B8AE9C;
+            padding: 0em 0.2em;
+        }
     }
     h1, h2, h3, h4 {
         margin: 0;
@@ -1023,7 +1028,7 @@ div.course {
         font-weight: normal;
         font-size: large;
     }
-    div.course:hover {
+    &:hover {
         background-color:#FBF4E9;
         border: #B8AE9C 1px solid;
     }

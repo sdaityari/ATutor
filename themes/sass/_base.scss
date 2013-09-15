@@ -14,13 +14,6 @@ html,body{
     padding-#{$direction}: $padding;
 }
 
-@mixin get-margin($top, $right, $bottom, $left) {
-    margin-top: $top;
-    margin-right: $right;
-    margin-bottom: $bottom;
-    margin-left: $left;
-}
-
 @mixin zero-margins() {
     margin-bottom: 0px;
     margin-top: 0px;

@@ -32,10 +32,7 @@ body {
 
 .page_wrapper {
   width: 99%;
-  margin-top: 0;
-  margin-right: auto;
-  margin-bottom: 0;
-  margin-left: auto;
+  margin: 0 auto;
   background-color: white;
   box-shadow: 0.1em 0.1em 0.1em #b7c68b;
   -moz-box-shadow: 0.1em 0.1em 0.1em #b7c68b;
@@ -113,15 +110,15 @@ li, li .folders {
   margin-right: 0px; }
   li .folders {
     list-style: disc url(../../images/folder.gif) outside; }
-  li .folders .disabled {
-    color: #B8AE9C; }
+    li .folders .disabled {
+      color: #B8AE9C; }
 
 /* link attributes */
-a a:link, a a:visited {
+a:link, a:visited {
   color: #1A4A72; }
-a a:active {
+a:active {
   color: #932318; }
-a a:hover {
+a:hover {
   color: #932318;
   color: white; }
 a .dropdown-title {
@@ -145,17 +142,17 @@ a .dropdown-title {
   -webkit-border-radius: 0.3em, 0.3em, 0.3em, 0.3em;
   font-weight: normal;
   border: #AAA  solid 1px; }
-  .button .button:focus, .button .button:hover {
+  .button:focus, .button:hover {
     background-color: #685642;
     border: 1px solid #DED29E; }
-  .button .button:active {
+  .button:active {
     color: #f4f0cb;
     background-color: #685642; }
 
 .button2 {
   font-family: Verdana, Helevetica, Arial, sans-serif;
   background-color: #B3A580; }
-  .button2 .button2:focus {
+  .button2:focus {
     color: #f4f0cb;
     background-color: #685642;
     border: #ACCFCC  solid 1px; }
@@ -491,7 +488,7 @@ a#editor-link {
   border: 1px solid #DED29E;
   font-weight: normal;
   text-decoration: none; }
-  a#editor-link a#editor-link:hover {
+  a#editor-link:hover {
     background-color: #F7F3ED;
     border: 1px solid #B8AE9C; }
   a#editor-link .off, a#editor-link .on {
@@ -530,7 +527,7 @@ table.data {
       text-align: left;
       background-color: #DED29E;
       cursor: auto; }
-    table.data tbody tr:hover {
+    table.data tbody th:hover {
       background-color: #F4F0CB;
       cursor: pointer; }
     table.data tbody tr.selected {
@@ -552,10 +549,10 @@ table.data {
       background-color: #685642;
       font-weight: normal;
       border: #685642  solid 1px; }
-    table.data tfoot input:focus, table.data tfoot input:hover {
-      color: #685642;
-      background-color: #f4f0cb;
-      border: #685642  solid 1px; }
+      table.data tfoot input:focus, table.data tfoot input:hover {
+        color: #685642;
+        background-color: #f4f0cb;
+        border: #685642  solid 1px; }
   table.data .static tfoot td, table.data .static tfoot tr:first-child td {
     border-top: 1px solid #B8AE9C;
     padding: 5px;
@@ -741,7 +738,7 @@ div.paging {
       padding-right: 4px;
       border-left: 1px solid white;
       border-right: 1px solid white; }
-      div.paging li a a:hover, li div.paging .folders a a:hover, div.paging li a a.current, li div.paging .folders a a.current {
+      div.paging li a:hover, li div.paging .folders a:hover, div.paging li a.current, li div.paging .folders a.current {
         background-color: #DED29E;
         border-left: 1px solid #000;
         border-right: 1px solid #000; }
@@ -754,7 +751,7 @@ div.paging {
   padding-bottom: 2em; }
   #header a {
     font-weight: 600i; }
-    #header a a:hover {
+    #header a:hover {
       color: #595241;
       background-color: #F7F3ED; }
 
@@ -794,7 +791,7 @@ div.tabs {
       border-bottom: #B8AE9C 1px solid;
       color: #595241;
       font-weight: normal; }
-    div.tabs a a:hover, div.tabs a a.active {
+    div.tabs a:hover, div.tabs a.active {
       background-color: #B8AE9C;
       border-bottom: 1px solid #B8AE9C;
       color: white; }
@@ -894,7 +891,7 @@ div.course {
     border: 0px;
     font-weight: normal;
     font-size: large; }
-  div.course div.course:hover {
+  div.course:hover {
     background-color: #FBF4E9;
     border: #B8AE9C 1px solid; }
   div.course img.icon {
