@@ -363,7 +363,7 @@
 
 <link rel="stylesheet" href="<?php echo AT_BASE_HREF; ?>jscripts/a11yAccordeon/a11yAccordeon.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo AT_BASE_HREF; ?>jscripts/toggleSwitch/toggleSwitch.css" type="text/css" />
-<script type="text/javascript" src="<?php echo AT_BASE_HREF; ?>jscripts/a11yAccordeon/a11yAccordeon.min.js"></script>
+<script type="text/javascript" src="<?php echo AT_BASE_HREF; ?>jscripts/a11yAccordeon/a11yAccordeon.js"></script>
 <script type="text/javascript" src="<?php echo AT_BASE_HREF; ?>jscripts/toggleSwitch/toggleSwitch.js"></script>
 <script type="text/javascript">
 $(document).ready(function () {
