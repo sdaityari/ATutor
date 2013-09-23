@@ -42,9 +42,9 @@ if (isset($_REQUEST['to_tile']) && !isset($_POST['cancel'])) {
 	}
 	
 	$tile_import_url = AT_TILE_IMPORT_URL. '?oauth_token='.$access_token_key.'&url='.urlencode($export_url);
-	
+
 	$oauth_server_response = @file_get_contents($tile_import_url);
-	
+
 	// handle OAUTH import response
 	foreach (explode('&', $oauth_server_response) as $rtn)
 	{
@@ -62,10 +62,10 @@ if (isset($_REQUEST['to_tile']) && !isset($_POST['cancel'])) {
 		if (trim($error) == '') $error = _AT('tile_no_response');
 		else {
 			// delete this access token since it cannot import into Transformable
-			$sql = "DELETE FROM ".TABLE_PREFIX."oauth_client_tokens
-			         WHERE token = '".$access_token_key."'
+			$sql = "DELETE FROM %soauth_client_tokens
+			         WHERE token = '%s'
 			           AND token_type='access'";
-			$result = mysql_query($sql, $db);
+			$result = queryDB($sql, array(TABLE_PREFIX, $access_token_key));
 		}
 		$msg->addError(array('TILE_IMPORT_FAIL', $error));
 	}
@@ -148,13 +148,16 @@ $parser->set_object($handler);
 $parser->set_element_handler('openHandler','closeHandler');
 
 if (authenticate(AT_PRIV_CONTENT, AT_PRIV_RETURN)) {
-	$sql = "SELECT *, UNIX_TIMESTAMP(last_modified) AS u_ts FROM ".TABLE_PREFIX."content WHERE course_id=$course_id ORDER BY content_parent_id, ordering";
+	$sql = "SELECT *, UNIX_TIMESTAMP(last_modified) AS u_ts FROM %scontent WHERE course_id=%d ORDER BY content_parent_id, ordering";
+    $rows_content = queryDB($sql, array(TABLE_PREFIX, $course_id));
 } else {
-	$sql = "SELECT *, UNIX_TIMESTAMP(last_modified) AS u_ts FROM ".TABLE_PREFIX."content WHERE course_id=$course_id ORDER BY content_parent_id, ordering";
+	$sql = "SELECT *, UNIX_TIMESTAMP(last_modified) AS u_ts FROM %scontent WHERE course_id=%d ORDER BY content_parent_id, ordering";
+    $rows_content = queryDB($sql,array(TABLE_PREFIX, $course_id));
 }
 $cid = $_REQUEST['cid'];  //takes care of some system which lost the REQUEST[cid]
-$result = mysql_query($sql, $db);
-while ($row = mysql_fetch_assoc($result)) {
+
+// THIS IS WHERE EXPORT TO ACONTENT FAILS 5136 
+foreach($rows_content as $row){
 	if (authenticate(AT_PRIV_CONTENT, AT_PRIV_RETURN) || $contentManager->isReleased($row['content_id']) === TRUE) {
 		$content[$row['content_parent_id']][] = $row;
 		if ($cid == $row['content_id']) {
@@ -183,8 +186,6 @@ if ($cid) {
 $imsmanifest_xml = str_replace(array('{COURSE_TITLE}', '{COURSE_DESCRIPTION}', '{COURSE_PRIMARY_LANGUAGE_CHARSET}', '{COURSE_PRIMARY_LANGUAGE_CODE}'), 
 							  array($ims_course_title, $course_desc, $course_language_charset, $course_language_code),
 							  $ims_template_xml['header']);
-//debug($imsmanifest_xml);
-//exit;
 
 /* get the first content page to default the body frame to */
 $first = $content[$top_content_parent_id][0];
@@ -241,10 +242,12 @@ $imsmanifest_xml .= str_replace(	array('{ORGANIZATIONS}', '{GLOSSARY}',	'{RESOUR
 									$ims_template_xml['final']);
 
 /* generate the vcard for the instructor/author */
-$sql = "SELECT first_name, last_name, email, website, login, phone FROM ".TABLE_PREFIX."members WHERE member_id=$instructor_id";
-$result = mysql_query($sql, $db);
+$sql = "SELECT first_name, last_name, email, website, login, phone FROM %smembers WHERE member_id=%d";
+$row_member = queryDB($sql, array(TABLE_PREFIX, $instructor_id), TRUE);
+
 $vcard = new vCard();
-if ($row = mysql_fetch_assoc($result)) {
+
+if(count($row_member) > 0){
 	$vcard->setName($row['last_name'], $row['first_name'], $row['login']);
 	$vcard->setEmail($row['email']);
 	$vcard->setNote('Originated from an ATutor at '.AT_BASE_HREF.'. See ATutor.ca for additional information.');
