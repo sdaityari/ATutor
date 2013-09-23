@@ -97,16 +97,15 @@ function checkResources($import_path){
 	$data = rscandir($import_path);
 	//check if every file is presented in the manifest
 	foreach($data as $filepath){
-//	debug(preg_match('/(.*)\.xml/', substr($filepath, strlen($import_path))));
 		//validate xml via its xsd/dtds
 		if (preg_match('/(.*)\.xml/', substr($filepath, strlen($import_path)))){
 			libxml_use_internal_errors(true);
 			$dom = new DOMDocument();
 			$dom->load(realpath($filepath));
-//			debug(realpath($filepath), 'filepath');
+
  			if (!$dom->schemaValidate('main.xsd')){
 				$errors = libxml_get_errors();
-//				debug($errors);exit;
+
 				foreach ($errors as $error) {
 					//suppress warnings
 					if ($error->level==LIBXML_ERR_WARNING){
@@ -116,11 +115,6 @@ function checkResources($import_path){
 				}
 				libxml_clear_errors();
 			}
-			
-			//if this is the manifest file, we do not have to check for its existance.
-//			if (preg_match('/(.*)imsmanifest\.xml/', $filepath)){
-//				continue;
-//			}
 		}
 	}
 
@@ -179,7 +173,6 @@ function rscandir($base='', &$data=array()) {
  
     if (is_dir($base.$value)) : /* if this is a directory */
 //	  don't save the directory name
-//	  $data[] = $base.$value.'/'; /* add it to the $data array */
       $data = rscandir($base.$value.'/', $data); /* then make a recursive call with the
       current $value as the $base supplying the $data array to carry into the recursion */
      
@@ -206,18 +199,7 @@ function rehash($items){
 		$parent_obj = $items[$content['parent_content_id']];
 		$rehashed_items[$id] = $content;	//copy
         //first check if this is the top folder of the archieve, we don't want the top folder, remove it.
-/*        if (isset($content['parent_content_id']) && !isset($parent_obj) && !isset($content['type'])){
-            //if we can get into here, it means the parent_content_id of this is empty
-            //implying this is the first folder.
-            //note: it checks content[type] cause it could be a webcontent. In that case, 
-            //      we do want to keep it.  
-			debug($content, 'hit');
-            unset($rehashed_items[$id]);
-            continue;
-        }		
-		//then check if there exists a mapping for this item, if so, simply replace is and next.
-		else
-*/		if (isset($parent_page_maps[$content['parent_content_id']])){
+		if (isset($parent_page_maps[$content['parent_content_id']])){
 			$rehashed_items [$id]['parent_content_id'] = $parent_page_maps[$content['parent_content_id']];
 			$rehashed_items [$id]['ordering']++;
 		} 
@@ -366,23 +348,6 @@ function removeCommonPath($items){
 		global $xml_base_path, $test_message, $content_type;
 		global $current_identifier, $msg, $ns, $ns_cp;
 
-		//check if the xml is valid
-/*
-		if(isset($attrs['xsi:schemaLocation']) && $name == 'manifest'){
-			//run the loop and check it thru the ns.inc.php
-		} elseif ($name == 'manifest' && !isset($attrs['xsi:schemaLocation'])) {
-			//$msg->addError('MANIFEST_NOT_WELLFORM: NO NAMESPACE');
-			$msg->addError('IMPORT_CARTRIDGE_FAILED');
-		} else {
-			//error
-		}
-		//error if the tag names are wrong
-		if (preg_match('/^xsi\:/', $name) >= 1){
-			//$msg->addError('MANIFEST_NOT_WELLFORM');
-			$msg->addError('IMPORT_CARTRIDGE_FAILED');
-		}
-*/
-
 		//validate namespaces
 		if(!$skip_ims_validation && isset($attrs['xsi:schemaLocation']) && $name=='manifest'){
 			$schema_location = array();
@@ -401,12 +366,6 @@ function removeCommonPath($items){
 			//http://msdn.microsoft.com/en-us/library/ms256100(VS.85).aspx
 			//http://www.w3.org/TR/xmlschema-1/
 			for($i=0; $i < sizeof($split_location);$i=$i+2){
-				/*
-				if (isset($ns[$split_location[$i]]) && $ns[$split_location[$i]] != $split_location[$i+1]){
-					//$msg->addError('MANIFEST_NOT_WELLFORM: SCHEMA');
-					$msg->addError('IMPORT_CARTRIDGE_FAILED');
-				}
-				*/
 				//if the key of the namespace is not defined. Throw error.
 				if(!isset($ns[$split_location[$i]]) && !isset($ns_cp[$split_location[$i]])){
 					$msg->addError(array('IMPORT_CARTRIDGE_FAILED', _AT('schema_error')));
@@ -421,7 +380,6 @@ function removeCommonPath($items){
 		} else if ($name == 'file') {
 			// check if it misses file references
 			if(!$skip_ims_validation && (!isset($attrs['href']) || $attrs['href']=='')){
-				//$msg->addError('MANIFEST_NOT_WELLFORM');
 				$msg->addError(array('IMPORT_CARTRIDGE_FAILED', _AT('ims_missing_references')));
 			}
 
@@ -434,7 +392,7 @@ function removeCommonPath($items){
 			}
 
 			$temp_path = pathinfo($attrs['href']);
-//			if (!strpos($temp_path['dirname'], 'Share')) {
+
             if ($temp_path['extension'] == 'html') {
 			    $temp_path = explode('/', $temp_path['dirname']);
 			    if (empty($package_base_path)){
@@ -501,7 +459,6 @@ function removeCommonPath($items){
 			$path[] = $attrs['identifierref'];
 		} else if (($name == 'item') && ($attrs['identifier'])) {
 			$path[] = $attrs['identifier'];
-//		} else if (($name == 'resource') && is_array($items[$attrs['identifier']]))  {
 		} else if (($name == 'resource')) {
 			$current_identifier = $attrs['identifier'];
 			$items[$current_identifier]['type'] = $attrs['type'];
@@ -517,20 +474,12 @@ function removeCommonPath($items){
 				{
 					$temp_path = pathinfo($attrs['href']);
 					$temp_path = explode('/', $temp_path['dirname']);
-//					if (empty($package_base_path)) {
-						$package_base_path = $temp_path;
-//					} 
-//					else {
-//						$package_base_path = array_intersect($package_base_path, $temp_path);
-//					}
+					$package_base_path = $temp_path;
 					$items[$attrs['identifier']]['new_path'] = implode('/', $temp_path);
 				}
 			}
 
-			//if test custom message has not been saved
-//			if (!isset($items[$current_identifier]['test_message'])){
-//				$items[$current_identifier]['test_message'] = $test_message;
-//			}
+
 		} else if ($name=='dependency' && $attrs['identifierref']!='') {
 			//if there is a dependency, attach it to the item array['file']
 			$items[$current_identifier]['dependency'][] = $attrs['identifierref'];
@@ -809,9 +758,8 @@ if ($archive->extract(	PCLZIP_OPT_PATH,	$import_path,
 error_reporting(AT_ERROR_REPORTING);
 
 /* get the course's max_quota */
-$sql	= "SELECT max_quota FROM ".TABLE_PREFIX."courses WHERE course_id=$_SESSION[course_id]";
-$result = mysql_query($sql, $db);
-$q_row	= mysql_fetch_assoc($result);
+$sql	= "SELECT max_quota FROM %scourses WHERE course_id=%d";
+$q_row	= queryDB($sql, array(TABLE_PREFIX, $_SESSION['course_id']), TRUE);
 
 if ($q_row['max_quota'] != AT_COURSESIZE_UNLIMITED) {
 
@@ -844,16 +792,8 @@ $order = array(); /* keeps track of the ordering for each content page */
 $path  = array();  /* the hierarchy path taken in the menu to get to the current item in the manifest */
 $dependency_files = array(); /* the file path for the dependency files */
 
-/*
-$items[content_id/resource_id] = array(
-									'title'
-									'real_content_id' // calculated after being inserted
-									'parent_content_id'
-									'href'
-									'ordering'
-									);
-*/
 $ims_manifest_xml = @file_get_contents($import_path.'imsmanifest.xml');
+
 //scan for manifest xml if it's not on the top level.
 if ($ims_manifest_xml === false){
 	$data = rscandir($import_path);
@@ -930,9 +870,9 @@ if (file_exists($import_path . $glossary_path . 'glossary.xml')){
 	xml_parser_free($xml_parser);
 	$contains_glossary_terms = true;
 	foreach ($imported_glossary as $term => $defn) {
-		if (!$glossary[$term]) {
-			$sql = "INSERT INTO ".TABLE_PREFIX."glossary VALUES (NULL, $_SESSION[course_id], '$term', '$defn', 0)";
-			mysql_query($sql, $db);	
+		if (!$glossary[$term]) {	
+			$sql = "INSERT INTO %sglossary VALUES (NULL, %d, '%s', '%s', 0)";
+			queryDB($sql, array(TABLE_PREFIX, $_SESSION['course_id'], $term, $defn));
 		}
 	}
 }
@@ -983,9 +923,9 @@ if ($xml_base_path) {
 }
 
 /* get the top level content ordering offset */
-$sql	= "SELECT MAX(ordering) AS ordering FROM ".TABLE_PREFIX."content WHERE course_id=$_SESSION[course_id] AND content_parent_id=$cid";
-$result = mysql_query($sql, $db);
-$row	= mysql_fetch_assoc($result);
+$sql	= "SELECT MAX(ordering) AS ordering FROM %scontent WHERE course_id=%d AND content_parent_id=%d";
+$row = queryDB($sql, array(TABLE_PREFIX, $_SESSION['course_id'], $cid), TRUE);
+
 $order_offset = intval($row['ordering']); /* it's nice to have a real number to deal with */
 $lti_offset = array();	//since we don't need lti tools, the ordering needs to be subtracted
 //reorder the items stack
@@ -1029,14 +969,6 @@ foreach ($items as $item_id => $content_info)
 	$head = '';
 	if (is_array($content_info['dependency']) && !empty($content_info['dependency'])){
 		foreach($content_info['dependency'] as $dependency_ref){
-			//handle styles	
-			/** handled by get_html_head in vitals.inc.php
-			if (preg_match('/(.*)\.css$/', $items[$dependency_ref]['href'])){
-				//calculate where this is based on our current base_href. 
-				//assuming the dependency folders are siblings of the item
-				$head = '<link rel="stylesheet" type="text/css" href="../'.$items[$dependency_ref]['href'].'" />';
-			}
-			*/
 			//check if this is a discussion tool dependency
 			if ($items[$dependency_ref]['type']=='imsdt_xmlv1p0'){
 				$items[$item_id]['forum'][$dependency_ref] = $items[$dependency_ref]['href'];
@@ -1047,22 +979,6 @@ foreach ($items as $item_id => $content_info)
 			}
 		}
 	}
-
-	//check file array, see if there are css. 
-	//edited nov 26, harris
-	//removed cuz i added link to the html_tags
-	/*
-	if (is_array($content_info['file']) && !empty($content_info['file'])){
-		foreach($content_info['file'] as $dependency_ref){
-			//handle styles	
-			if (preg_match('/(.*)\.css$/', $dependency_ref)){
-				//calculate where this is based on our current base_href. 
-				//assuming the dependency folders are siblings of the item
-				$head = '<link rel="stylesheet" type="text/css" href="'.$dependency_ref.'" />';
-			}
-		}
-	}
-	*/
 
 	// remote href
 	if (preg_match('/^http.*:\/\//', trim($content_info['href'])) )
@@ -1088,13 +1004,12 @@ foreach ($items as $item_id => $content_info)
 			$ext = '';
 			$last_modified = date('Y-m-d H:i:s');
 		} else {
-			//$file_info = @stat(AT_CONTENT_DIR . 'import/'.$_SESSION['course_id'].'/'.$content_info['href']);
+
 			$file_info = @stat($import_path.$content_info['href']);
 			if ($file_info === false) {
 				continue;
 			}
-		
-			//$path_parts = pathinfo(AT_CONTENT_DIR . 'import/'.$_SESSION['course_id'].'/'.$content_info['href']);
+
 			$path_parts = pathinfo($import_path.$content_info['href']);
 			$ext = strtolower($path_parts['extension']);
 
@@ -1114,23 +1029,7 @@ foreach ($items as $item_id => $content_info)
             /* Using default size of 550 x 400 */
 
 			$content = '<object classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" width="550" height="400" codebase="http://www.apple.com/qtactivex/qtplugin.cab"><param name="src" value="'. $content_info['href'] . '" /><param name="autoplay" value="true" /><param name="controller" value="true" /><embed src="' . $content_info['href'] .'" width="550" height="400" controller="true" pluginspage="http://www.apple.com/quicktime/download/"></embed></object>';
-
-		/* Oct 19, 2009
-		 * commenting this whole chunk out.  It's part of my test import codes, not sure why it's here, 
-		 * and I don't think it should be here.  Remove this whole comment after further testing and confirmation.
-		 * @harris
-		 *
-			//Mimic the array for now.
-			$test_attributes['resource']['href'] = $test_xml_file;
-			$test_attributes['resource']['type'] = isset($items[$item_id]['type'])?'imsqti_xmlv1p2':'imsqti_xmlv1p1';
-			$test_attributes['resource']['file'] = $items[$item_id]['file'];
-//			$test_attributes['resource']['file'] = array($test_xml_file);
-
-			//Get the XML file out and start importing them into our database.
-			//TODO: See question_import.php 287-289.
-			$qids = $qti_import->importQuestions($test_attributes);
-		
-		 */
+			
 		} else if ($ext == 'mp3') {
 			$content = '<object classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" width="200" height="15" codebase="http://www.apple.com/qtactivex/qtplugin.cab"><param name="src" value="'. $content_info['href'] . '" /><param name="autoplay" value="false" /><embed src="' . $content_info['href'] .'" width="200" height="15" autoplay="false" pluginspage="http://www.apple.com/quicktime/download/"></embed></object>';
 		} else if (in_array($ext, array('wav', 'au'))) {
@@ -1258,8 +1157,7 @@ foreach ($items as $item_id => $content_info)
 	if ($content_formatting!=CONTENT_TYPE_WEBLINK){
 		$content_folder_type = (!isset($content_info['type'])?CONTENT_TYPE_FOLDER:CONTENT_TYPE_CONTENT);
 	}
-
-	$sql= 'INSERT INTO '.TABLE_PREFIX.'content'
+		$sql= 'INSERT INTO %scontent'
 	      . '(course_id, 
 	          content_parent_id, 
 	          ordering,
@@ -1291,14 +1189,15 @@ foreach ($items as $item_id => $content_info)
 			     .'"'.$content.'",'
 				 .'"'.$content_info['test_message'].'",'
 				 .$content_folder_type.')';
-
-	$result = mysql_query($sql, $db) or die(mysql_error());
-
+    $result = queryDB($sql, array(TABLE_PREFIX));
+    
 	/* get the content id and update $items */
-	$items[$item_id]['real_content_id'] = mysql_insert_id($db);
+    $items[$item_id]['real_content_id'] = at_insert_id();
 
 	/* get the tests associated with this content */
+
 	if (!empty($items[$item_id]['tests']) || strpos($items[$item_id]['type'], 'imsqti_xmlv1p2/imscc_xmlv1p0') !== false){
+
 		$qti_import = new QTIImport($import_path);
 		if (isset($items[$item_id]['tests'])){
 			$loop_var = $items[$item_id]['tests'];
@@ -1332,26 +1231,26 @@ foreach ($items as $item_id => $content_info)
 					$weight = 0;
 				}
 				$new_order = $order + 1;
-				$sql = "INSERT INTO " . TABLE_PREFIX . "tests_questions_assoc" . 
+				
+				$sql = "INSERT INTO %stests_questions_assoc" . 
 						"(test_id, question_id, weight, ordering, required) " .
-						"VALUES ($tid, $qid, $weight, $new_order, 0)";
-				$result = mysql_query($sql, $db);
+						"VALUES (%d, %d, %d, %d, 0)";
+				$result = queryDB($sql, array(TABLE_PREFIX, $tid, $qid, $weight, $new_order));
+				
 			}
 
 			//associate content and test
-			$sql =	'INSERT INTO ' . TABLE_PREFIX . 'content_tests_assoc' . 
-					'(content_id, test_id) ' .
-					'VALUES (' . $items[$item_id]['real_content_id'] . ", $tid)";
-			$result = mysql_query($sql, $db);
-		
-//			if (!$msg->containsErrors()) {
-//				$msg->addFeedback('IMPORT_SUCCEEDED');
-//			}
+			$sql =	"INSERT INTO %scontent_tests_assoc 
+					(content_id, test_id) VALUES (%d, %d)";
+			$result = queryDB($sql, array(TABLE_PREFIX, $items[$item_id]['real_content_id'], $tid));			
+
 		}
 	}
 
 	/* get the a4a related xml */
+
 	if (isset($items[$item_id]['a4a_import_enabled']) && isset($items[$item_id]['a4a']) && !empty($items[$item_id]['a4a'])) {
+
 		$a4a_import = new A4aImport($items[$item_id]['real_content_id']);
 		$a4a_import->setRelativePath($items[$item_id]['new_path']);
 		$a4a_import->importA4a($items[$item_id]['a4a']);
@@ -1393,26 +1292,13 @@ if ($package_base_path == '.') {
 	$package_base_path = '';
 }
 
-// loop through the files outside the package folder, and copy them to its relative path
-/**
-if (is_dir(AT_CONTENT_DIR . 'import/'.$_SESSION['course_id'].'/resources')) {
-	$handler = opendir(AT_CONTENT_DIR . 'import/'.$_SESSION['course_id'].'/resources');
-	while ($file = readdir($handler)){
-		$filename = AT_CONTENT_DIR . 'import/'.$_SESSION['course_id'].'/resources/'.$file;
-debug($filename);
-		if(is_file($filename)){
-			@rename($filename, AT_CONTENT_DIR .$_SESSION['course_id'].'/'.$package_base_name.'/'.$file);
-		}
-	}
-	closedir($handler);
-}
-**/
 //--- harris edit for path thing
 $file = AT_CONTENT_DIR . 'import/'.$_SESSION['course_id'].DIRECTORY_SEPARATOR.$common_path;
 if (is_dir($file)) {
     rename($file, AT_CONTENT_DIR .$_SESSION['course_id'].'/'.$package_base_name);
 }
 //--- end
+
 //takes care of the condition where the whole package doesn't have any contents but question banks
 //also is the case of urls
 if(is_array($all_package_base_path)){
@@ -1425,14 +1311,7 @@ if(is_array($all_package_base_path)){
         }
     }
 }
-//exit;//harris
-//check if there are still resources missing
-/*
-foreach($items as $idetails){
-	$temp_path = pathinfo($idetails['href']);
-	@rename(AT_CONTENT_DIR . 'import/'.$_SESSION['course_id'].'/'.$temp_path['dirname'], AT_CONTENT_DIR .$_SESSION['course_id'].'/'.$package_base_name . '/' . $temp_path['dirname']);
-}
-*/
+
 clr_dir(AT_CONTENT_DIR . 'import/'.$_SESSION['course_id']);
 
 if (file_exists($full_filename)) {

@@ -16,12 +16,6 @@ require (AT_INCLUDE_PATH.'vitals.inc.php');
 require(AT_INCLUDE_PATH.'lib/tinymce.inc.php');
 
 authenticate(AT_PRIV_ANNOUNCEMENTS);
-/*
-if (defined('AT_FORCE_GET_FILE') && AT_FORCE_GET_FILE) {
-	$content_base_href = 'get.php/';
-} else {
-	$content_base_href = 'content/' . $_SESSION['course_id'] . '/';
-} */
 
 if (isset($_POST['cancel'])) {
 	$msg->addFeedback('CANCELLED');
@@ -43,8 +37,8 @@ if (isset($_POST['cancel'])) {
 		//Check if the title has exceeded the DB length, 100
 		$_POST['title'] = validate_length($_POST['title'], 100);
 
-		$sql = "UPDATE ".TABLE_PREFIX."news SET title='$_POST[title]', body='$_POST[body_text]', formatting=$_POST[formatting], date=date WHERE news_id=$_POST[aid] AND course_id=$_SESSION[course_id]";
-		$result = mysql_query($sql,$db);
+		$sql = "UPDATE %snews SET title='%s', body='%s', formatting=%d, date=date WHERE news_id=%s AND course_id=%d";
+		$result = queryDB($sql, array(TABLE_PREFIX, $_POST['title'], $_POST['body_text'], $_POST['formatting'], $_POST['aid'], $_SESSION['course_id']));
 
 		/* update announcement RSS: */
 		if (file_exists(AT_CONTENT_DIR . 'feeds/' . $_SESSION['course_id'] . '/RSS1.0.xml')) {
@@ -100,9 +94,10 @@ if ($aid == 0) {
 	exit;
 }
 
-$sql = "SELECT * FROM ".TABLE_PREFIX."news WHERE news_id=$aid AND course_id=$_SESSION[course_id]";
-$result = mysql_query($sql,$db);
-if (!($row = mysql_fetch_array($result))) {
+$sql = "SELECT * FROM %snews WHERE news_id=%d AND course_id=%d";
+$row = queryDB($sql,array(TABLE_PREFIX, $aid, $_SESSION['course_id']), TRUE);
+
+if(count($row) == 0){
 	$msg->printErrors('ITEM_NOT_FOUND');
 	require (AT_INCLUDE_PATH.'footer.inc.php');
 	exit;
