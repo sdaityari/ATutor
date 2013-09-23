@@ -31,13 +31,15 @@ if (isset($_POST['cancel'])) {
 		if (!(preg_match("/^[a-zA-Z0-9_]([a-zA-Z0-9_])*$/i", $_POST['login']))) {
 			$msg->addError('LOGIN_CHARS');
 		} else {
-			$result = mysql_query("SELECT * FROM ".TABLE_PREFIX."members WHERE login='$_POST[login]'",$db);
-			if (mysql_num_rows($result) != 0) {
+			$sql = "SELECT * FROM %smembers WHERE login='%s'";
+			$rows_members = queryDB($sql,array(TABLE_PREFIX, $_POST['login']));
+			if(count($rows_members) != 0){
 				$msg->addError('LOGIN_EXISTS');
 			} 
 						
-			$result = mysql_query("SELECT * FROM ".TABLE_PREFIX."admins WHERE login='$_POST[login]'",$db);
-			if (mysql_num_rows($result) != 0) {
+			$sql = "SELECT * FROM %sadmins WHERE login='%s'";
+			$rows_admins = queryDB($sql, array(TABLE_PREFIX, $_POST['login']));
+			if(count($rows_admins) != 0){
 				$msg->addError('LOGIN_EXISTS');
 			}
 		}
@@ -63,12 +65,20 @@ if (isset($_POST['cancel'])) {
 	} else if (!preg_match("/^[a-z0-9\._-]+@+[a-z0-9\._-]+\.+[a-z]{2,6}$/i", $_POST['email'])) {
 		$msg->addError('EMAIL_INVALID');
 	}
-	$result = mysql_query("SELECT * FROM ".TABLE_PREFIX."members WHERE email LIKE '$_POST[email]'",$db);
-	if (mysql_num_rows($result) != 0) {
+
+	$sql = "SELECT * FROM %smembers WHERE email LIKE '%s'";
+	$rows_email = queryDB($sql, array(TABLE_PREFIX, $_POST['email']));
+	if(count($rows_email) != 0){
 		$valid = 'no';
 		$msg->addError('EMAIL_EXISTS');
 	}
-
+	
+	$sql = "SELECT * FROM %sadmins WHERE email LIKE '%s'";
+	$rows_email = queryDB($sql, array(TABLE_PREFIX, $_POST['email']));
+	if(count($rows_email) != 0){
+		$valid = 'no';
+		$msg->addError('EMAIL_EXISTS');
+	}
 	$priv = 0;
 	if (isset($_POST['priv_admin'])) {
 		// overrides all above.
@@ -78,7 +88,6 @@ if (isset($_POST['cancel'])) {
 			$priv += intval($value);
 		}
 	}
-	$_POST['privs'] = $priv;
 
 	if ($missing_fields) {
 		$missing_fields = implode(', ', $missing_fields);
@@ -93,30 +102,30 @@ if (isset($_POST['cancel'])) {
 
 		$admin_lang = $_config['default_language']; 
 
-		$sql    = "INSERT INTO ".TABLE_PREFIX."admins
+		$sql    = "INSERT INTO %sadmins
 		                 (login,
 		                  password,
 		                  real_name,
 		                  email,
 		                  language,
-		                  `privileges`,
+		                  privileges,
 		                  last_login)
-		          VALUES ('$_POST[login]', 
-		                  '$password', 
-		                  '$_POST[real_name]', 
-		                  '$_POST[email]', 
-		                  '$admin_lang', 
-		                  $priv, 
+		          VALUES ('%s', 
+		                  '%s', 
+		                  '%s', 
+		                  '%s', 
+		                  '%s', 
+		                  %d, 
 		                  0)";
-		$result = mysql_query($sql, $db) or die(mysql_error());
-
+		$result = queryDB($sql, array(TABLE_PREFIX, $_POST['login'], $password, $_POST['real_name'], $_POST['email'], $admin_lang, $priv));
+	
 		$sql    = "INSERT INTO ".TABLE_PREFIX."admins
 		                 (login,
 		                  password,
 		                  real_name,
 		                  email,
 		                  language,
-		                  `privileges`,
+		                  privileges,
 		                  last_login)
 		          VALUES ('$_POST[login]', 
 		                  '********', 
@@ -124,9 +133,8 @@ if (isset($_POST['cancel'])) {
 		                  '$_POST[email]', 
 		                  '$admin_lang', 
 		                  $priv, 
-		                  0)";
-		                  
-		write_to_log(AT_ADMIN_LOG_INSERT, 'admins', mysql_affected_rows($db), $sql);
+		                  0)";               
+		write_to_log(AT_ADMIN_LOG_INSERT, 'admins', $result, $sql);
 
 		$msg->addFeedback('ADMIN_CREATED');
 		header('Location: index.php');
