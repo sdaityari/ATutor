@@ -129,16 +129,17 @@ function print_organizations($parent_id,
 
                     /* TODO *************BOLOGNA*************REMOVE ME*********/
                     //recupero i forum associati al contenuto corrente
-                    $sql = "SELECT cf.forum_id, f.title, f.description FROM (SELECT * FROM ".TABLE_PREFIX."content_forums_assoc WHERE content_id=$content[content_id]) AS cf LEFT JOIN ".TABLE_PREFIX."forums f ON cf.forum_id=f.forum_id";
-                    $result_cf = mysql_query($sql,$db);
-                    $cf_count = mysql_num_rows($result_cf);
-   
+
+                    $sql = "SELECT cf.forum_id, f.title, f.description FROM (SELECT * FROM %scontent_forums_assoc WHERE content_id=%d) AS cf LEFT JOIN %sforums f ON cf.forum_id=f.forum_id";
+                    $rows_forums_assocs = queryDB($sql, array(TABLE_PREFIX, $content['content_id'], TABLE_PREFIX));
+                    $cf_count = count($rows_forums_assocs);
+                    
                     //per ogni forum ottenuto controllo se è già stato caricato nell'array
                     //necessario mantenerlo distinto poichè NON si prevedono funzioni sul
                     //controllo dei nomi nell'inserimento di file nell'archivio.
                     $find=false;
                     $forums_dependency='';  //template for associate Discussion Topic to the current content into the manifest
-                    while($current_forum = mysql_fetch_assoc($result_cf)) {
+                    foreach($rows_forums_assocs as $current_forum){
                         for($j=0;$j<$f_count;$j++) {
                             if($forum_list[$j]['id'] == $current_forum['forum_id'])
                                 $find= true;
@@ -155,9 +156,10 @@ function print_organizations($parent_id,
                     }
 
 			 /** Test dependency **/
-			 $sql = 'SELECT * FROM '.TABLE_PREFIX.'content_tests_assoc WHERE content_id='.$content['content_id'];
-			 $result = mysql_query($sql, $db);
-			 while ($row = mysql_fetch_assoc($result)){
+			 $sql = 'SELECT * FROM %scontent_tests_assoc WHERE content_id=%d';
+			 $rows_test_assocs = queryDB($sql, array(TABLE_PREFIX, $content['content_id']));
+			 
+             foreach($rows_test_assocs as $row){
 				//add test dependency on top of forum dependency
 				$forums_dependency .= $prefix.$space.'<dependency identifierref="MANIFEST01_RESOURCE_QTI'.$row['test_id'].'" />';
 			 }
@@ -220,7 +222,6 @@ function print_organizations($parent_id,
 				$content_test_rs = $contentManager->getContentTestsAssoc($content['content_id']);	
 				$test_ids = array();		//reset test ids
 				//$my_files = array();		//reset myfiles.
-				while ($content_test_row = mysql_fetch_assoc($content_test_rs)){
 					//export
 					$test_ids[] = $content_test_row['test_id'];
 					//the 'added_files' is for adding into the manifest file in this zip
@@ -234,11 +235,7 @@ function print_organizations($parent_id,
 					$resources .= str_replace(	array('{TEST_ID}', '{PATH}', '{FILES}'),
 												array($content_test_row['test_id'], 'tests_'.$content_test_row['test_id'].'.xml', $added_files_xml),
 												$ims_template_xml['resource_test']); 
-/*	Taken out since we are gonna use dependency instead
-					$test_xml_items .= str_replace(	array('{TEST_ID}'),
-												array($content_test_row['test_id']),
-												$ims_template_xml['test']); 
-*/
+
 					foreach($test_files as $filename=>$realfilepath){
 						$zipfile->add_file(@file_get_contents($realfilepath), 'resources/'.$filename, filemtime($realfilepath));
 					}

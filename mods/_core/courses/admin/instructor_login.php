@@ -21,20 +21,21 @@ if (isset($_POST['submit_yes'])) {
 
 	$admin_login = $_SESSION['login'];
 
-	$sql = "SELECT M.member_id, M.login, M.preferences, M.language FROM ".TABLE_PREFIX."members M, ".TABLE_PREFIX."courses C WHERE C.course_id=".$_POST['course']." and C.member_id=M.member_id";
-	$result = mysql_query($sql, $db);
-	if ($row = mysql_fetch_assoc($result)) {
+	$sql = "SELECT M.member_id, M.login, M.preferences, M.language FROM %smembers M, %scourses C WHERE C.course_id=%d and C.member_id=M.member_id";
+	$row_member = queryDB($sql, array(TABLE_PREFIX, TABLE_PREFIX, $_POST['course']), TRUE);
+	
+	if(count($row_member) > 0){
 		$_SESSION['course_id']  = 0;
-		$_SESSION['login']		= $row['login'];
+		$_SESSION['login']		= $row_member['login'];
 		$_SESSION['valid_user'] = true;
-		$_SESSION['member_id']	= intval($row['member_id']);
+		$_SESSION['member_id']	= intval($row_member['member_id']);
 		unset($_SESSION['prefs']);
 		if ($row['preferences'] == "")
 			assign_session_prefs(unserialize(stripslashes($_config["pref_defaults"])), 1);
 		else
-			assign_session_prefs(unserialize(stripslashes($row['preferences'])), 1);
+			assign_session_prefs(unserialize(stripslashes($row_member['preferences'])), 1);
 		$_SESSION['is_guest']	= 0;
-		$_SESSION['lang']		= $row['language'];
+		$_SESSION['lang']		= $row_member['language'];
 		$_SESSION['is_super_admin'] = $admin_login;
 		session_write_close();
 
@@ -50,9 +51,8 @@ if (isset($_POST['submit_yes'])) {
 
 require(AT_INCLUDE_PATH.'header.inc.php'); 
 
-	$sql = "SELECT * FROM ".TABLE_PREFIX."courses WHERE course_id=".$_REQUEST['course'];
-	$result = mysql_query($sql, $db);
-	$row = mysql_fetch_array($result);
+	$sql = "SELECT * FROM %scourses WHERE course_id=%d";
+	$row = queryDB($sql,array(TABLE_PREFIX, $_REQUEST['course']), TRUE);
 
 	$hidden_vars['course'] = $_GET['course'];
 

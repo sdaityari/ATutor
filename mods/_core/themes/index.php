@@ -38,9 +38,9 @@ if (isset($_GET['export'], $_GET['theme_dir'])) {
 	}
 	$_config['pref_defaults'] = serialize($_config['pref_defaults']);
 
-	$sql    = "REPLACE INTO ".TABLE_PREFIX."config VALUES ('pref_defaults','{$_config['pref_defaults']}')";
-	$result = mysql_query($sql, $db);
-
+	$sql    = "REPLACE INTO %sconfig VALUES ('pref_defaults','%s')";
+	$result = queryDB($sql, array(TABLE_PREFIX, $_config['pref_defaults']));
+	
 	header('Location: '.$_SERVER['PHP_SELF']);
 	exit;
 } else if (isset($_GET['enable'], $_GET['theme_dir'])) {
@@ -101,17 +101,20 @@ if (!is_writeable(AT_SUBSITE_THEME_DIR)): ?>
 	<br />
 <?php endif; 
 
-$sql    = "SELECT * FROM " . TABLE_PREFIX . "themes WHERE type='".DESKTOP_DEVICE."' ORDER BY title ASC";
-$result = mysql_query($sql, $db);
-print_data_table($result, DESKTOP_DEVICE);
+$sql    = "SELECT * FROM %sthemes WHERE type='%s' ORDER BY title ASC";
+$rows_desktop = queryDB($sql, array(TABLE_PREFIX, DESKTOP_DEVICE));
+
+print_data_table($rows_desktop , DESKTOP_DEVICE);
+
 echo '<br /><br />';
-$sql    = "SELECT * FROM " . TABLE_PREFIX . "themes WHERE type='".MOBILE_DEVICE."' ORDER BY title ASC";
-$result = mysql_query($sql, $db);
-print_data_table($result, MOBILE_DEVICE);
+$sql    = "SELECT * FROM %sthemes WHERE type='%s' ORDER BY title ASC";
+$rows_mobile = queryDB($sql, array(TABLE_PREFIX, MOBILE_DEVICE));
+
+print_data_table($rows_mobile, MOBILE_DEVICE);
 ?>
 
-<?php function print_data_table($result, $type) {
-	if (@mysql_num_rows($result) == 0) return;
+<?php function print_data_table($rows_themes, $type) {
+    if(count($rows_themes) == 0) return;
 ?>
 <h3><?php if ($type == DESKTOP_DEVICE) echo _AT('themes_for_desktop'); else echo _AT('themes_for_mobile');?></h3><br />
 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="get" name="form_<?php echo $type; ?>">
@@ -145,17 +148,16 @@ print_data_table($result, MOBILE_DEVICE);
 // For each theme:
 // 1. find out where the theme folder is. It could be from the main site or a subsite configuration folder.
 // 2. Disallow the deletion of the system themes if the request is from a subsite. This is achieved by using css class "AT_disable_del"
-while($row = mysql_fetch_assoc($result)) {
+foreach($rows_themes as $row){
 	$customized = intval($row["customized"]);
 
 	$main_theme_dir = get_main_theme_dir($customized);
 	if($customized == '1'){
 	    global $theme_path;
 	}
-	
 ?>
 
-	<tr class="AT_theme_row <?php if (!$customized) echo 'AT_disable_del'; ?>">
+	<tr class="AT_theme_row <?php if (!$customized && defined('IS_SUBSITE') && IS_SUBSITE) echo 'AT_disable_del'; ?>">
 		<td valign="top">
 			<input type="radio" name="theme_dir" value="<?php echo $row['dir_name']; ?>" />
 			<input type="hidden" name="<?php echo $row['dir_name']; ?>_version" value="<?php echo $row['version']; ?>" />
