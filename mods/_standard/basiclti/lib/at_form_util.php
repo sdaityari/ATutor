@@ -200,6 +200,7 @@ function at_form_validate($form_definition, $msg ) {
 }
 
 function at_get_field_value($fieldvalue, $type = false) {
+    global  $addslashes;
     if ( $fieldvalue === false ) {
        $fieldvalue = 'NULL';
     } else if ( is_int($fieldvalue) ) {
@@ -207,7 +208,7 @@ function at_get_field_value($fieldvalue, $type = false) {
     } else if ( $type == 'radio' || $type == 'integer') {
         if ( strlen($fieldvalue) < 1 ) $fieldvalue = '0';
     } else {
-        $fieldvalue = "'".mysql_real_escape_string($fieldvalue)."'";
+        $fieldvalue = "'".$addslashes($fieldvalue)."'";
     }
     return $fieldvalue;
 }
