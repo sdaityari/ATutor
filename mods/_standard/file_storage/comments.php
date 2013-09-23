@@ -43,8 +43,7 @@ if (!$files) {
 ?>
 
 <?php if ($_config['fs_versioning']): ?>
-    <form method="get" action="<?php echo 'mods/_standard/file_storage/comments.php'
-	//@harris echo $_SERVER['PHP_SELF']; ?>">
+    <form method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>">
     <input type="hidden" name="ot" value="<?php echo $owner_type; ?>" />
     <input type="hidden" name="oid" value="<?php echo $owner_id; ?>" />
     <div class="input-form" style="width: 95%">
@@ -82,11 +81,13 @@ if (!$files) {
 </div>
 
 <?php
-$_GET['comment_id'] = isset($_GET['comment_id']) ? intval($_GET['comment_id']) : 0;
-	$sql = "SELECT * FROM ".TABLE_PREFIX."files_comments WHERE file_id=$id ORDER BY date ASC";
-	$result = mysql_query($sql, $db);
-if ($row = mysql_fetch_assoc($result)): ?>
-	<?php do { ?>
+    $_GET['comment_id'] = isset($_GET['comment_id']) ? intval($_GET['comment_id']) : 0;
+	$sql = "SELECT * FROM %sfiles_comments WHERE file_id=%d ORDER BY date ASC";
+	$rows_files_comments = queryDB($sql, array(TABLE_PREFIX, $id));
+	
+	if(count($rows_files_comments) > 0): ?>
+	
+	<?php foreach($rows_files_comments as $row){ ?>
 		<div class="input-form" id="comment<?php echo $row['comment_id']; ?>">
 			<div class="row">
 				<h4><?php echo get_display_name($row['member_id']); ?> - <?php echo AT_date(_AT('filemanager_date_format'), $row['date'], AT_DATE_MYSQL_DATETIME); ?></h4>
@@ -113,7 +114,7 @@ if ($row = mysql_fetch_assoc($result)): ?>
 				    <?php endif; ?>
 				</div>
 		    </div>
-	    <?php } while ($row = mysql_fetch_assoc($result)); //do while loop ends ?>
+	<?php }  ?>
 <?php elseif(0): ?>
 	<div class="input-form">
 		<div class="row">

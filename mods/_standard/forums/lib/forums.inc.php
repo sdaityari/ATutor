@@ -19,18 +19,17 @@ if (!defined('AT_INCLUDE_PATH')) { exit; }
 * @access  public
 * @param   integer $course		id of the course
 * @return  string array			each row is a forum 
-* @see     $db					in include/vitals.inc.php
 * @see     is_shared_forum()
 * @author  Heidi Hazelton
 * @author  Joel Kronenberg
 */
 function get_forums($course) {
-	global $db;
-
 	if ($course) {
-		$sql	= "SELECT F.*, DATE_FORMAT(F.last_post, '%Y-%m-%d %H:%i:%s') AS last_post FROM ".TABLE_PREFIX."forums_courses FC INNER JOIN ".TABLE_PREFIX."forums F USING (forum_id) WHERE FC.course_id=$course GROUP BY FC.forum_id ORDER BY F.title";
+		$sql	= "SELECT F.*, DATE_FORMAT(F.last_post, '%%Y-%%m-%%d %%H:%%i:%%s') AS last_post FROM %sforums_courses FC INNER JOIN %sforums F USING (forum_id) WHERE FC.course_id=%d GROUP BY FC.forum_id ORDER BY F.title";
+	    $rows_forums = queryDB($sql, array(TABLE_PREFIX, TABLE_PREFIX, $course));
 	} else {
-		$sql	= "SELECT F.*, FC.course_id, DATE_FORMAT(F.last_post, '%Y-%m-%d %H:%i:%s') AS last_post FROM ".TABLE_PREFIX."forums_courses FC INNER JOIN ".TABLE_PREFIX."forums F USING (forum_id) GROUP BY FC.forum_id ORDER BY F.title";
+		$sql	= "SELECT F.*, FC.course_id, DATE_FORMAT(F.last_post, '%%Y-%%m-%%d %%H:%%i:%%s') AS last_post FROM %sforums_courses FC INNER JOIN %sforums F USING (forum_id) GROUP BY FC.forum_id ORDER BY F.title";
+	    $rows_forums = queryDB($sql, array(TABLE_PREFIX, TABLE_PREFIX));
 	}
 
 	// 'nonshared' forums are always listed first:
@@ -38,8 +37,7 @@ function get_forums($course) {
 	$forums['shared']    = array();
 	$forums['group']     = array();
 
-	$result = mysql_query($sql, $db);
-	while ($row = mysql_fetch_assoc($result)) {
+	foreach($rows_forums as $row){
 		// for each forum, check if it's shared or not:
 
 		if (is_shared_forum($row['forum_id'])) {
@@ -57,31 +55,30 @@ function get_forums($course) {
 
 	// filter out the groups that do not belong to the given course
 	foreach ($_SESSION['groups'] as $group) {
-		$sql = "SELECT * FROM ".TABLE_PREFIX."groups g, ". TABLE_PREFIX."groups_types gt
-		         WHERE g.group_id=".$group."
+		$sql = "SELECT * FROM %sgroups g, %sgroups_types gt
+		         WHERE g.group_id=%d
 		           AND g.type_id = gt.type_id
-		           AND gt.course_id=".$course;
-		$result = mysql_query($sql, $db);
-		
-		if (mysql_num_rows($result) > 0){
+		           AND gt.course_id=%d";
+		$rows_forums = queryDB($sql, array(TABLE_PREFIX, TABLE_PREFIX, $group, $course));
+		if($rows_forums > 0){
 			$groups .= $group .',';
 		}
 	}
+
 	if (isset($groups)) {
 		$groups = substr($groups, 0, -1);
-		$sql = "SELECT F.*, G.group_id FROM ".TABLE_PREFIX."forums_groups G 
-		         INNER JOIN ".TABLE_PREFIX."forums F 
+		$sql = "SELECT F.*, G.group_id FROM %sforums_groups G 
+		         INNER JOIN %sforums F 
 		         USING (forum_id) 
-		         WHERE G.group_id IN ($groups) 
+		         WHERE G.group_id IN (%s) 
 		         ORDER BY F.title";
-		
-		$result = mysql_query($sql, $db);
-		while ($row = mysql_fetch_assoc($result)) {
+		$rows_gforums = queryDB($sql, array(TABLE_PREFIX, TABLE_PREFIX, $groups));
+
+		foreach($rows_gforums as $row){
 			$row['title'] = get_group_title($row['group_id']);
 			$forums['group'][] = $row;
 		}
 	}
-	
 	return $forums;	
 }
 
@@ -90,15 +87,11 @@ function get_forums($course) {
 * @access  public
 * @param   integer $forum_id	id of the forum
 * @return  boolean				true if this forum is shared, false otherwise
-* @see     $db					in include/vitals.inc.php
 * @author  Joel Kronenberg
 */
 function is_shared_forum($forum_id) {
-	global $db;
-
-	$sql = "SELECT COUNT(*) AS cnt FROM ".TABLE_PREFIX."forums_courses WHERE forum_id=$forum_id";
-	$result = mysql_query($sql, $db);
-	$row = mysql_fetch_assoc($result);
+	$sql = "SELECT COUNT(*) AS cnt FROM %sforums_courses WHERE forum_id=%d";
+	$row = queryDB($sql, array(TABLE_PREFIX, $forum_id), TRUE);
 
 	if ($row['cnt'] > 1) {
 		return TRUE;
@@ -114,20 +107,20 @@ function is_shared_forum($forum_id) {
 * @param   integer $forum_id	id of the forum
 * @param   integer $course		id of the course (for non-admins)
 * @return  string array			each row is a forum 
-* @see     $db					in include/vitals.inc.php
 * @author  Heidi Hazelton
 */
 function get_forum($forum_id, $course = '') {
-	global $db;
 
 	if (!empty($course)) {
-		$sql	= "SELECT * FROM ".TABLE_PREFIX."forums_courses fc, ".TABLE_PREFIX."forums f WHERE (fc.course_id=$course OR fc.course_id=0) AND fc.forum_id=f.forum_id and fc.forum_id=$forum_id ORDER BY title";
-		$result = mysql_query($sql, $db);
-		$forum = mysql_fetch_assoc($result);
+	
+		$sql	= "SELECT * FROM %sforums_courses fc, %sforums f WHERE (fc.course_id=%d OR fc.course_id=0) AND fc.forum_id=f.forum_id and fc.forum_id=%d ORDER BY title";
+		$forum = queryDB($sql, array(TABLE_PREFIX, TABLE_PREFIX, $course, $forum_id), TRUE);
+
 	} else if (empty($course)) {  	//only admins should be retrieving forums w/o a course!  add this check
-		$sql = "SELECT * FROM ".TABLE_PREFIX."forums WHERE forum_id=$forum_id";
-		$result = mysql_query($sql, $db);
-		$forum = mysql_fetch_assoc($result);
+	
+		$sql = "SELECT * FROM %sforums WHERE forum_id=%d";
+		$forum = queryDB($sql, array(TABLE_PREFIX, $forum_id), TRUE);
+		
 	} else {
 
 		return;
@@ -141,30 +134,27 @@ function get_forum($forum_id, $course = '') {
 * @access  public
 * @param   integer $forum_id	id of the forum
 * @return  boolean				view (true) or not view (false)
-* @see     $db					in include/vitals.inc.php
 * @author  Heidi Hazelton
 */
 function valid_forum_user($forum_id) {
-	global $db;
 
-	$sql	= "SELECT forum_id FROM ".TABLE_PREFIX."forums_courses WHERE (course_id=$_SESSION[course_id] OR course_id=0) AND forum_id=$forum_id";
-	$result = mysql_query($sql, $db);
-	$row = mysql_fetch_assoc($result);
+	$sql	= "SELECT forum_id FROM %sforums_courses WHERE (course_id=%d OR course_id=0) AND forum_id=%d";
+	$row = queryDB($sql, array(TABLE_PREFIX, $_SESSION['course_id'], $forum_id), TRUE);
 
-	if (empty($row)) {
+	if (count($row) == 0) {
 		// not a course forum, let's check group:
 		if (!empty($_SESSION['groups'])){
 			$groups = implode(',', $_SESSION['groups']);
-			$sql	= "SELECT forum_id FROM ".TABLE_PREFIX."forums_groups WHERE group_id IN ($groups) AND forum_id=$forum_id";
-			$result = mysql_query($sql, $db);
-			if ($row = mysql_fetch_assoc($result)) {
+			
+			$sql	= "SELECT forum_id FROM %sforums_groups WHERE group_id IN (%s) AND forum_id=%d";
+			$row= queryDB($sql, array(TABLE_PREFIX, $groups, $forum_id));
+			
+			if(count($row) >0){
 				return TRUE;
 			}
 		}
-
 		return FALSE;
 	}
-
 	return TRUE;	
 }
 
@@ -172,24 +162,15 @@ function valid_forum_user($forum_id) {
 * Adds a forum
 * @access  public
 * @param   array $_POST			add-forum form variables
-* @see     $db					in include/vitals.inc.php
-* @see     $addslashes			in include/vitals.inc.php
 * @author  Heidi Hazelton
 */
 function add_forum($forum_prop) {
-	global $db;
-	global $addslashes;
 
-	$forum_prop['title'] = $addslashes($forum_prop['title']);
-	$forum_prop['body']  = $addslashes($forum_prop['body']);
-	$forum_prop['edit']  = intval($forum_prop['edit']);
-
-	$sql	= "INSERT INTO ".TABLE_PREFIX."forums VALUES (NULL,'$forum_prop[title]', '$forum_prop[body]', 0, 0, NOW(), $forum_prop[edit])";
-	$result = mysql_query($sql,$db);
+	$sql	= "INSERT INTO %sforums VALUES (NULL,'%s', '%s', 0, 0, NOW(), %d)";
+	$result = queryDB($sql, array(TABLE_PREFIX, $forum_prop['title'], $forum_prop['body'], $forum_prop['edit']));
 
 	$sql	= "INSERT INTO ".TABLE_PREFIX."forums_courses VALUES (LAST_INSERT_ID(),  $_SESSION[course_id])";
-	$result = mysql_query($sql,$db);
-
+	$result = queryDB($sql, array(TABLE_PREFIX, $_SESSION[course_id]));
 	return;
 }
 
@@ -202,18 +183,10 @@ function add_forum($forum_prop) {
 * @author  Heidi Hazelton
 */
 function edit_forum($forum_prop) {
-	global $db;
-	global $addslashes;
 
-	$forum_prop['title']  = $addslashes($forum_prop['title']);
-	$forum_prop['body']   = $addslashes($forum_prop['body']);
-
-	$forum_prop['fid']    = intval($forum_prop['fid']);
-	$forum_prop['edit']    = intval($forum_prop['edit']);
-
-	$sql	= "UPDATE ".TABLE_PREFIX."forums SET title='$forum_prop[title]', description='$forum_prop[body]', last_post=last_post, mins_to_edit=$forum_prop[edit] WHERE forum_id=$forum_prop[fid]";
-	$result = mysql_query($sql,$db);
-
+	$sql	= "UPDATE %sforums SET title='%s', description='%s', last_post=last_post, mins_to_edit=%d WHERE forum_id=%d";
+	$result = queryDB($sql, array(TABLE_PREFIX, $forum_prop['title'], $forum_prop['body'], $forum_prop['edit'], $forum_prop['fid']));
+	
 	return;
 }
 
@@ -223,38 +196,37 @@ function edit_forum($forum_prop) {
 * Assumes the user has the priv to delete this forum.
 * @access  public
 * @param   array $_POST			add-forum form variables
-* @see     $db					in include/vitals.inc.php
-* @see     $addslashes			in include/vitals.inc.php
 * @author  Heidi Hazelton
 */
 function delete_forum($forum_id) {
-	global $db;
 
-	$sql	= "SELECT post_id FROM ".TABLE_PREFIX."forums_threads WHERE forum_id=$forum_id";
-	$result = mysql_query($sql, $db);
-	while ($row = mysql_fetch_array($result)) {
-		$sql	 = "DELETE FROM ".TABLE_PREFIX."forums_accessed WHERE post_id=$row[post_id]";
-		$result2 = mysql_query($sql, $db);
+	$sql	= "SELECT post_id FROM %sforums_threads WHERE forum_id=%d";
+	$rows_threads = queryDB($sql, array(TABLE_PREFIX, $forum_id));
+	
+	foreach($rows_threads as $row){
+
+		$sql	 = "DELETE FROM %sforums_accessed WHERE post_id=%d";
+		$result2 = queryDB($sql, array(TABLE_PREFIX, $row['post_id']));
+
 	}
 
-	$sql	= "DELETE FROM ".TABLE_PREFIX."forums_subscriptions WHERE forum_id=$forum_id";
-	$result = mysql_query($sql, $db);
+	$sql	= "DELETE FROM %sforums_subscriptions WHERE forum_id=%d";
+	$result = queryDB($sql, array(TABLE_PREFIX, $forum_id));
+	
+	$sql    = "DELETE FROM %sforums_threads WHERE forum_id=%d";
+	$result = queryDB($sql, array(TABLE_PREFIX, $forum_id));
+	
+	$sql    = "DELETE FROM %sforums_courses WHERE forum_id=%d";
+	$result = queryDB($sql, array(TABLE_PREFIX, $forum_id));
 
-	$sql    = "DELETE FROM ".TABLE_PREFIX."forums_threads WHERE forum_id=$forum_id";
-	$result = mysql_query($sql, $db);
+	$sql    = "DELETE FROM %sforums WHERE forum_id=%d";
+	$result = queryDB($sql, array(TABLE_PREFIX, $forum_id));
 
-	$sql = "DELETE FROM ".TABLE_PREFIX."forums_courses WHERE forum_id=$forum_id";
-	$result = mysql_query($sql, $db);
+	$sql    = "DELETE FROM %scontent_forums_assoc WHERE forum_id=%d";
+	$result = queryDB($sql, array(TABLE_PREFIX, $forum_id));
 
-	$sql    = "DELETE FROM ".TABLE_PREFIX."forums WHERE forum_id=$forum_id";
-	$result = mysql_query($sql, $db);
-
-	$sql    = "DELETE FROM ".TABLE_PREFIX."content_forums_assoc WHERE forum_id=$forum_id";
-	$result = mysql_query($sql, $db);
-
-	$sql = "OPTIMIZE TABLE ".TABLE_PREFIX."forums_threads";
-	$result = mysql_query($sql, $db);
-
+	$sql = "OPTIMIZE TABLE %sforums_threads";
+	$result = queryDB($sql, array(TABLE_PREFIX));
 }
 
 function print_entry($row) {

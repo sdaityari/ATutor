@@ -646,11 +646,12 @@ INSERT INTO `modules` VALUES ('_standard/assignments',   2, 524288,    0, 0, 0);
 INSERT INTO `modules` VALUES ('_standard/gradebook',     2, 1048576, 4096, 0, 0);
 INSERT INTO `modules` VALUES ('_standard/student_tools', 2, 2097152,   0, 0, 0);
 INSERT INTO `modules` VALUES ('_standard/farchive',      2, 4194304, 0, 0, 0);
-INSERT INTO `modules` VALUES ('_standard/social',	 2, 8388608, 0, 0, 0);
-INSERT INTO `modules` VALUES ('_standard/photos',	 2, 16777216, 0, 0, 0);
+INSERT INTO `modules` VALUES ('_standard/social',	     2, 8388608, 0, 0, 0);
+INSERT INTO `modules` VALUES ('_standard/photos',	     2, 16777216, 0, 0, 0);
 INSERT INTO `modules` VALUES ('_standard/flowplayer',	 2, 33554432, 0, 0, 0);
-INSERT INTO `modules` VALUES ('_standard/basiclti', 2, 67108864, 16384, 0, 0);
+INSERT INTO `modules` VALUES ('_standard/basiclti',      2, 67108864, 16384, 0, 0);
 INSERT INTO `modules` VALUES ('_standard/assignment_dropbox', 2, 134217728, 0, 0, 0);
+INSERT INTO `modules` VALUES ('_standard/calendar',      2, 268435456, 0, 0, 0);
 INSERT INTO `modules` VALUES ('_core/users',             2, 0,         2, 0, 0);
 INSERT INTO `modules` VALUES ('_core/courses',           2, 0,         4, 0, 0);
 INSERT INTO `modules` VALUES ('_core/backups',           2, 1,         8, 0, 0);
@@ -666,12 +667,12 @@ INSERT INTO `modules` VALUES ('_core/content_packaging', 2, 0, 0, 0, 0);
 INSERT INTO `modules` VALUES ('_standard/google_search', 2, 0, 0, 0, 0);
 INSERT INTO `modules` VALUES ('_standard/blogs',         2, 0, 0, 0, 0);
 INSERT INTO `modules` VALUES ('_standard/profile_pictures', 2, 0, 0, 0, 0);
-INSERT INTO `modules` VALUES ('_standard/patcher', 2, 0, 1024, 0, 0);
+INSERT INTO `modules` VALUES ('_standard/patcher',       2, 0, 1024, 0, 0);
 INSERT INTO `modules` VALUES ('_standard/support_tools', 2, 0, 2048, 0, 0);
 # added by Bologna CC. Please check if it is the right position to insert it!
-INSERT INTO `modules` VALUES ('_core/tool_manager', 2, 0, 0, 0, 0);
-INSERT INTO `modules` VALUES ('_core/modules', 2, 0, 8192, 0, 0);
-INSERT INTO `modules` VALUES('_standard/vimeo', 2, 0, 1, 0, 0);
+INSERT INTO `modules` VALUES ('_core/tool_manager',      2, 0, 0, 0, 0);
+INSERT INTO `modules` VALUES ('_core/modules',           2, 0, 8192, 0, 0);
+INSERT INTO `modules` VALUES('_standard/vimeo',          2, 0, 1, 0, 0);
 
 # --------------------------------------------------------
 # Table structure for table `news`
@@ -1022,19 +1023,20 @@ CREATE TABLE `myown_patches_files` (
 ) ENGINE = MyISAM ;
 
 # insert the default theme
-INSERT INTO `themes` VALUES ('ATutor', '2.1', 'default', 'Desktop', NOW(), 'This is the default ATutor theme and cannot be deleted as other themes inherit from it. Please do not alter this theme directly as it would complicate upgrading. Instead, create a new theme derived from this one.', 2, 0);
-INSERT INTO `themes` VALUES ('Fluid', '2.1', 'fluid', 'Desktop', NOW(), 'Theme that implements the Fluid reorderer used to drag-and-drop the menu from side-to-side.', 1, 0);
-INSERT INTO `themes` VALUES ('ATutor Classic', '2.1', 'default_classic', 'Desktop', NOW(), 'This is the ATutor Classic theme which makes use of the custom Header and logo images. To customize those images you must edit the <code>theme.cfg.php</code> in this themes directory.', 1,0);
-INSERT INTO `themes` VALUES ('Blumin', '2.1', 'blumin', 'Desktop', NOW(), 'This is the plone look-alike theme.', 1, 0); 
-INSERT INTO `themes` VALUES ('Greenmin', '2.1', 'greenmin', 'Desktop', NOW(), 'This is the plone look-alike theme in green.', 1, 0);
-INSERT INTO `themes` VALUES ('ATutor 2.0', '2.1', 'default20', 'Desktop', NOW(), 'This is the ATutor 2.0 series Default theme.', 1, 0);
+INSERT INTO `themes` VALUES ('ATutor', '2.2', 'default', 'Desktop', NOW(), 'This is the default ATutor theme and cannot be deleted as other themes inherit from it. Please do not alter this theme directly as it would complicate upgrading. Instead, create a new theme derived from this one.', 2, 0);
+INSERT INTO `themes` VALUES ('ATutor 2.1', '2.2', 'default21', 'Desktop', NOW(), 'This is the ATutor 2.1 series defailt theme.', 1, 0);
+INSERT INTO `themes` VALUES ('Fluid', '2.2', 'fluid', 'Desktop', NOW(), 'Theme that implements the Fluid reorderer used to drag-and-drop the menu from side-to-side.', 1, 0);
+INSERT INTO `themes` VALUES ('ATutor Classic', '2.2', 'default_classic', 'Desktop', NOW(), 'This is the ATutor Classic theme which makes use of the custom Header and logo images. To customize those images you must edit the <code>theme.cfg.php</code> in this themes directory.', 1,0);
+INSERT INTO `themes` VALUES ('Blumin', '2.2', 'blumin', 'Desktop', NOW(), 'This is the plone look-alike theme.', 1, 0); 
+INSERT INTO `themes` VALUES ('Greenmin', '2.2', 'greenmin', 'Desktop', NOW(), 'This is the plone look-alike theme in green.', 1, 0);
+INSERT INTO `themes` VALUES ('ATutor 2.0', '2.2', 'default20', 'Desktop', NOW(), 'This is the ATutor 2.0 series Default theme.', 1, 0);
 
-INSERT INTO `themes` VALUES ('ATutor 1.5', '2.1', 'default15', 'Desktop', NOW(), 'This is the 1.5 series default theme.', 1, 0);
-INSERT INTO `themes` VALUES ('ATutor 1.6', '2.1', 'default16', 'Desktop', NOW(), 'This is the 1.6 series default theme.', 1, 0);
-INSERT INTO `themes` VALUES ('IDI Theme', '2.1', 'idi', 'Desktop', NOW(), 'The theme created for the IDI course server.', 1, 0);
-INSERT INTO `themes` VALUES ('Mobile', '2.1', 'mobile', 'Mobile', NOW(), 'This is the default theme for mobile devices.', 3, 0);
-INSERT INTO `themes` VALUES('Simple', '2.1', 'simplified_desktop', 'Desktop', NOW(), 'An adapted version of the iPad theme, designed to make a desktop look like an iPad.', 1, 0);
-INSERT INTO `themes` VALUES('ATutorSpaces', '2.1', 'atspaces', 'Desktop', NOW(), 'This is the default theme for the ATutorSpaces.com hosting service.', 1, 0);
+INSERT INTO `themes` VALUES ('ATutor 1.5', '2.2', 'default15', 'Desktop', NOW(), 'This is the 1.5 series default theme.', 1, 0);
+INSERT INTO `themes` VALUES ('ATutor 1.6', '2.2', 'default16', 'Desktop', NOW(), 'This is the 1.6 series default theme.', 1, 0);
+INSERT INTO `themes` VALUES ('IDI Theme', '2.2', 'idi', 'Desktop', NOW(), 'The theme created for the IDI course server.', 1, 0);
+INSERT INTO `themes` VALUES ('Mobile', '2.2', 'mobile', 'Mobile', NOW(), 'This is the default theme for mobile devices.', 3, 0);
+INSERT INTO `themes` VALUES('Simple', '2.2', 'simplified_desktop', 'Desktop', NOW(), 'An adapted version of the iPad theme, designed to make a desktop look like an iPad.', 1, 0);
+INSERT INTO `themes` VALUES('ATutorSpaces', '2.2', 'atspaces', 'Desktop', NOW(), 'This is the default theme for the ATutorSpaces.com hosting service.', 1, 0);
 
 # --------------------------------------------------------
 # Table structure for table `users_online`
@@ -1632,3 +1634,36 @@ INSERT INTO `config` (`name`,`value`) VALUES ('transformable_oauth_expire','9360
 ########
 # Set the default Home URL to atutorspaces.com
 INSERT INTO `config` (`name`,`value`) VALUES ('home_url','http://www.atutorspaces.com');
+
+########
+# sql  for calendar module
+
+CREATE TABLE `calendar_events` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(256),
+  `start` datetime,
+  `end` datetime,
+  `allDay` varchar(20),
+  `userid` int(8),
+  PRIMARY KEY (`id`)
+) ENGINE = MyISAM;
+
+CREATE TABLE `calendar_google_sync` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `token` varchar(256),
+  `userid` int(8),
+  `calids` text,
+  PRIMARY KEY (`id`)
+) ENGINE = MyISAM;
+
+CREATE TABLE `calendar_bookmark` (
+  `memberid` int(11),
+  `ownerid` int(8),
+  `courseid` int(8),
+  `calname` varchar(256)
+) ENGINE = MyISAM;
+
+CREATE TABLE `calendar_notification` (
+  `memberid` int(11),
+  `status` int(8)
+) ENGINE = MyISAM;
