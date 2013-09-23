@@ -118,14 +118,11 @@ function assign_categories_course_count(&$categories) {
 
 	$num_uncategorized = 0;
 
-	//$sql = "SELECT cat_id, COUNT(*) AS cnt FROM ".TABLE_PREFIX."courses GROUP BY cat_id";
-	//$result = mysql_query($sql, $db);
 	
 	$sql = "SELECT cat_id, COUNT(*) AS cnt FROM %scourses GROUP BY cat_id";
 	$rows_cats = queryDB($sql, array(TABLE_PREFIX), true);
 	
 	foreach($rows_cats, as $rows){
-	//while ($row = mysql_fetch_assoc($result)) {
 		if ($row['cat_id'] == 0) {
 			$num_uncategorized = $row['cnt'];
 		} else {

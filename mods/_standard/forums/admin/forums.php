@@ -40,16 +40,18 @@ require(AT_INCLUDE_PATH.'header.inc.php');
 	$shared_forums = array();
 	$i = 0;
 		
-	if ($num_shared) {
+	if ($num_shared > 0) {
 		foreach ($all_forums['shared'] as $forum) {
 			$shared_forums[$i]["id"] = $forum['forum_id'];
 			$shared_forums[$i]["title"] = AT_print($forum['title'], 'forums.title');   
 			$shared_forums[$i]["desc"] = AT_print($forum['description'], 'forums.description');
 
 			$courses = array();//create an empty array
-			$sql = "SELECT F.course_id FROM ".TABLE_PREFIX."forums_courses F WHERE F.forum_id=$forum[forum_id]";
-			$c_result = mysql_query($sql, $db);
-			while ($course = mysql_fetch_assoc($c_result)) {
+
+			$sql = "SELECT F.course_id FROM %sforums_courses F WHERE F.forum_id=%d";
+			$rows_courses = queryDB($sql, array(TABLE_PREFIX, $forum['forum_id']));
+			
+			foreach($rows_courses as $course){
 				$courses[] = $system_courses[$course['course_id']]['title'];
 			}
 			natcasesort($courses);
@@ -58,10 +60,6 @@ require(AT_INCLUDE_PATH.'header.inc.php');
 			$i++;
 
 		}
-	} else {
-		echo '<tr>';
-		echo '	<td colspan="4"><strong>' . _AT('no_forums') . '</strong></td>';
-		echo '</tr>';
 	}
 
 $nonshared_forums = array();
