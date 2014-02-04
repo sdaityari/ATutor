@@ -86,4 +86,7 @@ $savant->assign('related_word', $related_word);
 $savant->assign('def_trunc', $def_trunc);	
 
 $savant->display('instructor/glossary/index.tmpl.php');
-require(AT_INCLUDE_PATH.'footer.inc.php'); ?>
+?>
+<script type="text/javascript" src="<?php echo AT_BASE_HREF; ?>jscripts/ajax/Glossary.js"></script>
+<script type="text/javascript" src="<?php echo AT_BASE_HREF; ?>jscripts/ajax/Functions.js"></script>
+<?php require(AT_INCLUDE_PATH.'footer.inc.php'); ?>
