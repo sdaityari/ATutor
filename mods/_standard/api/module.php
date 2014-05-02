@@ -26,7 +26,7 @@ define('AT_ADMIN_PRIV_api', $this->getAdminPrivilege());
 /*******
  * create a side menu box/stack.
  */
-$this->_stacks['api'] = array('title_var'=>'api', 'file'=>'mods/api/side_menu.inc.php');
+//$this->_stacks['api'] = array('title_var'=>'api', 'file'=>'mods/api/side_menu.inc.php');
 // ** possible alternative: **
 // $this->addStack('api', array('title_var' => 'api', 'file' => './side_menu.inc.php');
 
@@ -49,8 +49,8 @@ if (admin_authenticate(AT_ADMIN_PRIV_api, TRUE) || admin_authenticate(AT_ADMIN_P
 /*******
  * instructor Manage section:
  */
-$this->_pages['mods/api/index_instructor.php']['title_var'] = 'api';
-$this->_pages['mods/api/index_instructor.php']['parent']   = 'tools/index.php';
+//$this->_pages['mods/api/index_instructor.php']['title_var'] = 'api';
+//$this->_pages['mods/api/index_instructor.php']['parent']   = 'tools/index.php';
 // ** possible alternative: **
 // $this->pages['./index_instructor.php']['title_var'] = 'api';
 // $this->pages['./index_instructor.php']['parent']    = 'tools/index.php';
