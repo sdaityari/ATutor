@@ -1,6 +1,8 @@
 <?php
 
-//require(AT_INCLUDE_PATH."../api/core/api_functions.php");
+if (!defined('AT_INCLUDE_PATH')) {
+    exit;
+}
 
 $url_prefix = "/courses";
 

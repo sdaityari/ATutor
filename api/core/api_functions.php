@@ -1,11 +1,14 @@
 <?php
 
-/*
-function module_status(){
+if (!defined('AT_INCLUDE_PATH')) {
+    exit;
+}
+
+function api_module_status(){
     $enabled = queryDB("SELECT * FROM %smodules WHERE dir_name = '%s' and status = %d",
         array(TABLE_PREFIX, "_standard/api", 2));
     return $enabled;
-}*/
+}
 
 function generate_urls($old_array, $prefix) {
     $new_array = array();
