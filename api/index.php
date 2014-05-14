@@ -9,6 +9,10 @@ include_once(AT_INCLUDE_PATH.'../api/core/api_functions.php');
 include_once(AT_INCLUDE_PATH.'vitals.inc.php');
 include_once(AT_INCLUDE_PATH.'lib/vital_funcs.inc.php');
 
+// Enable CORS
+header("Access-Control-Allow-Origin: *");
+
+
 //XXX: Code to check if mod is enabled. Show 404 or error if not enabled.
 if (!api_module_status()) {
     //header('HTTP/1.0 404 Not Found');
