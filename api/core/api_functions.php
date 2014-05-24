@@ -18,4 +18,8 @@ function generate_urls($old_array, $prefix) {
     return $new_array;
 }
 
+function get_access_token($headers) {
+    return AT_print($headers['x-AT-API-TOKEN']);
+}
+
 ?>

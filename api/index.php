@@ -6,6 +6,8 @@ define('AT_INCLUDE_PATH', '../include/');
 $_user_location = 'public';
 
 include_once(AT_INCLUDE_PATH.'../api/core/api_functions.php');
+include_once(AT_INCLUDE_PATH.'../api/core/constants.php');
+
 include_once(AT_INCLUDE_PATH.'vitals.inc.php');
 include_once(AT_INCLUDE_PATH.'lib/vital_funcs.inc.php');
 
@@ -21,6 +23,9 @@ if (!api_module_status()) {
 }
 
 require("lib/Toro.php");
+
+// Core classes
+include(AT_INCLUDE_PATH.'../api/core/router_classes.php');
 
 // Courses app
 include("courses/urls.php");
@@ -53,7 +58,11 @@ class TestHandler {
 $base_urls = array(
     "/" => "TestHandler",
     // Example of variable in the URL
-    "/test/:string" => "TestHandler"
+    "/test/:string" => "TestHandler",
+
+    // Authentication
+    "/login/" => "Authentication",
+    "/logout/" => "Authentication",
 );
 
 // The URL routes
