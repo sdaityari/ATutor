@@ -18,8 +18,22 @@ function generate_urls($old_array, $prefix) {
     return $new_array;
 }
 
+function check_token_exists($token){
+    $check = queryDB("SELECT * FROM %sapi WHERE access_token = %s", array(TABLE_PREFIX, $token));
+    if ($check[0]) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function get_access_token($headers) {
-    return AT_print($headers['x-AT-API-TOKEN']);
+    $token = AT_print($headers['x-AT-API-TOKEN']);
+    if (check_token_exists($token)){
+        return $token;
+    } else {
+        return false;
+    }
 }
 
 ?>

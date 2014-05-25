@@ -25,7 +25,7 @@ class Authentication {
             // TODO - Define access level with member_id
             $access_level = TOKEN_ACCESS_LEVEL;
 
-            // Deleting old data
+            // Deleting old data if exists
             queryDB("DELETE FROM %sapi WHERE member_id = %d", array(TABLE_PREFIX, $row['member_id']));
 
             queryDB("INSERT INTO %sapi(member_id, access_level, token, modified, expiry) VALUES(%d, %d, '%s', CURRENT_TIMESTAMP, NOW() + INTERVAL 1 DAY)",
@@ -42,7 +42,11 @@ class Authentication {
     function get() {
         $token = get_access_token(getallheaders());
 
-        // TODO - Check if token exists
+        if (!$token){
+            http_response_code(401);
+            exit;
+        }
+
         queryDB("DELETE FROM %sapi WHERE access_token = %s", array(TABLE_PREFIX, $token));
 
         echo "LOGGED_OUT_SUCCESSFULLY";
