@@ -42,11 +42,6 @@ class Authentication {
     function get() {
         $token = get_access_token(getallheaders());
 
-        if (!$token){
-            http_response_code(401);
-            exit;
-        }
-
         queryDB("DELETE FROM %sapi WHERE access_token = %s", array(TABLE_PREFIX, $token));
 
         echo "LOGGED_OUT_SUCCESSFULLY";

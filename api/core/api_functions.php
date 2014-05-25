@@ -23,7 +23,8 @@ function check_token_exists($token){
     if ($check[0]) {
         return true;
     } else {
-        return false;
+        http_response_code(401);
+        exit;
     }
 }
 
@@ -31,8 +32,6 @@ function get_access_token($headers) {
     $token = AT_print($headers['x-AT-API-TOKEN']);
     if (check_token_exists($token)){
         return $token;
-    } else {
-        return false;
     }
 }
 
