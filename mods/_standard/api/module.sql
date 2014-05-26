@@ -2,7 +2,7 @@
 
 CREATE TABLE IF NOT EXISTS `api` (
     `id` serial,
-    `member_id` mediumint(8) NOT NULL,
+    `member_id` varchar(30),
     `access_level` smallint,
     `token` varchar(50) NOT NULL,
     `created` timestamp DEFAULT CURRENT_TIMESTAMP,
