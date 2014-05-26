@@ -5,31 +5,32 @@ class Authentication {
         $username = addslashes($_POST["username"]);
         $password = addslashes($_POST["password"]);
 
-        $data = queryDB("SELECT member_id, status FROM %smembers WHERE (login = '%s' OR email = '%s') AND password = Sha1('%s')",
-            array(TABLE_PREFIX, $username, $username, $password));
+        $row = queryDB("SELECT member_id, status FROM %smembers WHERE (login = '%s' OR email = '%s') AND password = Sha1('%s')",
+            array(TABLE_PREFIX, $username, $username, $password), true);
+        $row_admin = queryDB("SELECT member_id, status FROM %sadmins WHERE (login = '%s' OR email = '%s') AND password = Sha1('%s')",
+            array(TABLE_PREFIX, $username, $username, $password), true);
 
-        $row = $data[0];
-
-        if (!$row) {
-            // TODO - Make a messaging system
-            echo "WRONG_CREDENTIALS";
+        if (!$row and !$row_admin) {
+            print_error("WRONG_CREDENTIALS");
         } else if ($row['status'] == AT_STATUS_UNCONFIRMED) {
-            echo "NOT_CONFIRMED";
+            print_error("NOT_CONFIRMED");
         } else if ($row['status'] == AT_STATUS_DISABLED) {
-            echo "ACCOUNT_DISABLED";
+            print_error("ACCOUNT_DISABLED");
         } else {
             // Generating API token
             $now = time();
             $token = md5( $row["member_id"] . $now . rand() );
 
+            $member_id = $row?$row['member_id']:$row_admin['login'];
+
             // TODO - Define access level with member_id
             $access_level = TOKEN_ACCESS_LEVEL;
 
             // Deleting old data if exists
-            queryDB("DELETE FROM %sapi WHERE member_id = %d", array(TABLE_PREFIX, $row['member_id']));
+            queryDB("DELETE FROM %sapi WHERE member_id = %d", array(TABLE_PREFIX, $member_id));
 
             queryDB("INSERT INTO %sapi(member_id, access_level, token, modified, expiry) VALUES(%d, %d, '%s', CURRENT_TIMESTAMP, NOW() + INTERVAL 1 DAY)",
-                array(TABLE_PREFIX, $row["member_id"], $access_level, $token));
+                array(TABLE_PREFIX, $member_id, $access_level, $token));
 
             // Returning the access token
             echo json_encode(array(
@@ -42,9 +43,11 @@ class Authentication {
     function get() {
         $token = get_access_token(getallheaders());
 
-        queryDB("DELETE FROM %sapi WHERE access_token = %s", array(TABLE_PREFIX, $token));
+        queryDB("DELETE FROM %sapi WHERE token = '%s'", array(TABLE_PREFIX, $token));
 
-        echo "LOGGED_OUT_SUCCESSFULLY";
+        print json_encode(array(
+            "successMessage" => "LOGGED_OUT_SUCCESSFULLY"
+        ));
     }
 }
 

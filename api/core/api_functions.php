@@ -4,10 +4,10 @@ if (!defined('AT_INCLUDE_PATH')) {
     exit;
 }
 
-function api_module_status(){
+function api_module_status() {
     $enabled = queryDB("SELECT * FROM %smodules WHERE dir_name = '%s' and status = %d",
         array(TABLE_PREFIX, "_standard/api", 2));
-    return $enabled[0]?true:false;
+    return count($enabled)?true:false;
 }
 
 function generate_urls($old_array, $prefix) {
@@ -20,20 +20,27 @@ function generate_urls($old_array, $prefix) {
 }
 
 function check_token($token){
-    // TODO - check if token expired as well
-    // TODO - modify modified column in db
-    $check = queryDB("SELECT * FROM %sapi WHERE access_token = %s", array(TABLE_PREFIX, $token));
-    if ($check[0]) {
-        return true;
-    } else {
+    $check = queryDB("SELECT * FROM %sapi WHERE token = '%s' AND expiry > CURRENT_TIMESTAMP", array(TABLE_PREFIX, $token), token);
+    if (!$check) {
         http_response_code(401);
+        print_error("TOKEN_DOES_NOT_EXIST");
         exit;
     }
+
+    // Update modified timestamp
+    queryDB("UPDATE %sapi SET modified = CURRENT_TIMESTAMP, expiry = NOW() + INTERVAL 1 DAY WHERE token = '%s'", array(TABLE_PREFIX, $token));
+    return true;
 }
 
 function get_access_token($headers) {
-    $token = allslashes($headers['x-AT-API-TOKEN']);
+    $token = addslashes($headers['x-AT-API-TOKEN']);
     return check_token($token)?$token:false;
+}
+
+function print_error($message) {
+    print json_encode(array(
+        "errorMessage" => $message
+    ));
 }
 
 ?>
