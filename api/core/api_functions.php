@@ -19,11 +19,16 @@ function generate_urls($old_array, $prefix) {
     return $new_array;
 }
 
-function check_token($token){
-    $check = queryDB("SELECT * FROM %sapi WHERE token = '%s' AND expiry > CURRENT_TIMESTAMP", array(TABLE_PREFIX, $token), token);
+function check_token($token, $minimum_access_level){
+    $check = queryDB("SELECT access_level FROM %sapi WHERE token = '%s' AND expiry > CURRENT_TIMESTAMP",
+        array(TABLE_PREFIX, $token), true);
     if (!$check) {
         http_response_code(401);
         print_error("TOKEN_DOES_NOT_EXIST");
+        exit;
+    } else if ($check["access_level"] > $minimum_access_level) {
+        http_response_code(401);
+        print_error("YOU_ARE_NOT_AUTHORIZED_TO_ACCESS_THIS_RESOURCE");
         exit;
     }
 
@@ -32,9 +37,9 @@ function check_token($token){
     return true;
 }
 
-function get_access_token($headers) {
+function get_access_token($headers, $minimum_access_level = ADMIN_ACCESS_LEVEL) {
     $token = addslashes($headers['x-AT-API-TOKEN']);
-    return check_token($token)?$token:false;
+    return check_token($token, $minimum_access_level)?$token:false;
 }
 
 function print_error($message) {
