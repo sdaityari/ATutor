@@ -48,4 +48,17 @@ function print_error($message) {
     ));
 }
 
+function generate_basic_log($request) {
+    $log = array();
+    $log["ip_address"] = $request["REMOTE_ADDR"];
+    $log["request_uri"] = $request["REQUEST_URI"];
+    $log["http_method"] = $request["REQUEST_METHOD"];
+    return $log;
+}
+
+function log_request($log) {
+    queryDB("INSERT INTO %sapi_logs(ip_address, request_uri, http_method, token, response) VALUES('%s', '%s', '%s', '%s', '%s')",
+        array(TABLE_PREFIX, $log["ip_address"], $log["request_uri"], $log["http_method"], $log["token"], $log["response"]));
+}
+
 ?>

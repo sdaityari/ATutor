@@ -2,6 +2,7 @@
 
 class Authentication {
     function post() {
+        $log = generate_basic_log($_SERVER);
         $username = addslashes($_POST["username"]);
         $password = addslashes($_POST["password"]);
 
@@ -39,21 +40,30 @@ class Authentication {
                 array(TABLE_PREFIX, $member_id, $access_level, $token));
 
             // Returning the access token
-            echo json_encode(array(
+            $response = json_encode(array(
                 "access_token" => $token
             ));
+            $log["response"] = $response;
+            log_request($log);
+            echo $response;
         }
 
     }
 
     function get() {
+        $log = generate_basic_log($_SERVER);
         $token = get_access_token(getallheaders());
+
+        $log["token"] = $token;
 
         queryDB("DELETE FROM %sapi WHERE token = '%s'", array(TABLE_PREFIX, $token));
 
-        print json_encode(array(
+        $response = json_encode(array(
             "successMessage" => "LOGGED_OUT_SUCCESSFULLY"
         ));
+        $log["response"] = $response;
+        log_request($log);
+        echo $response;
     }
 }
 

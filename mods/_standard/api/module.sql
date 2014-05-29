@@ -11,5 +11,17 @@ CREATE TABLE IF NOT EXISTS `api` (
     PRIMARY KEY (`id`)
     );
 
+CREATE TABLE IF NOT EXISTS `api_logs` (
+    `id` serial,
+    `member_id` varchar (30),
+    `ip_address` varchar(15),
+    `request_uri` varchar(100),
+    `http_method` varchar(10),
+    `token` varchar(50),
+    `response` text,
+    `request_time` timestamp default CURRENT_TIMESTAMP
+);
+
+
 INSERT INTO `language_text` VALUES ('en', '_module','api','API', NOW(),'');
 INSERT INTO `language_text` VALUES ('en', '_module','AT_ERROR_GOES_HERE','There was some error with the API request.', NOW(),'');
