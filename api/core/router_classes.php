@@ -20,7 +20,7 @@ class Authentication {
         } else {
             // Generating API token
             $now = time();
-            $member_id = $row_admin?$row_admin['login']:$row['member_id'];
+            $member_id = $row_admin ? $row_admin['login'] : $row['member_id'];
             $token = md5( $member_id . $now . rand() );
 
             if ($row_admin) {

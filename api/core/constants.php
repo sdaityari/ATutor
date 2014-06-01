@@ -1,4 +1,6 @@
 <?php
+    define ("TOKEN_NAME", "x-AT-API-TOKEN");
+
     define("ADMIN_ACCESS_LEVEL", 1);
     define("INSTRUCTOR_ACCESS_LEVEL", 2);
     define("STUDENT_ACCESS_LEVEL", 3);

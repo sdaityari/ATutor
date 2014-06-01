@@ -38,7 +38,7 @@ function check_token($token, $minimum_access_level){
 }
 
 function get_access_token($headers, $minimum_access_level = ADMIN_ACCESS_LEVEL) {
-    $token = addslashes($headers['x-AT-API-TOKEN']);
+    $token = addslashes($headers[TOKEN_NAME]);
     return check_token($token, $minimum_access_level)?$token:false;
 }
 
