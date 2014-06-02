@@ -1,15 +1,15 @@
 <?php
 
-define('AT_INCLUDE_PATH', '../include/');
+define("AT_INCLUDE_PATH", "../include/");
 
 // All restricted areas would be handled using tokens, mangaed from within the API
-$_user_location = 'public';
+$_user_location = "public";
 
-include_once(AT_INCLUDE_PATH.'../api/core/api_functions.php');
-include_once(AT_INCLUDE_PATH.'../api/core/constants.php');
+include_once(AT_INCLUDE_PATH."../api/core/api_functions.php");
+include_once(AT_INCLUDE_PATH."../api/core/constants.php");
 
-include_once(AT_INCLUDE_PATH.'vitals.inc.php');
-include_once(AT_INCLUDE_PATH.'lib/vital_funcs.inc.php');
+include_once(AT_INCLUDE_PATH."vitals.inc.php");
+include_once(AT_INCLUDE_PATH."lib/vital_funcs.inc.php");
 
 // Enable CORS
 header("Access-Control-Allow-Origin: *");
@@ -18,18 +18,26 @@ header("Access-Control-Allow-Origin: *");
 //XXX: Code to check if mod is enabled. Show 404 or error if not enabled.
 if (!api_module_status()) {
     //header('HTTP/1.0 404 Not Found');
-    echo "Module is not enabled! Please contact the ATutor administrator.";
+    print_error("Module is not enabled! Please contact the ATutor administrator.");
     exit;
 }
 
 require("lib/Toro.php");
 
 // Core classes
-include(AT_INCLUDE_PATH.'../api/core/router_classes.php');
+include(AT_INCLUDE_PATH."../api/core/router_classes.php");
 
-// Courses app
-include("courses/urls.php");
-include("courses/router_classes.php");
+// Courses
+include(AT_INCLUDE_PATH."../api/courses/urls.php");
+include(AT_INCLUDE_PATH."../api/courses/router_classes.php");
+
+// Students
+include(AT_INCLUDE_PATH."../api/students/urls.php");
+include(AT_INCLUDE_PATH."../api/students/router_classes.php");
+
+// Instructors
+include(AT_INCLUDE_PATH."../api/instructors/urls.php");
+include(AT_INCLUDE_PATH."../api/instructors/router_classes.php");
 
 //XXX: Classes/Handlers be included from a separate directories
 class TestHandler {
@@ -68,7 +76,9 @@ $base_urls = array(
 // The URL routes
 Toro::serve(array_merge(
     $base_urls,
-    $course_urls
+    $course_urls,
+    $student_urls,
+    $instructor_urls
 ));
 
 ?>

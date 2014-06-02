@@ -3,7 +3,7 @@
 class CourseList {
     function get() {
         $log = generate_basic_log($_SERVER);
-        $token = get_access_token(getallheaders(), STUDENT_ACCESS_LEVELl);
+        $token = get_access_token(getallheaders(), STUDENT_ACCESS_LEVEL);
 
         $log["token"] = $token;
 
@@ -43,7 +43,7 @@ class CourseList {
 class CourseDetails {
     function get($course_id) {
         $log = generate_basic_log($_SERVER);
-        $token = get_access_token(getallheaders(), STUDENT_ACCESS_LEVELl);
+        $token = get_access_token(getallheaders(), STUDENT_ACCESS_LEVEL);
 
         $log["token"] = $token;
         $course = queryDB("SELECT x.course_id, x.cat_id, y.cat_name, x.created_date, ".
