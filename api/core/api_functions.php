@@ -70,13 +70,4 @@ function log_request($log) {
         array(TABLE_PREFIX, $log["ip_address"], $log["request_uri"], $log["http_method"], $log["token"], $log["response"]));
 }
 
-function get_courses_of_member($member_id){
-    $courses = queryDB("SELECT x.course_id, x.cat_id, y.cat_name, x.created_date, ".
-        "x.title, x.description, x.notify, x.copyright, x.icon, x.release_date, x.primary_language, ".
-        "x.end_date, x.banner FROM %scourses x, %scourse_cats y, %scourse_enrollment z WHERE x.cat_id = y.cat_id ".
-        "AND z.member_id = %d AND z.course_id = x.course_id", array(TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX,
-        $member_id));
-    return json_encode($courses);
-}
-
 ?>

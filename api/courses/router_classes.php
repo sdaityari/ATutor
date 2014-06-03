@@ -16,14 +16,14 @@ class CourseList {
         $category_id = $_GET["category_id"]?addslashes($_GET["category_id"]):$garbage_int;
         $primary_language = $_GET["primary_language"]?addslashes($_GET["primary_language"]):$garbage;
 
-        $courses = queryDB("SELECT x.course_id, x.cat_id, y.cat_name, x.created_date, ".
-            "x.title, x.description, x.notify, x.copyright, x.icon, x.release_date, x.primary_language, ".
-            "x.end_date, x.banner FROM %scourses x, %scourse_cats y WHERE x.cat_id = y.cat_id ".
-            "AND ('%s' = '%s' OR x.title like '%%%s%%')".
-            //"AND ('%s' = '%s' OR x.release_date = %s) ".
-            //"AND ('%s' = '%s' OR x.end_date = %s) ".
-            "AND (%d = %d OR x.cat_id = %d) ".
-            "AND ('%s' = '%s' OR x.primary_language = '%s')",
+        $courses = queryDB("SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
+            "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
+            "c.end_date, c.banner FROM %scourses c, %scourse_cats cc WHERE c.cat_id = cc.cat_id ".
+            "AND ('%s' = '%s' OR c.title like '%%%s%%')".
+            //"AND ('%s' = '%s' OR c.release_date = %s) ".
+            //"AND ('%s' = '%s' OR c.end_date = %s) ".
+            "AND (%d = %d OR c.cat_id = %d) ".
+            "AND ('%s' = '%s' OR c.primary_language = '%s')",
             array(TABLE_PREFIX, TABLE_PREFIX,
                   $title, $garbage, $title,
                   //$release_date, $garbage, $release_date,
@@ -46,9 +46,9 @@ class CourseDetails {
         $token = get_access_token(getallheaders(), STUDENT_ACCESS_LEVEL);
 
         $log["token"] = $token;
-        $course = queryDB("SELECT x.course_id, x.cat_id, y.cat_name, x.created_date, ".
-            "x.title, x.description, x.notify, x.copyright, x.icon, x.release_date, x.end_date, ".
-            "x.banner FROM %scourses x, %scourse_cats y WHERE x.cat_id = y.cat_id AND x.course_id = %d",
+        $course = queryDB("SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
+            "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.end_date, ".
+            "c.banner FROM %scourses c, %scourse_cats cc WHERE c.cat_id = cc.cat_id AND c.course_id = %d",
             array(TABLE_PREFIX, TABLE_PREFIX, $course_id), true);
 
         // TODO Raise 404 error

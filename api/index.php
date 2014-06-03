@@ -26,6 +26,7 @@ require("lib/Toro.php");
 
 // Core classes
 include(AT_INCLUDE_PATH."../api/core/router_classes.php");
+include(AT_INCLUDE_PATH."../api/shared/shared_functions.php");
 
 // Courses
 include(AT_INCLUDE_PATH."../api/courses/urls.php");
