@@ -8,8 +8,7 @@ class InstructorCoursesList {
             http_response_code(404);
             exit;
         }
-
-        $response = get_courses_of_member($instructor_id);
+        $response = get_courses($_GET, $instructor_id);
         $log["response"] = $response;
         log_request($log);
         echo $response;
@@ -25,7 +24,7 @@ class InstructorCoursesDetails {
             exit;
         }
 
-        $response = get_course_details($instructor_id, $course_id);
+        $response = get_course_details($course_id, $instructor_id);
         $log["response"] = $response;
         log_request($log);
         echo $response;

@@ -8,7 +8,7 @@ class StudentCoursesList {
             // Some error message
         }
 
-        $response = get_courses_of_member($student_id);
+        $response = get_courses($_GET, $student_id);
         $log["response"] = $response;
         log_request($log);
         echo $response;       
@@ -24,7 +24,7 @@ class StudentCoursesDetails {
             exit;
         }
 
-        $response = get_course_details($student_id, $course_id);
+        $response = get_course_details($course_id, $student_id);
         $log["response"] = $response;
         log_request($log);
         echo $response;
