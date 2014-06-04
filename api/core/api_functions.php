@@ -51,10 +51,17 @@ function get_access_token($headers, $minimum_access_level = ADMIN_ACCESS_LEVEL, 
     }
 }
 
-function print_error($message) {
-    print json_encode(array(
+function print_error($message, $log = array()) {
+    if (!$log) {
+        $log = generate_basic_log($_SERVER);
+        $log["token"] = getallheaders()[TOKEN_NAME];
+    }
+    $response = json_encode(array(
         "errorMessage" => $message
     ));
+    $log["response"] = $response;
+    log_request($log);
+    echo $response;
 }
 
 function generate_basic_log($request) {

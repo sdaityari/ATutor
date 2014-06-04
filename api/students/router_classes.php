@@ -5,7 +5,8 @@ class StudentCoursesList {
         $log = generate_basic_log($_SERVER);
         list($token, $member_id) = get_access_token(getallheaders(), STUDENT_ACCESS_LEVEL, true);
         if ($student_id != $member_id) {
-            // Some error message
+            http_response_code(404);
+            exit;
         }
 
         $response = get_courses($_GET, $student_id);
