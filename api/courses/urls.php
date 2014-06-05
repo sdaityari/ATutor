@@ -8,7 +8,9 @@ $courses_url_prefix = "/courses";
 
 $course_base_urls = array(
     "/" => "CourseList",
-    "/:number" => "CourseDetails"
+    "/:number" => "CourseDetails",
+    "/categories/" => "CourseCategories",
+    "/categories/:number" => "CourseCategoryDetails"
 );
 
 $course_urls = generate_urls($course_base_urls, $courses_url_prefix);

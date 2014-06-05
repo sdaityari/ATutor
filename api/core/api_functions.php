@@ -92,4 +92,15 @@ function log_request($log) {
         array(TABLE_PREFIX, $log["ip_address"], $log["request_uri"], $log["http_method"], $log["token"], $log["response"]));
 }
 
+function return_created_id($id, $log) {
+    $response = json_encode(array(
+        "successMessage" => "Your object was created successfully",
+        "id" => $id
+    ));
+    $log["response"] = $response;
+    log_request($log);
+    echo $response;
+    exit;
+}
+
 ?>
