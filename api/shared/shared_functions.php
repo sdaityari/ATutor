@@ -47,6 +47,9 @@ function get_course_details($course_id, $member_id = -1) {
         "AND ((%d = %d OR ce.member_id = %d) AND ce.course_id = c.course_id) AND c.course_id = %d",
         array(TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX,
             $member_id, $random_int, $member_id, $course_id), true);
+    if (count($courses) == 0){
+        http_response_code(404);
+    }
     return json_encode($courses);
 }
 

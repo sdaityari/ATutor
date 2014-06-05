@@ -62,6 +62,21 @@ function print_error($message, $log = array()) {
     $log["response"] = $response;
     log_request($log);
     echo $response;
+    exit;
+}
+
+function print_success($message, $log = array()) {
+    if (!$log) {
+        $log = generate_basic_log($_SERVER);
+        $log["token"] = getallheaders()[TOKEN_NAME];
+    }
+    $response = json_encode(array(
+        "successMessage" => $message
+    ));
+    $log["response"] = $response;
+    log_request($log);
+    echo $response;
+    exit;
 }
 
 function generate_basic_log($request) {
