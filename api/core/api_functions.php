@@ -25,11 +25,11 @@ function check_token($token, $minimum_access_level){
         array(TABLE_PREFIX, $token), true);
     if (!$check) {
         http_response_code(401);
-        print_error("TOKEN_DOES_NOT_EXIST");
+        print_message(ERROR, "TOKEN_DOES_NOT_EXIST");
         exit;
     } else if ($check["access_level"] > $minimum_access_level) {
         http_response_code(401);
-        print_error("YOU_ARE_NOT_AUTHORIZED_TO_ACCESS_THIS_RESOURCE");
+        print_message(ERROR, "YOU_ARE_NOT_AUTHORIZED_TO_ACCESS_THIS_RESOURCE");
         exit;
     }
 
@@ -51,27 +51,14 @@ function get_access_token($headers, $minimum_access_level = ADMIN_ACCESS_LEVEL, 
     }
 }
 
-function print_error($message, $log = array()) {
+function print_message($type, $message, $log = array()) {
     if (!$log) {
         $log = generate_basic_log($_SERVER);
         $log["token"] = getallheaders()[TOKEN_NAME];
     }
+    $key = $type == ERROR ? "errorMessage" : "successMessage";
     $response = json_encode(array(
-        "errorMessage" => $message
-    ));
-    $log["response"] = $response;
-    log_request($log);
-    echo $response;
-    exit;
-}
-
-function print_success($message, $log = array()) {
-    if (!$log) {
-        $log = generate_basic_log($_SERVER);
-        $log["token"] = getallheaders()[TOKEN_NAME];
-    }
-    $response = json_encode(array(
-        "successMessage" => $message
+        $key => $message
     ));
     $log["response"] = $response;
     log_request($log);

@@ -1,4 +1,7 @@
 <?php
+    define ("ERROR", 1);
+    define ("SUCCESS", 2);
+
     define ("TOKEN_NAME", "x-AT-API-TOKEN");
 
     define("ADMIN_ACCESS_LEVEL", 1);

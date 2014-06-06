@@ -37,9 +37,9 @@ class CourseDetails {
             array(TABLE_PREFIX, $course_id));
         if ($query == 0) {
             http_response_code(404);
-            print_error("COURSE_DOES_NOT_EXIST");
+            print_message(ERROR, "COURSE_DOES_NOT_EXIST");
         } else {
-            print_success("COURSE_DELETED_SUCCESSFULLY", $log);
+            print_message(SUCCESS, "COURSE_DELETED_SUCCESSFULLY", $log);
         }
     }
 }
@@ -63,12 +63,12 @@ class CourseCategories {
         $token = get_access_token(getallheaders(), TOKEN_ACCESS_LEVEL);
 
         $log["token"] = $token;
-        $name = addslashes($_POST["name"]);
-        $parent = addslashes($_POST["parent_id"]) OR 0;
-        $theme = addslashes($_POST["theme"]);
+        $name = $_POST["name"];
+        $parent = $_POST["parent_id"] OR 0;
+        $theme = $_POST["theme"];
 
         if (!$name) {
-            print_error("INSUFFICIENT_INFORMATION_TO_CREATE_OBJECT");
+            print_message(ERROR, "INSUFFICIENT_INFORMATION_TO_CREATE_OBJECT");
         }
 
         $id = queryDB("INSERT INTO %scourse_cats(cat_name, cat_parent, theme) VALUES('%s', %d, '%s')",
@@ -85,7 +85,7 @@ class CourseCategoryDetails {
 
         $log["token"] = $token;
 
-        $id = addslashes($category_id);
+        $id = $category_id;
         $query = queryDB("SELECT cat_id, cat_name, cat_parent, theme FROM %scourse_cats WHERE cat_id = %d",
             array(TABLE_PREFIX, $id), true);
         if (count($query) == 0){
@@ -105,10 +105,10 @@ class CourseCategoryDetails {
         $token = get_access_token(getallheaders(), TOKEN_ACCESS_LEVEL);
 
         $log["token"] = $token;
-        $id = addslashes($category_id);
-        $name = addslashes($_POST["name"]);
-        $parent = addslashes($_POST["parent_id"]);
-        $theme = addslashes($_POST["theme"]);
+        $id = ($category_id);
+        $name = ($_POST["name"]);
+        $parent = ($_POST["parent_id"]);
+        $theme = ($_POST["theme"]);
 
         $id = queryDB("UPDATE %scourse_cats SET cat_name = '%s', cat_parent = %d, theme = '%s' WHERE )",
             array(TABLE_PREFIX, $name, $parent, $theme), false, true, $callback_func = "mysql_insert_id");
@@ -123,13 +123,13 @@ class CourseCategoryDetails {
 
         $log["token"] = $token;
 
-        $id = addslashes($category_id);
+        $id = $category_id;
 
         $query = queryDB("DELETE FROM %scourse_cats WHERE cat_id = %d",
             array(TABLE_PREFIX, $id));
         if ($query == 0) {
             http_response_code(404);
-            print_error("COURSE_CATEGORY_DOES_NOT_EXIST");
+            print_message(ERROR, "COURSE_CATEGORY_DOES_NOT_EXIST");
         } else {
             // Changing course category parents
             queryDB("UPDATE %scourse_cats SET cat_parent = 0 WHERE cat_parent = %d",
@@ -138,7 +138,7 @@ class CourseCategoryDetails {
             // Updating courses with this course category
             queryDB("UPDATE %scourses SET cat_id = 0 WHERE cat_id = %d",
                 array(TABLE_PREFIX, $id));
-            print_success("COURSE_CATEGORY_DELETED_SUCCESSFULLY", $log);
+            print_message(SUCCESS, "COURSE_CATEGORY_DELETED_SUCCESSFULLY", $log);
         }
     }
 }

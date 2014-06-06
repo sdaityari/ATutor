@@ -3,8 +3,8 @@
 class Authentication {
     function post() {
         $log = generate_basic_log($_SERVER);
-        $username = addslashes($_POST["username"]);
-        $password = addslashes($_POST["password"]);
+        $username = $_POST["username"];
+        $password = $_POST["password"];
 
         $row = queryDB("SELECT member_id, status FROM %smembers WHERE (login = '%s' OR email = '%s') AND password = Sha1('%s')",
             array(TABLE_PREFIX, $username, $username, $password), true);
@@ -12,11 +12,11 @@ class Authentication {
             array(TABLE_PREFIX, $username, $username, $password), true);
 
         if (!$row and !$row_admin) {
-            print_error("WRONG_CREDENTIALS", $log);
+            print_message(ERROR, "WRONG_CREDENTIALS", $log);
         } else if ($row['status'] == AT_STATUS_UNCONFIRMED and !$row_admin) {
-            print_error("NOT_CONFIRMED", $log);
+            print_message(ERROR, "NOT_CONFIRMED", $log);
         } else if ($row['status'] == AT_STATUS_DISABLED and !$row_admin) {
-            print_error("ACCOUNT_DISABLED", $log);
+            print_message(ERROR, "ACCOUNT_DISABLED", $log);
         } else {
             // Generating API token
             $now = time();
