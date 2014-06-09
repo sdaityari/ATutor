@@ -100,21 +100,27 @@ class CourseCategoryDetails {
     }
 
     function put($category_id) {
-        /*
         $log = generate_basic_log($_SERVER);
         $token = get_access_token(getallheaders(), TOKEN_ACCESS_LEVEL);
-
         $log["token"] = $token;
-        $id = ($category_id);
-        $name = ($_POST["name"]);
-        $parent = ($_POST["parent_id"]);
-        $theme = ($_POST["theme"]);
 
-        $id = queryDB("UPDATE %scourse_cats SET cat_name = '%s', cat_parent = %d, theme = '%s' WHERE )",
-            array(TABLE_PREFIX, $name, $parent, $theme), false, true, $callback_func = "mysql_insert_id");
+        $sql = create_SQL_clause(array(
+            "name" => "cat_name",
+            "parent" => "cat_parent",
+            "theme" => "theme"), $_REQUEST);
 
-        return_created_id($id, $log);*/
-        exit;
+        $existing = queryDB("SELECT * FROM %scourse_cats WHERE cat_id = %d",
+            array(TABLE_PREFIX, $category_id), true);
+
+        if (!$existing) {
+            http_response_code(404);
+            print_message(ERROR, "COURSE_CATEGORY_DOES_NOT_EXIST");
+        }
+
+        queryDB("UPDATE %scourse_cats SET ".$sql. "WHERE cat_id = %d",
+            array(TABLE_PREFIX, $category_id));
+
+        print_message(SUCCESS, "COURSE_CATEGORY_EDITED_SUCCESSFULLY", $log);
     }
 
     function delete($category_id) {

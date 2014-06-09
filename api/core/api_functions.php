@@ -90,4 +90,28 @@ function return_created_id($id, $log) {
     exit;
 }
 
+function create_SQL_clause($terms, $requests, $prefix = "") {
+    /*
+     * Function to create SQL clause
+     * $terms is an associative array
+     * The keys of $terms represent the variables in $requests
+     * The values of $terms represent the column names that must be present
+     * For example, create_SQL_clause(array(
+     *                  "title" => "c.title",
+     *                  "language" => "c.language"), $_GET) should return
+     * "WHERE c.title = 'My Course' AND c.language = 'en'"
+     * provided title and language are present in $_GET
+     */
+    $query = $prefix;
+    foreach ($terms as $key => $value) {
+        if ($requests["$key"]) {
+            if ($query != "") {
+                $query = $query."AND ";
+            }
+            $query = $query.$value." = '".$requests["$key"]."' ";
+        }
+    }
+    return $query;
+}
+
 ?>
