@@ -7,7 +7,6 @@ class CourseList {
 
         $log["token"] = $token;
 
-        // TODO Raise 404 error
         $response = get_courses($_GET);
         $log["response"] = $response;
         log_request($log);
@@ -37,9 +36,9 @@ class CourseDetails {
             array(TABLE_PREFIX, $course_id));
         if ($query == 0) {
             http_response_code(404);
-            print_message(ERROR, "COURSE_DOES_NOT_EXIST");
+            print_message(ERROR, RESOURCE_DOES_NOT_EXIST);
         } else {
-            print_message(SUCCESS, "COURSE_DELETED_SUCCESSFULLY", $log);
+            print_message(SUCCESS, ACTION_COMPLETED_SUCCESSFULLY, $log);
         }
     }
 }
@@ -68,7 +67,7 @@ class CourseCategories {
         $theme = $_POST["theme"];
 
         if (!$name) {
-            print_message(ERROR, "INSUFFICIENT_INFORMATION_TO_CREATE_OBJECT");
+            print_message(ERROR, INSUFFICIENT_INFORMATION_TO_CREATE_OBJECT);
         }
 
         $id = queryDB("INSERT INTO %scourse_cats(cat_name, cat_parent, theme) VALUES('%s', %d, '%s')",
@@ -114,13 +113,13 @@ class CourseCategoryDetails {
 
         if (!$existing) {
             http_response_code(404);
-            print_message(ERROR, "COURSE_CATEGORY_DOES_NOT_EXIST");
+            print_message(ERROR, RESOURCE_DOES_NOT_EXIST);
         }
 
         queryDB("UPDATE %scourse_cats SET ".$sql. "WHERE cat_id = %d",
             array(TABLE_PREFIX, $category_id));
 
-        print_message(SUCCESS, "COURSE_CATEGORY_EDITED_SUCCESSFULLY", $log);
+        print_message(SUCCESS, ACTION_COMPLETED_SUCCESSFULLY, $log);
     }
 
     function delete($category_id) {
@@ -135,7 +134,7 @@ class CourseCategoryDetails {
             array(TABLE_PREFIX, $id));
         if ($query == 0) {
             http_response_code(404);
-            print_message(ERROR, "COURSE_CATEGORY_DOES_NOT_EXIST");
+            print_message(ERROR, RESOURCE_DOES_NOT_EXIST);
         } else {
             // Changing course category parents
             queryDB("UPDATE %scourse_cats SET cat_parent = 0 WHERE cat_parent = %d",
@@ -144,7 +143,7 @@ class CourseCategoryDetails {
             // Updating courses with this course category
             queryDB("UPDATE %scourses SET cat_id = 0 WHERE cat_id = %d",
                 array(TABLE_PREFIX, $id));
-            print_message(SUCCESS, "COURSE_CATEGORY_DELETED_SUCCESSFULLY", $log);
+            print_message(SUCCESS, ACTION_COMPLETED_SUCCESSFULLY, $log);
         }
     }
 }

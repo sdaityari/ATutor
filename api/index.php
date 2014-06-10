@@ -18,7 +18,7 @@ header("Access-Control-Allow-Origin: *");
 //XXX: Code to check if mod is enabled. Show 404 or error if not enabled.
 if (!api_module_status()) {
     //header('HTTP/1.0 404 Not Found');
-    print_message(ERROR, "Module is not enabled! Please contact the ATutor administrator.");
+    print_message(ERROR, MODULE_DISABLED);
     exit;
 }
 

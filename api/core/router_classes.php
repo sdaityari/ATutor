@@ -12,11 +12,11 @@ class Authentication {
             array(TABLE_PREFIX, $username, $username, $password), true);
 
         if (!$row and !$row_admin) {
-            print_message(ERROR, "WRONG_CREDENTIALS", $log);
+            print_message(ERROR, WRONG_CREDENTIALS, $log);
         } else if ($row['status'] == AT_STATUS_UNCONFIRMED and !$row_admin) {
-            print_message(ERROR, "NOT_CONFIRMED", $log);
+            print_message(ERROR, NOT_CONFIRMED, $log);
         } else if ($row['status'] == AT_STATUS_DISABLED and !$row_admin) {
-            print_message(ERROR, "ACCOUNT_DISABLED", $log);
+            print_message(ERROR, ACCOUNT_DISABLED, $log);
         } else {
             // Generating API token
             $now = time();

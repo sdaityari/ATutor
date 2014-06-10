@@ -25,11 +25,11 @@ function check_token($token, $minimum_access_level){
         array(TABLE_PREFIX, $token), true);
     if (!$check) {
         http_response_code(401);
-        print_message(ERROR, "TOKEN_DOES_NOT_EXIST");
+        print_message(ERROR, TOKEN_DOES_NOT_EXIST);
         exit;
     } else if ($check["access_level"] > $minimum_access_level) {
         http_response_code(401);
-        print_message(ERROR, "YOU_ARE_NOT_AUTHORIZED_TO_ACCESS_THIS_RESOURCE");
+        print_message(ERROR, YOU_ARE_NOT_AUTHORIZED_TO_ACCESS_THIS_RESOURCE);
         exit;
     }
 
