@@ -9,7 +9,13 @@ class StudentCoursesList {
             exit;
         }
 
-        $response = get_courses($_GET, $student_id);
+        $clause = create_SQL_clause(array(
+            "title" => "c.title",
+            "category_id" => "c.cat_id",
+            "primary_language" => "c.primary_language"
+        ), $_GET);
+
+        $response = get_courses_main($clause, -1, $student_id;
         $log["response"] = $response;
         log_request($log);
         echo $response;       
@@ -25,7 +31,7 @@ class StudentCoursesDetails {
             exit;
         }
 
-        $response = get_course_details($course_id, $student_id);
+        $response = get_courses_main(NULL, $course_id, $student_id);
         $log["response"] = $response;
         log_request($log);
         echo $response;

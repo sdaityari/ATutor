@@ -7,7 +7,13 @@ class CourseList {
 
         $log["token"] = $token;
 
-        $response = get_courses($_GET);
+        $clause = create_SQL_clause(array(
+            "title" => "c.title",
+            "category_id" => "c.cat_id",
+            "primary_language" => "c.primary_language"
+        ), $_GET);
+
+        $response = get_courses_main($clause);
         $log["response"] = $response;
         log_request($log);
         echo $response;
@@ -20,7 +26,7 @@ class CourseDetails {
         $token = get_access_token(getallheaders(), TOKEN_ACCESS_LEVEL);
         $log["token"] = $token;
 
-        $response = get_course_details($course_id);
+        $response = get_courses_main(NULL, $course_id);
         $log["response"] = $response;
         log_request($log);
         echo $response;
