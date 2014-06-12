@@ -38,6 +38,12 @@ function check_token($token, $minimum_access_level){
     return $check["member_id"];
 }
 
+function is_admin($token) {
+    $check = queryDB("SELECT member_id FROM %sapi WHERE token = '%s' AND access_level = %d",
+        array(TABLE_PREFIX, $token, ADMIN_ACCESS_LEVEL), true);
+    return $check ? true : false;
+}
+
 function get_access_token($headers, $minimum_access_level = ADMIN_ACCESS_LEVEL, $return_member_id = false) {
     $token = addslashes($headers[TOKEN_NAME]);
     $member_id = check_token($token, $minimum_access_level);

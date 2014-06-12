@@ -2,34 +2,19 @@
 
 class CourseList {
     function get() {
-        $log = generate_basic_log($_SERVER);
-        $token = get_access_token(getallheaders(), TOKEN_ACCESS_LEVEL);
-
-        $log["token"] = $token;
-
         $clause = create_SQL_clause(array(
             "title" => "c.title",
             "category_id" => "c.cat_id",
             "primary_language" => "c.primary_language"
         ), $_GET);
 
-        $response = get_courses_main($clause);
-        $log["response"] = $response;
-        log_request($log);
-        echo $response;
+        get_courses_main(TOKEN_ACCESS_LEVEL, $clause);
     }
 }
 
 class CourseDetails {
     function get($course_id) {
-        $log = generate_basic_log($_SERVER);
-        $token = get_access_token(getallheaders(), TOKEN_ACCESS_LEVEL);
-        $log["token"] = $token;
-
-        $response = get_courses_main(NULL, $course_id);
-        $log["response"] = $response;
-        log_request($log);
-        echo $response;
+        get_courses_main(TOKEN_ACCESS_LEVEL, NULL, $course_id);
     }
 
     function delete($course_id) {

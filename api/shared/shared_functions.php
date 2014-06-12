@@ -1,6 +1,16 @@
 <?php
 
-function get_courses_main($clause = NULL, $course_id = -1, $member_id = -1) {
+function get_courses_main($access_level = ADMIN_ACCESS_LEVEL, $clause = NULL, $course_id = -1, $member_id = -1) {
+    $log = generate_basic_log($_SERVER);
+    list($token, $token_member_id) = get_access_token(getallheaders(), $access_level, true);
+
+    if ($member_id != -1 && // Checking if member id was passed
+            $token_member_id != $member_id && // Checking if token belongs to member requested
+            !is_admin($token)) { // Checking if request comes from admin
+        http_response_code(404);
+        exit;
+    }
+
     $one_row = $course_id == -1? false : true;
 
     $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
@@ -25,7 +35,10 @@ function get_courses_main($clause = NULL, $course_id = -1, $member_id = -1) {
         http_response_code(404);
     }
 
-    return json_encode($courses);
+    $response = json_encode($courses);
+    $log["response"] = $response;
+    log_request($log);
+    echo $response;
 }
 
 ?>
