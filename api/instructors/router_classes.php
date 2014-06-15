@@ -16,9 +16,6 @@ class InstructorCoursesList {
         ), $_GET);
 
         $response = get_courses_main(INSTRUCTOR_ACCESS_LEVEL, $clause, -1, $instructor_id);
-/*        $log["response"] = $response;
-        log_request($log);
-        echo $response;*/
     }
 }
 

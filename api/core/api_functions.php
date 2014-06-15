@@ -38,9 +38,9 @@ function check_token($token, $minimum_access_level){
     return $check["member_id"];
 }
 
-function is_admin($token) {
-    $check = queryDB("SELECT member_id FROM %sapi WHERE token = '%s' AND access_level = %d",
-        array(TABLE_PREFIX, $token, ADMIN_ACCESS_LEVEL), true);
+function check_access_level($token, $access_level = ADMIN_ACCESS_LEVEL) {
+    $check = queryDB("SELECT member_id FROM %sapi WHERE token = '%s' AND access_level <= %d",
+        array(TABLE_PREFIX, $token, $access_level), true);
     return $check ? true : false;
 }
 
@@ -80,7 +80,7 @@ function generate_basic_log($request) {
     return $log;
 }
 
-function log_request($log) {
+function log_request($log = array()) {
     queryDB("INSERT INTO %sapi_logs(ip_address, request_uri, http_method, token, response) VALUES('%s', '%s', '%s', '%s', '%s')",
         array(TABLE_PREFIX, $log["ip_address"], $log["request_uri"], $log["http_method"], $log["token"], $log["response"]));
 }
