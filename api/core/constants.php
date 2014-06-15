@@ -10,6 +10,12 @@
     define("TOKEN_ACCESS_LEVEL", 4);
     define("PUBLIC_ACCESS_LEVEL", 5);
 
+    // http methods
+    define("HTTP_GET", 1);
+    define("HTTP_POST", 2);
+    define("HTTP_PUT", 3);
+    define("HTTP_DELETE", 4);
+
     // custom messages
     define("TOKEN_DOES_NOT_EXIST", "The token you provided does not exist");
     define("YOU_ARE_NOT_AUTHORIZED_TO_ACCESS_THIS_RESOURCE", "You are not authorized to access this resource");
