@@ -37,7 +37,7 @@ function get_courses_main($access_level = ADMIN_ACCESS_LEVEL, $clause = NULL, $c
     api_backbone(HTTP_GET, $token, $access_level, $query, $array, $one_row);
 }
 
-function api_backbone($request_type, $token, $access_level, $query, $array = array(), $one_row = false, $callback_func = "mysql_affected_rows") {
+function api_backbone($request_type, $token, $access_level, $query, $array = array(), $one_row = false, $returned_id_name) {
     /*
      * Function to perform all API calls
      * Every call has a token, checks access level and performs a query
@@ -52,6 +52,8 @@ function api_backbone($request_type, $token, $access_level, $query, $array = arr
     }
 
     $log["token"] = $token;
+
+    $callback_func = $returned_id_name ? "mysql_insert_id" : "mysql_affected_rows";
 
     $result = queryDB($query, $array, $one_row, true, $callback_func);
 

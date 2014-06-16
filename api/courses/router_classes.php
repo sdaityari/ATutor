@@ -3,10 +3,10 @@
 class CourseList {
     function get() {
         $clause = create_SQL_clause(array(
-            "title" => "c.title",
-            "category_id" => "c.cat_id",
-            "primary_language" => "c.primary_language"
-        ), $_GET);
+            "c.title" => $_GET["title"],
+            "c.cat_id" => $_GET["category_id"],
+            "c.primary_language" => $_GET["primary_language"]
+        ));
 
         get_courses_main(TOKEN_ACCESS_LEVEL, $clause);
     }
@@ -53,9 +53,8 @@ class CourseCategories {
 
         $query = "INSERT INTO %scourse_cats(cat_name, cat_parent, theme) VALUES('%s', %d, '%s')";
         $array = array(TABLE_PREFIX, $name, $parent, $theme);
-        $callback_func = "mysql_insert_id";
 
-        api_backbone(HTTP_POST, $token, $access_level, $query, $array, false, $callback_func);
+        api_backbone(HTTP_POST, $token, $access_level, $query, $array, false, true);
     }
 }
 
@@ -75,9 +74,9 @@ class CourseCategoryDetails {
         $token = get_access_token(getallheaders(), $access_level);
 
         $sql = create_SQL_clause(array(
-            "name" => "cat_name",
-            "parent" => "cat_parent",
-            "theme" => "theme"), $_REQUEST);
+            "cat_name" => $_REQUEST["name"],
+            "cat_parent" => $_REQUEST["parent"],
+            "theme" => $_REQUEST["theme"]));
 
         $existing = queryDB("SELECT * FROM %scourse_cats WHERE cat_id = %d",
             array(TABLE_PREFIX, $category_id), true);
