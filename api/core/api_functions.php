@@ -93,7 +93,7 @@ function return_created_id($id, $log) {
     echo $response;
 }
 
-function create_SQL_clause($terms, $prefix = "") {
+function create_SQL_clause($terms, $sanitize = true) {
     /*
      * Function to create SQL clause
      * $terms is an associative array
@@ -103,13 +103,15 @@ function create_SQL_clause($terms, $prefix = "") {
      *                  "language" => "en")) should return
      * "WHERE c.title = 'My Course' AND c.language = 'en'"
      */
-    $query = $prefix;
+    $query = "";
     foreach ($terms as $key => $value) {
         if ($value) {
-            if ($query != "") {
+            if ($query != "")
                 $query = $query."AND ";
-            }
-            $query = $query.$key." = '".$value."' ";
+            if ($sanitize)
+                $query = $query.$key." = '". addslashes($value) ."' ";
+            else
+                $query = $query.$key." = '".$value."' ";
         }
     }
     return $query;
