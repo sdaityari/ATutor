@@ -6,14 +6,7 @@ function get_courses_main($access_level = ADMIN_ACCESS_LEVEL, $clause = NULL, $c
      * Makes call to api_get_backbone after generating query
      */
 
-    list($token, $token_member_id) = get_access_token(getallheaders(), $access_level, true);
-
-    if ($member_id != -1 && // Checking if member id was passed
-            $token_member_id != $member_id && // Checking if token belongs to member requested
-            !check_access_level($token)) { // Checking if request comes from admin
-        http_response_code(404);
-        exit;
-    }
+    $token = get_access_token(getallheaders(), $access_level);
 
     $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
         "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
@@ -40,7 +33,8 @@ function get_courses_main($access_level = ADMIN_ACCESS_LEVEL, $clause = NULL, $c
         "access_level" => $access_level,
         "query" => $query,
         "query_array" => $array,
-        "one_row" => $one_row
+        "one_row" => $one_row,
+        "member_id" => $member_id
     ));
 }
 
@@ -54,11 +48,20 @@ function api_backbone($options) {
     $defaults = array(
         "request_type" => HTTP_GET,
         "access_level" => ADMIN_ACCESS_LEVEL,
+        "member_id" => -1
     );
 
     $options = array_merge($defaults, $options);
 
-    $options["token"] = get_access_token(getallheaders(), $options["access_level"]);
+    list($options["token"], $token_member_id) = get_access_token(getallheaders(), $options["access_level"], true);
+
+    if ($options["member_id"] != -1 && // Checking if member id was passed
+            $token_member_id != $options["member_id"] && // Checking if token belongs to member requested
+            !check_access_level($options["token"])) { // Checking if request comes from admin
+        http_response_code(404);
+        exit;
+    }
+
     $options["log"] = generate_basic_log($_SERVER);
     $options["log"]["token"] = $options["token"];
 
@@ -108,7 +111,6 @@ function api_backbone($options) {
             break;
 
         default:
-            # code...
             break;
     }
 }

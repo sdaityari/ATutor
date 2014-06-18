@@ -108,10 +108,7 @@ function create_SQL_clause($terms, $sanitize = true) {
         if ($value) {
             if ($query != "")
                 $query = $query."AND ";
-            if ($sanitize)
-                $query = $query.$key." = '". addslashes($value) ."' ";
-            else
-                $query = $query.$key." = '".$value."' ";
+            $query = $sanitize ? $query.$key." = '". addslashes($value) ."' " : $query.$key." = '". $value ."' ";
         }
     }
     return $query;
