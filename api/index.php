@@ -40,6 +40,11 @@ include(AT_INCLUDE_PATH."../api/students/router_classes.php");
 include(AT_INCLUDE_PATH."../api/instructors/urls.php");
 include(AT_INCLUDE_PATH."../api/instructors/router_classes.php");
 
+// Boilerplate Example
+// Include urls and router_classes from your app
+include(AT_INCLUDE_PATH."../api/boilerplate-example/urls.php");
+include(AT_INCLUDE_PATH."../api/boilerplate-example/router_classes.php");
+
 //XXX: Classes/Handlers be included from a separate directories
 class TestHandler {
     // This class is an example of how different variables are going to be handled
@@ -59,7 +64,7 @@ class TestHandler {
             // Parameter in URL
             "sentString" => AT_print($someString),
             // Parameter in custom header 'x-API-Token'
-            "token" => AT_print($headers['x-API-Token']));
+            "token" => AT_print($headers[TOKEN_NAME]));
         print json_encode($data);
     }
 }
@@ -79,7 +84,10 @@ Toro::serve(array_merge(
     $base_urls,
     $course_urls,
     $student_urls,
-    $instructor_urls
+    $instructor_urls,
+
+    // Include the url array of your app
+    $boilerplate_urls
 ));
 
 ?>
