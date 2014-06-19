@@ -1,4 +1,6 @@
 <?php
+    define ("DEBUG", true);
+
     define ("ERROR", 1);
     define ("SUCCESS", 2);
 

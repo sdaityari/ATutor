@@ -10,21 +10,25 @@ function get_courses_main($access_level = ADMIN_ACCESS_LEVEL, $clause = NULL, $c
 
     $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
         "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
-        "c.end_date, c.banner FROM %scourses c, %scourse_cats cc, %scourse_enrollment ce WHERE c.cat_id = cc.cat_id";
+        "c.end_date, c.banner FROM %scourses c ".
+        "INNER JOIN %scourse_cats cc ON c.cat_id = cc.cat_id";
 
     if ($member_id != -1) {
-        $query = $query." AND ce.member_id = ".$member_id;
+        $query = $query." INNER JOIN %scourse_enrollment ce ON c.course_id = ce.course_id".
+        " WHERE ce.member_id = ".$member_id;
     }
 
     if ($course_id != -1) {
-        $query = $query." AND c.course_id = ".$course_id;
+        $query = $member_id == -1 ? $query . " WHERE " : $query . " AND ";
+        $query = $query."c.course_id = ".$course_id;
     }
 
     if ($clause) {
-        $query = $query." AND ".$clause;
+        $query = ($member_id == -1 && $course_id == -1) ? $query." WHERE " : $query." AND ";
+        $query = $query.$clause;
     }
 
-    $array = array(TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX);
+    $array = $member_id != -1 ? array(TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX) : array(TABLE_PREFIX, TABLE_PREFIX);
 
     $one_row = $course_id == -1? false : true;
 
@@ -44,6 +48,11 @@ function api_backbone($options) {
      * Every call has a token, checks access level and performs a query
      * This function takes those as argument and logs the request
      */
+
+    if (DEBUG) {
+        print vsprintf($options["query"], $options["query_array"]);
+        print "\n\n";
+    }
 
     $defaults = array(
         "request_type" => HTTP_GET,
