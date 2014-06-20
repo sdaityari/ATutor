@@ -10,6 +10,7 @@ class CourseList {
 
         get_courses_main(TOKEN_ACCESS_LEVEL, $clause);
     }
+
 }
 
 class CourseDetails {
@@ -91,7 +92,7 @@ class CourseCategoryDetails {
         $access_level = TOKEN_ACCESS_LEVEL;
         $token = get_access_token(getallheaders(), $access_level);
 
-        $query_id_existence = "SELECT * FROM %scourse_cats WHERE cat_id = %d";
+        $query_id_existence = "SELECT COUNT(*) FROM %scourse_cats WHERE cat_id = %d";
         $query_id_existence_array = array(TABLE_PREFIX, $category_id);
 
         $clause = create_SQL_clause(array(
@@ -108,7 +109,6 @@ class CourseCategoryDetails {
             "access_level" => $access_level,
             "query" => $query,
             "query_array" => $array,
-            "one_row" => true,
             "query_id_existence" => $query_id_existence,
             "query_id_existence_array" => $query_id_existence_array
         ));
@@ -117,23 +117,11 @@ class CourseCategoryDetails {
     function delete($category_id) {
         $access_level = ADMIN_ACCESS_LEVEL;
 
-        $query_id_existence = "SELECT * FROM %scourse_cats WHERE cat_id = %d";
+        $query_id_existence = "SELECT COUNT(*) FROM %scourse_cats WHERE cat_id = %d";
         $query_id_existence_array = array(TABLE_PREFIX, $category_id);
 
         $query = "DELETE FROM %scourse_cats WHERE cat_id = %d";
         $array = array(TABLE_PREFIX, $category_id);
-
-        // Changing course category parents and updating courses with this course category
-        $queries_after = array(
-            array(
-                "query" => "UPDATE %scourse_cats SET cat_parent = 0 WHERE cat_parent = %d",
-                "query_array" => array(TABLE_PREFIX, $category_id)
-            ),
-            array(
-                "query" => "UPDATE %scourses SET cat_id = 0 WHERE cat_id = %d",
-                "query_array" => array(TABLE_PREFIX, $category_id)
-            )
-        );
 
         api_backbone(array(
             "request_type" => HTTP_DELETE,
@@ -144,6 +132,12 @@ class CourseCategoryDetails {
             "query_id_existence_array" => $query_id_existence_array,
             "queries_after" => $queries_after
         ));
+
+        // Changing course category parents and updating courses with this course category
+        queryDB("UPDATE %scourse_cats SET cat_parent = 0 WHERE cat_parent = %d",
+                    array(TABLE_PREFIX, $category_id));
+        queryDB("UPDATE %scourses SET cat_id = 0 WHERE cat_id = %d",
+                    array(TABLE_PREFIX, $category_id));
     }
 }
 

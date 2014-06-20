@@ -104,6 +104,7 @@ function api_backbone($options) {
 
         case HTTP_POST:
             return_created_id($result, $options["log"]);
+            return $result;
             break;
 
         case HTTP_PUT:
@@ -123,12 +124,12 @@ function api_backbone($options) {
             break;
     }
 
-    if ($options["queries_after"]) {
+    /*if ($options["queries_after"]) {
         // A series of queries to be performed after the API call was successful
         foreach ($options["queries_after"] as $key => $value) {
             queryDB($value["query"], $value["query_array"]);
         }
-    }
+    }*/
 }
 
 ?>
