@@ -122,6 +122,13 @@ function api_backbone($options) {
         default:
             break;
     }
+
+    if ($options["queries_after"]) {
+        // A series of queries to be performed after the API call was successful
+        foreach ($options["queries_after"] as $key => $value) {
+            queryDB($value["query"], $value["query_array"]);
+        }
+    }
 }
 
 ?>

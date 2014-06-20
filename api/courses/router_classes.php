@@ -115,28 +115,35 @@ class CourseCategoryDetails {
     }
 
     function delete($category_id) {
-        $log = generate_basic_log($_SERVER);
-        $token = get_access_token(getallheaders(), ADMIN_ACCESS_LEVEL);
+        $access_level = ADMIN_ACCESS_LEVEL;
 
-        $log["token"] = $token;
+        $query_id_existence = "SELECT * FROM %scourse_cats WHERE cat_id = %d";
+        $query_id_existence_array = array(TABLE_PREFIX, $category_id);
 
-        $id = $category_id;
+        $query = "DELETE FROM %scourse_cats WHERE cat_id = %d";
+        $array = array(TABLE_PREFIX, $category_id);
 
-        $query = queryDB("DELETE FROM %scourse_cats WHERE cat_id = %d",
-            array(TABLE_PREFIX, $id));
-        if ($query == 0) {
-            http_response_code(404);
-            print_message(ERROR, RESOURCE_DOES_NOT_EXIST);
-        } else {
-            // Changing course category parents
-            queryDB("UPDATE %scourse_cats SET cat_parent = 0 WHERE cat_parent = %d",
-                array(TABLE_PREFIX, $id));
+        // Changing course category parents and updating courses with this course category
+        $queries_after = array(
+            array(
+                "query" => "UPDATE %scourse_cats SET cat_parent = 0 WHERE cat_parent = %d",
+                "query_array" => array(TABLE_PREFIX, $category_id)
+            ),
+            array(
+                "query" => "UPDATE %scourses SET cat_id = 0 WHERE cat_id = %d",
+                "query_array" => array(TABLE_PREFIX, $category_id)
+            )
+        );
 
-            // Updating courses with this course category
-            queryDB("UPDATE %scourses SET cat_id = 0 WHERE cat_id = %d",
-                array(TABLE_PREFIX, $id));
-            print_message(SUCCESS, ACTION_COMPLETED_SUCCESSFULLY, $log);
-        }
+        api_backbone(array(
+            "request_type" => HTTP_DELETE,
+            "access_level" => $access_level,
+            "query" => $query,
+            "query_array" => $array,
+            "query_id_existence" => $query_id_existence,
+            "query_id_existence_array" => $query_id_existence_array,
+            "queries_after" => $queries_after
+        ));
     }
 }
 
