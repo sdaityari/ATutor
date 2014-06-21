@@ -1,5 +1,17 @@
 <?php
 
+class StudentList {
+    function get() {
+        get_members_main(STUDENT_ROLE);
+    }
+}
+
+class StudentDetails {
+    function get($student_id) {
+        get_members_main(STUDENT_ROLE, $student_id);
+    }
+}
+
 class StudentCoursesList {
     function get($student_id) {
         $clause = create_SQL_clause(array(

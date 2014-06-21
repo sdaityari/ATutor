@@ -12,6 +12,10 @@
     define("TOKEN_ACCESS_LEVEL", 4);
     define("PUBLIC_ACCESS_LEVEL", 5);
 
+    // Member roles
+    define("STUDENT_ROLE", 2);
+    define("INSTRUCTOR_ROLE", 3);
+
     // http methods
     define("HTTP_GET", 1);
     define("HTTP_POST", 2);

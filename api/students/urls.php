@@ -7,6 +7,8 @@ if (!defined('AT_INCLUDE_PATH')) {
 $student_url_prefix = "/students";
 
 $student_base_urls = array(
+    "/" => "StudentList",
+    "/:number/" => "StudentDetails",
     "/:number/courses/" => "StudentCoursesList",
     "/:number/courses/:number" => "StudentCoursesDetails"
 );

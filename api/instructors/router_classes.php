@@ -1,5 +1,17 @@
 <?php
 
+class InstructorList {
+    function get() {
+        get_members_main(INSTRUCTOR_ROLE);
+    }
+}
+
+class InstructorDetails {
+    function get($instructor_id) {
+        get_members_main(INSTRUCTOR_ROLE, $instructor_id);
+    }
+}
+
 class InstructorCoursesList {
     function get($instructor_id) {
         $clause = create_SQL_clause(array(

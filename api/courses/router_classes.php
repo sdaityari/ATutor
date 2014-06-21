@@ -19,14 +19,12 @@ class CourseDetails {
     }
 
     function delete($course_id) {
-        $access_level = ADMIN_ACCESS_LEVEL;
-
         $query = "DELETE FROM %scourses WHERE course_id = %d";
         $array = array(TABLE_PREFIX, $course_id);
 
         api_backbone(array(
             "request_type" => HTTP_DELETE, 
-            "access_level" => $access_level,
+            "access_level" => ADMIN_ACCESS_LEVEL,
             "query" => $query,
             "query_array" => $array
         ));
@@ -35,22 +33,18 @@ class CourseDetails {
 
 class CourseCategories {
     function get(){
-        $access_level = TOKEN_ACCESS_LEVEL;
-
         $query = "SELECT cat_id, cat_name, cat_parent, theme FROM %scourse_cats";
         $array = array(TABLE_PREFIX);
 
         api_backbone(array(
             "request_type" => HTTP_GET, 
-            "access_level" => $access_level,
+            "access_level" => TOKEN_ACCESS_LEVEL,
             "query" => $query,
             "query_array" => $array
         ));
     }
 
     function post(){
-        $access_level = INSTRUCTOR_ACCESS_LEVEL;
-
         $name = $_POST["name"];
         $parent = $_POST["parent_id"] OR 0;
         $theme = $_POST["theme"];
@@ -64,7 +58,7 @@ class CourseCategories {
 
         api_backbone(array(
             "request_type" => HTTP_POST, 
-            "access_level" => $access_level,
+            "access_level" => INSTRUCTOR_ACCESS_LEVEL,
             "query" => $query,
             "query_array" => $array,
             "returned_id_name" => true
@@ -74,14 +68,12 @@ class CourseCategories {
 
 class CourseCategoryDetails {
     function get($category_id) {
-        $access_level = TOKEN_ACCESS_LEVEL;
-
         $query = "SELECT cat_id, cat_name, cat_parent, theme FROM %scourse_cats WHERE cat_id = %d";
         $array = array(TABLE_PREFIX, $category_id);
 
         api_backbone(array(
             "request_type" => HTTP_GET,
-            "access_level" => $access_level,
+            "access_level" => TOKEN_ACCESS_LEVEL,
             "query" => $query,
             "query_array" => $array,
             "one_row" => true
@@ -115,8 +107,6 @@ class CourseCategoryDetails {
     }
 
     function delete($category_id) {
-        $access_level = ADMIN_ACCESS_LEVEL;
-
         $query_id_existence = "SELECT COUNT(*) FROM %scourse_cats WHERE cat_id = %d";
         $query_id_existence_array = array(TABLE_PREFIX, $category_id);
 
@@ -125,7 +115,7 @@ class CourseCategoryDetails {
 
         api_backbone(array(
             "request_type" => HTTP_DELETE,
-            "access_level" => $access_level,
+            "access_level" => ADMIN_ACCESS_LEVEL,
             "query" => $query,
             "query_array" => $array,
             "query_id_existence" => $query_id_existence,

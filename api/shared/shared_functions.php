@@ -15,12 +15,12 @@ function get_courses_main($access_level = ADMIN_ACCESS_LEVEL, $clause = NULL, $c
 
     if ($member_id != -1) {
         $query = $query." INNER JOIN %scourse_enrollment ce ON c.course_id = ce.course_id".
-        " WHERE ce.member_id = ".$member_id;
+        " WHERE ce.member_id = ".addslashes($member_id);
     }
 
     if ($course_id != -1) {
         $query = $member_id == -1 ? $query . " WHERE " : $query . " AND ";
-        $query = $query."c.course_id = ".$course_id;
+        $query = $query."c.course_id = ".addslashes($course_id);
     }
 
     if ($clause) {
@@ -39,6 +39,29 @@ function get_courses_main($access_level = ADMIN_ACCESS_LEVEL, $clause = NULL, $c
         "query_array" => $array,
         "one_row" => $one_row,
         "member_id" => $member_id
+    ));
+}
+
+function get_members_main ($role, $member_id = -1) {
+    $query = "SELECT member_id, login, email, first_name, last_name, website, gender, address, ".
+        "postal, city, province, country, phone, language, last_login, creation_date FROM %smembers ".
+        "WHERE status = %d";
+
+    if ($member_id != -1) {
+        $query = $query . " AND member_id = ".addslashes($member_id);
+        $one_row = true;
+    } else {
+        $one_row = false;
+    }
+
+    $array = array(TABLE_PREFIX, $role);
+
+    api_backbone(array(
+        "request_type" => HTTP_GET, 
+        "access_level" => ADMIN_ACCESS_LEVEL,
+        "query" => $query,
+        "query_array" => $array,
+        "one_row" => $one_row
     ));
 }
 
