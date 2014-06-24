@@ -39,9 +39,9 @@ function check_token($token, $minimum_access_level){
 }
 
 function check_access_level($token, $access_level = ADMIN_ACCESS_LEVEL) {
-    $check = queryDB("SELECT member_id FROM %sapi WHERE token = '%s' AND access_level <= %d",
+    $check = queryDB("SELECT COUNT(*) FROM %sapi WHERE token = '%s' AND access_level <= %d",
         array(TABLE_PREFIX, $token, $access_level), true);
-    return $check ? true : false;
+    return $check > 0 ? true : false;
 }
 
 function get_access_token($headers, $minimum_access_level = ADMIN_ACCESS_LEVEL, $return_member_id = false) {
