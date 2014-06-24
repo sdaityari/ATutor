@@ -2,7 +2,12 @@
 
 class InstructorList {
     function get() {
-        get_members_main(INSTRUCTOR_ROLE);
+        $clause = create_SQL_clause(array(
+            "email" => $_GET["email"],
+            "first_name" => $_GET["first_name"],
+            "last_name" => $_GET["last_name"],
+            "login" => $_GET["login"]));
+        get_members_main(INSTRUCTOR_ROLE, -1, $clause);
     }
 }
 

@@ -42,16 +42,20 @@ function get_courses_main($access_level = ADMIN_ACCESS_LEVEL, $clause = NULL, $c
     ));
 }
 
-function get_members_main ($role, $member_id = -1) {
+function get_members_main ($role, $member_id = -1, $clause = "") {
     $query = "SELECT member_id, login, email, first_name, last_name, website, gender, address, ".
         "postal, city, province, country, phone, language, last_login, creation_date FROM %smembers ".
         "WHERE status = %d";
 
     if ($member_id != -1) {
-        $query = $query . " AND member_id = ".addslashes($member_id);
+        $query .= " AND member_id = ".addslashes($member_id);
         $one_row = true;
     } else {
         $one_row = false;
+    }
+
+    if ($clause) {
+        $query .= " AND " . $clause;
     }
 
     $array = array(TABLE_PREFIX, $role);
