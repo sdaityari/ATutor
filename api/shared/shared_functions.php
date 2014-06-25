@@ -42,7 +42,7 @@ function get_courses_main($access_level = ADMIN_ACCESS_LEVEL, $clause = NULL, $c
     ));
 }
 
-function get_members_main ($role, $member_id = -1, $clause = "") {
+function get_members_main ($role, $access_level = ADMIN_ACCESS_LEVEL, $member_id = -1, $clause = "") {
     $query = "SELECT member_id, login, email, first_name, last_name, website, gender, address, ".
         "postal, city, province, country, phone, language, last_login, creation_date FROM %smembers ".
         "WHERE status = %d";
@@ -62,10 +62,33 @@ function get_members_main ($role, $member_id = -1, $clause = "") {
 
     api_backbone(array(
         "request_type" => HTTP_GET, 
-        "access_level" => ADMIN_ACCESS_LEVEL,
+        "access_level" => $access_level,
         "query" => $query,
         "query_array" => $array,
-        "one_row" => $one_row
+        "one_row" => $one_row,
+        "member_id" => $member_id
+    ));
+}
+
+function get_enrollment_members($instructor_id, $course_id, $role){
+    $query = "SELECT m.member_id, m.login, m.email, m.first_name, m.last_name, m.website, m.gender, m.address, ".
+        "m.postal, m.city, m.province, m.country, m.phone, m.language, m.last_login, m.creation_date FROM %smembers m ".
+        "INNER JOIN %scourse_enrollment ce ".
+        "ON m.member_id = ce.member_id ".
+        "WHERE m.status = %d AND ce.course_id = %d";
+
+    $array = array(TABLE_PREFIX, TABLE_PREFIX, $role, $course_id);
+
+    $query_id_existence = "SELECT COUNT(*) FROM %scourse_enrollment WHERE course_id = %d AND member_id = %d";
+    $query_id_existence_array = array(TABLE_PREFIX, $course_id, $instructor_id);
+
+    api_backbone(array(
+        "request_type" => HTTP_GET,
+        "access_level" => INSTRUCTOR_ACCESS_LEVEL,
+        "query" => $query,
+        "query_array" => $array,
+        "query_id_existence" => $query_id_existence,
+        "query_id_existence_array" => $query_id_existence_array
     ));
 }
 
@@ -104,7 +127,7 @@ function api_backbone($options) {
     // Checking if object with ID exists
     if ($options["query_id_existence"]) {
         $existence = queryDB($options["query_id_existence"], $options["query_id_existence_array"], true);
-        if (!$existence) {
+        if (!$existence["COUNT(*)"] || !$existence) {
             http_response_code(404);
             print_message(ERROR, RESOURCE_DOES_NOT_EXIST);
             exit;

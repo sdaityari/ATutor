@@ -7,13 +7,25 @@ class InstructorList {
             "first_name" => $_GET["first_name"],
             "last_name" => $_GET["last_name"],
             "login" => $_GET["login"]));
-        get_members_main(INSTRUCTOR_ROLE, -1, $clause);
+        get_members_main(INSTRUCTOR_ROLE, INSTRUCTOR_ACCESS_LEVEL -1, $clause);
     }
 }
 
 class InstructorDetails {
     function get($instructor_id) {
-        get_members_main(INSTRUCTOR_ROLE, $instructor_id);
+        get_members_main(INSTRUCTOR_ROLE, INSTRUCTOR_ACCESS_LEVEL, $instructor_id);
+    }
+}
+
+class CourseInstructorList {
+    function get($instructor_id, $course_id) {
+        get_enrollment_members($instructor_id, $course_id, INSTRUCTOR_ROLE);        
+    }
+}
+
+class CourseEnrolledList {
+    function get($instructor_id, $course_id) {
+        get_enrollment_members($instructor_id, $course_id, STUDENT_ROLE);
     }
 }
 

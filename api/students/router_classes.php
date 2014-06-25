@@ -7,13 +7,13 @@ class StudentList {
             "first_name" => $_GET["first_name"],
             "last_name" => $_GET["last_name"],
             "login" => $_GET["login"]));
-        get_members_main(STUDENT_ROLE, -1, $clause);
+        get_members_main(STUDENT_ROLE, STUDENT_ACCESS_LEVEL, -1, $clause);
     }
 }
 
 class StudentDetails {
     function get($student_id) {
-        get_members_main(STUDENT_ROLE, $student_id);
+        get_members_main(STUDENT_ROLE, STUDENT_ACCESS_LEVEL, $student_id);
     }
 }
 
