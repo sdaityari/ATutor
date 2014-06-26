@@ -41,9 +41,9 @@ define('AT_ADMIN_PRIV_api', $this->getAdminPrivilege());
  * add the admin pages when needed.
  */
 if (admin_authenticate(AT_ADMIN_PRIV_api, TRUE) || admin_authenticate(AT_ADMIN_PRIV_ADMIN, TRUE)) {
-    $this->_pages[AT_NAV_ADMIN] = array('mods/api/index_admin.php');
-    $this->_pages['mods/api/index_admin.php']['title_var'] = 'api';
-    $this->_pages['mods/api/index_admin.php']['parent']    = AT_NAV_ADMIN;
+    $this->_pages[AT_NAV_ADMIN] = array('mods/_standard/api/index_admin.php');
+    $this->_pages['mods/_standard/api/index_admin.php']['title_var'] = 'api';
+    $this->_pages['mods/_standard/api/index_admin.php']['parent']    = AT_NAV_ADMIN;
 }
 
 /*******
