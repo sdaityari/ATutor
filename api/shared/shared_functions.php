@@ -33,7 +33,7 @@ function get_courses_main($access_level = ADMIN_ACCESS_LEVEL, $clause = NULL, $c
     $one_row = $course_id == -1? false : true;
 
     api_backbone(array(
-        "request_type" => HTTP_GET, 
+        "request_type" => HTTP_GET,
         "access_level" => $access_level,
         "query" => $query,
         "query_array" => $array,
@@ -61,7 +61,7 @@ function get_members_main ($role, $access_level = ADMIN_ACCESS_LEVEL, $member_id
     $array = array(TABLE_PREFIX, $role);
 
     api_backbone(array(
-        "request_type" => HTTP_GET, 
+        "request_type" => HTTP_GET,
         "access_level" => $access_level,
         "query" => $query,
         "query_array" => $array,
@@ -145,7 +145,7 @@ function api_backbone($options) {
 
     $response = json_encode($result);
     $options["log"]["response"] = $response;
-    log_request($options["log"]);
+    log_request($options["log"], $options["request_type"]);
 
     switch ($options["request_type"]) {
         case HTTP_GET:

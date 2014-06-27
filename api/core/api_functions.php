@@ -81,7 +81,12 @@ function generate_basic_log($request) {
     return $log;
 }
 
-function log_request($log = array()) {
+function log_request($log = array(), $http_method = HTTP_GET) {
+    if ((LOGGING_LEVEL == NO_LOGGING) || // Logging not to be done
+        ($http_method == HTTP_GET && LOGGING_LEVEL == LOGGING_EXCEPT_GET)) { // Logging all except GET requests
+        return;
+    }
+
     queryDB("INSERT INTO %sapi_logs(ip_address, user_agent, request_uri, http_method, token, response) VALUES('%s', '%s', '%s', '%s', '%s', '%s')",
         array(TABLE_PREFIX, $log["ip_address"], $log["user_agent"], $log["request_uri"], $log["http_method"], $log["token"], $log["response"]));
 }

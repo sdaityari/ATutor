@@ -6,6 +6,7 @@
 
     define ("TOKEN_NAME", "x-AT-API-TOKEN");
 
+    // Access levels
     define("ADMIN_ACCESS_LEVEL", 1);
     define("INSTRUCTOR_ACCESS_LEVEL", 2);
     define("STUDENT_ACCESS_LEVEL", 3);
@@ -16,13 +17,18 @@
     define("STUDENT_ROLE", 2);
     define("INSTRUCTOR_ROLE", 3);
 
-    // http methods
+    // HTTP methods
     define("HTTP_GET", 1);
     define("HTTP_POST", 2);
     define("HTTP_PUT", 3);
     define("HTTP_DELETE", 4);
 
-    // custom messages
+    // Logging Levels
+    define("ALL_LOGGING", 1);
+    define("LOGGING_EXCEPT_GET", 2);
+    define("NO_LOGGING", 3);
+
+    // Custom Messages
     define("TOKEN_DOES_NOT_EXIST", "The token you provided does not exist");
     define("YOU_ARE_NOT_AUTHORIZED_TO_ACCESS_THIS_RESOURCE", "You are not authorized to access this resource");
     define("WRONG_CREDENTIALS", "The username password combination is wrong");
