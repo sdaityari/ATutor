@@ -36,13 +36,14 @@ class Authentication {
             // Deleting old data if exists
             queryDB("DELETE FROM %sapi WHERE member_id = %d", array(TABLE_PREFIX, $member_id));
 
-            queryDB("INSERT INTO %sapi(member_id, access_level, token, modified, expiry) VALUES('%s', %d, '%s', CURRENT_TIMESTAMP, NOW() + INTERVAL 1 DAY)",
-                array(TABLE_PREFIX, $member_id, $access_level, $token));
+            queryDB("INSERT INTO %sapi(member_id, access_level, token, modified, expiry) VALUES('%s', %d, '%s', CURRENT_TIMESTAMP, NOW() + INTERVAL %d DAY)",
+                array(TABLE_PREFIX, $member_id, $access_level, $token, TOKEN_EXPIRY));
 
             // Returning the access token
             $response = json_encode(array(
                 "access_token" => $token
             ));
+
             $log["response"] = $response;
             log_request($log);
             echo $response;

@@ -14,8 +14,9 @@ include_once(AT_INCLUDE_PATH."lib/vital_funcs.inc.php");
 // Enable CORS
 header("Access-Control-Allow-Origin: *");
 
-// Defining logging level as it is not accessible elsewhere
-define("LOGGING_LEVEL", $_config['api_logging_level']);
+// Defining logging level and token expiry as it is not accessible elsewhere
+define("LOGGING_LEVEL", $_config["api_logging_level"]);
+define("TOKEN_EXPIRY", $_config["api_token_expiry"]); // Number of days
 
 //XXX: Code to check if mod is enabled. Show 404 or error if not enabled.
 if (!api_module_status()) {

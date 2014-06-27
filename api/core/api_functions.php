@@ -34,7 +34,8 @@ function check_token($token, $minimum_access_level){
     }
 
     // Update modified timestamp
-    queryDB("UPDATE %sapi SET modified = CURRENT_TIMESTAMP, expiry = NOW() + INTERVAL 1 DAY WHERE token = '%s'", array(TABLE_PREFIX, $token));
+    queryDB("UPDATE %sapi SET modified = CURRENT_TIMESTAMP, expiry = NOW() + INTERVAL %d DAY WHERE token = '%s'",
+        array(TABLE_PREFIX, TOKEN_EXPIRY, $token));
     return $check["member_id"];
 }
 
