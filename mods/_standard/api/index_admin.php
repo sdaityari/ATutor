@@ -33,6 +33,10 @@ if ($_POST) {
 </div>
 
 <div>
+    <a href="custom/clear_log.php?status=inactive">Clear inactive API tokens</a>
+</div>
+
+<div>
     <form method="post">
         Token Expiry (Days): <input type="text" name="token-expiry" value="<?php echo $_config['api_token_expiry']; ?>" /><br />
         Logging Level: <select name="logging-level">
