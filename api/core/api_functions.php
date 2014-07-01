@@ -76,7 +76,7 @@ function print_message($type, $message, $log = array(), $http_method = HTTP_GET)
         $key => $message
     ));
     $log["response"] = $response;
-    log_request($log, $http_method, true);
+    log_request($log, $http_method, $type == ERROR);
     echo $response;
     exit;
 }
