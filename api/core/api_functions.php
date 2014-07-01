@@ -33,9 +33,17 @@ function check_token($token, $minimum_access_level){
         exit;
     }
 
+    $query = "UPDATE %sapi SET modified = CURRENT_TIMESTAMP, expiry = NOW() + INTERVAL %d DAY WHERE token = '%s'";
+    $query_array = array(TABLE_PREFIX, TOKEN_EXPIRY, $token);
+
+    if (DEBUG) {
+        print vsprintf($query, $query_array);
+        print "\n\n";
+    }
+
     // Update modified timestamp
-    queryDB("UPDATE %sapi SET modified = CURRENT_TIMESTAMP, expiry = NOW() + INTERVAL %d DAY WHERE token = '%s'",
-        array(TABLE_PREFIX, TOKEN_EXPIRY, $token));
+    queryDB($query, $query_array);
+
     return $check["member_id"];
 }
 
@@ -58,7 +66,7 @@ function get_access_token($headers, $minimum_access_level = ADMIN_ACCESS_LEVEL, 
     }
 }
 
-function print_message($type, $message, $log = array()) {
+function print_message($type, $message, $log = array(), $http_method = HTTP_GET) {
     if (!$log) {
         $log = generate_basic_log($_SERVER);
         $log["token"] = getallheaders()[TOKEN_NAME];
@@ -68,7 +76,7 @@ function print_message($type, $message, $log = array()) {
         $key => $message
     ));
     $log["response"] = $response;
-    log_request($log);
+    log_request($log, $http_method, true);
     echo $response;
     exit;
 }
@@ -82,14 +90,23 @@ function generate_basic_log($request) {
     return $log;
 }
 
-function log_request($log = array(), $http_method = HTTP_GET) {
-    if ((LOGGING_LEVEL == NO_LOGGING) || // Logging not to be done
-        ($http_method == HTTP_GET && LOGGING_LEVEL == LOGGING_EXCEPT_GET)) { // Logging all except GET requests
+function log_request($log = array(), $http_method = HTTP_GET, $error = false) {
+    if ((LOGGING_LEVEL == NO_LOGGING) ||
+        ($http_method == HTTP_GET && LOGGING_LEVEL == LOGGING_EXCEPT_GET && !$error)) {
         return;
     }
 
-    queryDB("INSERT INTO %sapi_logs(ip_address, user_agent, request_uri, http_method, token, response) VALUES('%s', '%s', '%s', '%s', '%s', '%s')",
-        array(TABLE_PREFIX, $log["ip_address"], $log["user_agent"], $log["request_uri"], $log["http_method"], $log["token"], $log["response"]));
+    $query = "INSERT INTO %sapi_logs(ip_address, user_agent, request_uri, http_method, token, response) VALUES('%s', '%s', '%s', '%s', '%s', '%s')";
+    $query_array = array(TABLE_PREFIX, $log["ip_address"], $log["user_agent"], $log["request_uri"], $log["http_method"], $log["token"], $log["response"]);
+
+    if (DEBUG) {
+        print vsprintf($query, $query_array);
+        print "\n\n";
+    }
+
+    queryDB($query, $query_array);
+
+
 }
 
 function return_created_id($id, $log) {

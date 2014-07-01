@@ -7,7 +7,7 @@ if (!defined('AT_INCLUDE_PATH')) {
 $instructor_url_prefix = "/instructors";
 
 $instructor_base_urls = array(
-    "/" => "InstructorList",
+    "/" => "Instructors",
     "/:number/" => "InstructorDetails",
     "/:number/courses/" => "InstructorCoursesList",
     "/:number/courses/:number" => "InstructorCoursesDetails",

@@ -158,15 +158,15 @@ function api_backbone($options) {
             break;
 
         case HTTP_PUT:
-            print_message(SUCCESS, ACTION_COMPLETED_SUCCESSFULLY, $options["log"]);
+            print_message(SUCCESS, ACTION_COMPLETED_SUCCESSFULLY, $options["log"], $options["request_type"]);
             break;
 
         case HTTP_DELETE:
             if (!$result) {
                 http_response_code(404);
-                print_message(ERROR, RESOURCE_DOES_NOT_EXIST, $options["log"]);
+                print_message(ERROR, RESOURCE_DOES_NOT_EXIST, $options["log"], $options["request_type"]);
             } else {
-                print_message(SUCCESS, ACTION_COMPLETED_SUCCESSFULLY, $options["log"]);
+                print_message(SUCCESS, ACTION_COMPLETED_SUCCESSFULLY, $options["log"], $options["request_type"]);
             }
             break;
 

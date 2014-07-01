@@ -38,5 +38,6 @@
     define("ACTION_COMPLETED_SUCCESSFULLY", "The action was completed successfully.");
     define("INSUFFICIENT_INFORMATION_TO_CREATE_OBJECT", "The information you provided wasn't enough to create the object");
     define("MODULE_DISABLED", "Module is not enabled! Please contact the ATutor administrator.");
+    define("EMAIL_OR_USERNAME_EXISTS", "The email or login you provided already exists.");
 
 ?>

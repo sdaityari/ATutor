@@ -23,7 +23,7 @@ class CourseDetails {
         $array = array(TABLE_PREFIX, $course_id);
 
         api_backbone(array(
-            "request_type" => HTTP_DELETE, 
+            "request_type" => HTTP_DELETE,
             "access_level" => ADMIN_ACCESS_LEVEL,
             "query" => $query,
             "query_array" => $array
@@ -37,7 +37,7 @@ class CourseCategories {
         $array = array(TABLE_PREFIX);
 
         api_backbone(array(
-            "request_type" => HTTP_GET, 
+            "request_type" => HTTP_GET,
             "access_level" => TOKEN_ACCESS_LEVEL,
             "query" => $query,
             "query_array" => $array
@@ -57,7 +57,7 @@ class CourseCategories {
         $array = array(TABLE_PREFIX, $name, $parent, $theme);
 
         api_backbone(array(
-            "request_type" => HTTP_POST, 
+            "request_type" => HTTP_POST,
             "access_level" => INSTRUCTOR_ACCESS_LEVEL,
             "query" => $query,
             "query_array" => $array,
@@ -73,7 +73,7 @@ class CourseCategoryDetails {
 
         api_backbone(array(
             "request_type" => HTTP_GET,
-            "access_level" => TOKEN_ACCESS_LEVEL,
+            "access_level" => INSTRUCTOR_ACCESS_LEVEL,
             "query" => $query,
             "query_array" => $array,
             "one_row" => true
@@ -81,8 +81,6 @@ class CourseCategoryDetails {
     }
 
     function put($category_id) {
-        $access_level = TOKEN_ACCESS_LEVEL;
-        $token = get_access_token(getallheaders(), $access_level);
 
         $query_id_existence = "SELECT COUNT(*) FROM %scourse_cats WHERE cat_id = %d";
         $query_id_existence_array = array(TABLE_PREFIX, $category_id);
@@ -98,7 +96,7 @@ class CourseCategoryDetails {
 
         api_backbone(array(
             "request_type" => HTTP_PUT,
-            "access_level" => $access_level,
+            "access_level" => INSTRUCTOR_ACCESS_LEVEL,
             "query" => $query,
             "query_array" => $array,
             "query_id_existence" => $query_id_existence,
