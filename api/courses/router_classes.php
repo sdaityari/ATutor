@@ -8,14 +8,47 @@ class CourseList {
             "c.primary_language" => $_GET["primary_language"]
         ));
 
-        get_courses_main(TOKEN_ACCESS_LEVEL, $clause);
+        // get_courses_main(TOKEN_ACCESS_LEVEL, $clause);
+
+        $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
+            "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
+            "c.end_date, c.banner FROM %scourses c ".
+            "INNER JOIN %scourse_cats cc ON c.cat_id = cc.cat_id";
+
+        if ($clause) {
+            $query .= " WHERE ";
+            $query .= $clause;
+        }
+
+        $array = array(TABLE_PREFIX, TABLE_PREFIX);
+
+        api_backbone(array(
+            "request_type" => HTTP_GET,
+            "access_level" => TOKEN_ACCESS_LEVEL,
+            "query" => $query,
+            "query_array" => $array
+        ));
     }
 
 }
 
 class CourseDetails {
     function get($course_id) {
-        get_courses_main(TOKEN_ACCESS_LEVEL, NULL, $course_id);
+        // get_courses_main(TOKEN_ACCESS_LEVEL, NULL, $course_id);
+        $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
+            "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
+            "c.end_date, c.banner FROM %scourses c ".
+            "INNER JOIN %scourse_cats cc ON c.cat_id = cc.cat_id WHERE course_id = %d";
+
+        $array = array(TABLE_PREFIX, TABLE_PREFIX, $course_id);
+
+        api_backbone(array(
+            "request_type" => HTTP_GET,
+            "access_level" => TOKEN_ACCESS_LEVEL,
+            "query" => $query,
+            "query_array" => $array,
+            "one_row" => true
+        ));
     }
 
     function delete($course_id) {
