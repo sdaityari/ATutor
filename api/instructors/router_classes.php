@@ -148,7 +148,29 @@ class InstructorCoursesList {
             "c.title" => $_GET["title"],
             "c.cat_id" => $_GET["category_id"],
             "c.primary_language" => $_GET["primary_language"]));
-        get_courses_main(INSTRUCTOR_ACCESS_LEVEL, $clause, -1, $instructor_id);
+        // get_courses_main(INSTRUCTOR_ACCESS_LEVEL, $clause, -1, $instructor_id);
+
+        $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
+            "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
+            "c.end_date, c.banner FROM %scourses c ".
+            "INNER JOIN %scourse_cats cc ON c.cat_id = cc.cat_id ".
+            "INNER JOIN %scourse_enrollment ce ON c.course_id = ce.course_id ".
+            "WHERE ce.member_id = %d";
+
+        if ($clause) {
+            $query .= " AND ";
+            $query .= $clause;
+        }
+
+        $array = array(TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, $instructor_id);
+
+        api_backbone(array(
+            "request_type" => HTTP_GET,
+            "access_level" => INSTRUCTOR_ACCESS_LEVEL,
+            "query" => $query,
+            "query_array" => $array,
+            "member_id" => $instructor_id
+        ));
     }
 
     function post($instructor_id) {
@@ -192,7 +214,25 @@ class InstructorCoursesList {
 
 class InstructorCoursesDetails {
     function get($instructor_id, $course_id) {
-        get_courses_main(INSTRUCTOR_ACCESS_LEVEL, NULL, $course_id, $instructor_id);
+        // get_courses_main(INSTRUCTOR_ACCESS_LEVEL, NULL, $course_id, $instructor_id);
+        $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
+            "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
+            "c.end_date, c.banner FROM %scourses c ".
+            "INNER JOIN %scourse_cats cc ON c.cat_id = cc.cat_id ".
+            "INNER JOIN %scourse_enrollment ce ON c.course_id = ce.course_id ".
+            "WHERE ce.member_id = %d ".
+            "AND c.course_id = %d";
+
+        $array = array(TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, $instructor_id, $course_id);
+
+        api_backbone(array(
+            "request_type" => HTTP_GET,
+            "access_level" => INSTRUCTOR_ACCESS_LEVEL,
+            "query" => $query,
+            "query_array" => $array,
+            "one_row" => true,
+            "member_id" => $instructor_id
+        ));
     }
 
     function put($instructor_id, $course_id) {

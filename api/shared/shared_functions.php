@@ -6,40 +6,42 @@ function get_courses_main($access_level = ADMIN_ACCESS_LEVEL, $clause = NULL, $c
      * Makes call to api_get_backbone after generating query
      */
 
-    $token = get_access_token(getallheaders(), $access_level);
+    return;
 
-    $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
-        "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
-        "c.end_date, c.banner FROM %scourses c ".
-        "INNER JOIN %scourse_cats cc ON c.cat_id = cc.cat_id";
+    // $token = get_access_token(getallheaders(), $access_level);
 
-    if ($member_id != -1) {
-        $query = $query." INNER JOIN %scourse_enrollment ce ON c.course_id = ce.course_id".
-        " WHERE ce.member_id = ".addslashes($member_id);
-    }
+    // $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
+    //     "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
+    //     "c.end_date, c.banner FROM %scourses c ".
+    //     "INNER JOIN %scourse_cats cc ON c.cat_id = cc.cat_id";
 
-    if ($course_id != -1) {
-        $query = $member_id == -1 ? $query . " WHERE " : $query . " AND ";
-        $query = $query."c.course_id = ".addslashes($course_id);
-    }
+    // if ($member_id != -1) {
+    //     $query = $query." INNER JOIN %scourse_enrollment ce ON c.course_id = ce.course_id".
+    //     " WHERE ce.member_id = ".addslashes($member_id);
+    // }
 
-    if ($clause) {
-        $query = ($member_id == -1 && $course_id == -1) ? $query." WHERE " : $query." AND ";
-        $query = $query.$clause;
-    }
+    // if ($course_id != -1) {
+    //     $query = $member_id == -1 ? $query . " WHERE " : $query . " AND ";
+    //     $query = $query."c.course_id = ".addslashes($course_id);
+    // }
 
-    $array = $member_id != -1 ? array(TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX) : array(TABLE_PREFIX, TABLE_PREFIX);
+    // if ($clause) {
+    //     $query = ($member_id == -1 && $course_id == -1) ? $query." WHERE " : $query." AND ";
+    //     $query = $query.$clause;
+    // }
 
-    $one_row = $course_id == -1? false : true;
+    // $array = $member_id != -1 ? array(TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX) : array(TABLE_PREFIX, TABLE_PREFIX);
 
-    api_backbone(array(
-        "request_type" => HTTP_GET,
-        "access_level" => $access_level,
-        "query" => $query,
-        "query_array" => $array,
-        "one_row" => $one_row,
-        "member_id" => $member_id
-    ));
+    // $one_row = $course_id == -1? false : true;
+
+    // api_backbone(array(
+    //     "request_type" => HTTP_GET,
+    //     "access_level" => $access_level,
+    //     "query" => $query,
+    //     "query_array" => $array,
+    //     "one_row" => $one_row,
+    //     "member_id" => $member_id
+    // ));
 }
 
 function get_members_main ($role, $access_level = ADMIN_ACCESS_LEVEL, $member_id = -1, $clause = "") {
