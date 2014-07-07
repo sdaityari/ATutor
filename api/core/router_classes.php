@@ -41,7 +41,9 @@ class Authentication {
 
             // Returning the access token
             $response = json_encode(array(
-                "access_token" => $token
+                "access_token" => $token,
+                "member_id" => $member_id,
+                "access_level" => $access_level
             ));
 
             $log["response"] = $response;
