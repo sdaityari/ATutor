@@ -7,8 +7,26 @@ class Instructors {
             "email" => $_GET["email"],
             "first_name" => $_GET["first_name"],
             "last_name" => $_GET["last_name"],
-            "login" => $_GET["login"]));
-        get_members_main(INSTRUCTOR_ROLE, INSTRUCTOR_ACCESS_LEVEL -1, $clause);
+            "login" => $_GET["login"]
+        ));
+        // get_members_main(INSTRUCTOR_ROLE, INSTRUCTOR_ACCESS_LEVEL -1, $clause);
+
+        $query = "SELECT member_id, login, email, first_name, last_name, website, gender, address, ".
+            "postal, city, province, country, phone, language, last_login, creation_date FROM %smembers ".
+            "WHERE status = %d";
+
+        if ($clause) {
+            $query .= " AND " . $clause;
+        }
+
+        $array = array(TABLE_PREFIX, INSTRUCTOR_ROLE);
+
+        api_backbone(array(
+            "request_type" => HTTP_GET,
+            "access_level" => INSTRUCTOR_ACCESS_LEVEL,
+            "query" => $query,
+            "query_array" => $array
+        ));
     }
 
     function post() {
@@ -59,7 +77,21 @@ class Instructors {
 
 class InstructorDetails {
     function get($instructor_id) {
-        get_members_main(INSTRUCTOR_ROLE, INSTRUCTOR_ACCESS_LEVEL, $instructor_id);
+        //get_members_main(INSTRUCTOR_ROLE, INSTRUCTOR_ACCESS_LEVEL, $instructor_id);
+        $query = "SELECT member_id, login, email, first_name, last_name, website, gender, address, ".
+            "postal, city, province, country, phone, language, last_login, creation_date FROM %smembers ".
+            "WHERE status = %d AND member_id = %d";
+
+        $array = array(TABLE_PREFIX, INSTRUCTOR_ROLE, $instructor_id);
+
+        api_backbone(array(
+            "request_type" => HTTP_GET,
+            "access_level" => INSTRUCTOR_ACCESS_LEVEL,
+            "query" => $query,
+            "query_array" => $array,
+            "one_row" => true,
+            "member_id" => $instructor_id
+        ));
     }
 
     function put($instructor_id) {

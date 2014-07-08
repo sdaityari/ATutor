@@ -7,7 +7,23 @@ class StudentList {
             "first_name" => $_GET["first_name"],
             "last_name" => $_GET["last_name"],
             "login" => $_GET["login"]));
-        get_members_main(STUDENT_ROLE, STUDENT_ACCESS_LEVEL, -1, $clause);
+        // get_members_main(STUDENT_ROLE, STUDENT_ACCESS_LEVEL, -1, $clause);
+        $query = "SELECT member_id, login, email, first_name, last_name, website, gender, address, ".
+            "postal, city, province, country, phone, language, last_login, creation_date FROM %smembers ".
+            "WHERE status = %d";
+
+        if ($clause) {
+            $query .= " AND " . $clause;
+        }
+
+        $array = array(TABLE_PREFIX, STUDENT_ROLE);
+
+        api_backbone(array(
+            "request_type" => HTTP_GET,
+            "access_level" => STUDENT_ACCESS_LEVEL,
+            "query" => $query,
+            "query_array" => $array
+        ));
     }
 
     function post() {
@@ -58,7 +74,21 @@ class StudentList {
 
 class StudentDetails {
     function get($student_id) {
-        get_members_main(STUDENT_ROLE, STUDENT_ACCESS_LEVEL, $student_id);
+        //get_members_main(STUDENT_ROLE, STUDENT_ACCESS_LEVEL, $student_id);
+        $query = "SELECT member_id, login, email, first_name, last_name, website, gender, address, ".
+            "postal, city, province, country, phone, language, last_login, creation_date FROM %smembers ".
+            "WHERE status = %d AND member_id = %d";
+
+        $array = array(TABLE_PREFIX, STUDENT_ROLE, $student_id);
+
+        api_backbone(array(
+            "request_type" => HTTP_GET,
+            "access_level" => STUDENT_ACCESS_LEVEL,
+            "query" => $query,
+            "query_array" => $array,
+            "one_row" => true,
+            "member_id" => $student_id
+        ));
     }
 
     function put($student_id) {

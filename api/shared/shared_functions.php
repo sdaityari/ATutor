@@ -45,31 +45,32 @@ function get_courses_main($access_level = ADMIN_ACCESS_LEVEL, $clause = NULL, $c
 }
 
 function get_members_main ($role, $access_level = ADMIN_ACCESS_LEVEL, $member_id = -1, $clause = "") {
-    $query = "SELECT member_id, login, email, first_name, last_name, website, gender, address, ".
-        "postal, city, province, country, phone, language, last_login, creation_date FROM %smembers ".
-        "WHERE status = %d";
+    return;
+    // $query = "SELECT member_id, login, email, first_name, last_name, website, gender, address, ".
+    //     "postal, city, province, country, phone, language, last_login, creation_date FROM %smembers ".
+    //     "WHERE status = %d";
 
-    if ($member_id != -1) {
-        $query .= " AND member_id = ".addslashes($member_id);
-        $one_row = true;
-    } else {
-        $one_row = false;
-    }
+    // if ($member_id != -1) {
+    //     $query .= " AND member_id = ".addslashes($member_id);
+    //     $one_row = true;
+    // } else {
+    //     $one_row = false;
+    // }
 
-    if ($clause) {
-        $query .= " AND " . $clause;
-    }
+    // if ($clause) {
+    //     $query .= " AND " . $clause;
+    // }
 
-    $array = array(TABLE_PREFIX, $role);
+    // $array = array(TABLE_PREFIX, $role);
 
-    api_backbone(array(
-        "request_type" => HTTP_GET,
-        "access_level" => $access_level,
-        "query" => $query,
-        "query_array" => $array,
-        "one_row" => $one_row,
-        "member_id" => $member_id
-    ));
+    // api_backbone(array(
+    //     "request_type" => HTTP_GET,
+    //     "access_level" => $access_level,
+    //     "query" => $query,
+    //     "query_array" => $array,
+    //     "one_row" => $one_row,
+    //     "member_id" => $member_id
+    // ));
 }
 
 function get_enrollment_members($instructor_id, $course_id, $role){
