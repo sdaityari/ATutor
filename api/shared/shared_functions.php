@@ -74,25 +74,26 @@ function get_members_main ($role, $access_level = ADMIN_ACCESS_LEVEL, $member_id
 }
 
 function get_enrollment_members($instructor_id, $course_id, $role){
-    $query = "SELECT m.member_id, m.login, m.email, m.first_name, m.last_name, m.website, m.gender, m.address, ".
-        "m.postal, m.city, m.province, m.country, m.phone, m.language, m.last_login, m.creation_date FROM %smembers m ".
-        "INNER JOIN %scourse_enrollment ce ".
-        "ON m.member_id = ce.member_id ".
-        "WHERE m.status = %d AND ce.course_id = %d";
+    return;
+    // $query = "SELECT m.member_id, m.login, m.email, m.first_name, m.last_name, m.website, m.gender, m.address, ".
+    //     "m.postal, m.city, m.province, m.country, m.phone, m.language, m.last_login, m.creation_date FROM %smembers m ".
+    //     "INNER JOIN %scourse_enrollment ce ".
+    //     "ON m.member_id = ce.member_id ".
+    //     "WHERE m.status = %d AND ce.course_id = %d";
 
-    $array = array(TABLE_PREFIX, TABLE_PREFIX, $role, $course_id);
+    // $array = array(TABLE_PREFIX, TABLE_PREFIX, $role, $course_id);
 
-    $query_id_existence = "SELECT COUNT(*) FROM %scourse_enrollment WHERE course_id = %d AND member_id = %d";
-    $query_id_existence_array = array(TABLE_PREFIX, $course_id, $instructor_id);
+    // $query_id_existence = "SELECT COUNT(*) FROM %scourse_enrollment WHERE course_id = %d AND member_id = %d";
+    // $query_id_existence_array = array(TABLE_PREFIX, $course_id, $instructor_id);
 
-    api_backbone(array(
-        "request_type" => HTTP_GET,
-        "access_level" => INSTRUCTOR_ACCESS_LEVEL,
-        "query" => $query,
-        "query_array" => $array,
-        "query_id_existence" => $query_id_existence,
-        "query_id_existence_array" => $query_id_existence_array
-    ));
+    // api_backbone(array(
+    //     "request_type" => HTTP_GET,
+    //     "access_level" => INSTRUCTOR_ACCESS_LEVEL,
+    //     "query" => $query,
+    //     "query_array" => $array,
+    //     "query_id_existence" => $query_id_existence,
+    //     "query_id_existence_array" => $query_id_existence_array
+    // ));
 }
 
 function api_backbone($options) {

@@ -164,13 +164,51 @@ class InstructorDetails {
 
 class CourseInstructorList {
     function get($instructor_id, $course_id) {
-        get_enrollment_members($instructor_id, $course_id, INSTRUCTOR_ROLE);
+        // get_enrollment_members($instructor_id, $course_id, INSTRUCTOR_ROLE);
+        $query = "SELECT m.member_id, m.login, m.email, m.first_name, m.last_name, m.website, m.gender, m.address, ".
+            "m.postal, m.city, m.province, m.country, m.phone, m.language, m.last_login, m.creation_date FROM %smembers m ".
+            "INNER JOIN %scourse_enrollment ce ".
+            "ON m.member_id = ce.member_id ".
+            "WHERE m.status = %d AND ce.course_id = %d";
+
+        $array = array(TABLE_PREFIX, TABLE_PREFIX, INSTRUCTOR_ROLE, $course_id);
+
+        $query_id_existence = "SELECT COUNT(*) FROM %scourse_enrollment WHERE course_id = %d AND member_id = %d";
+        $query_id_existence_array = array(TABLE_PREFIX, $course_id, $instructor_id);
+
+        api_backbone(array(
+            "request_type" => HTTP_GET,
+            "access_level" => INSTRUCTOR_ACCESS_LEVEL,
+            "query" => $query,
+            "query_array" => $array,
+            "query_id_existence" => $query_id_existence,
+            "query_id_existence_array" => $query_id_existence_array
+        ));
     }
 }
 
 class CourseEnrolledList {
     function get($instructor_id, $course_id) {
-        get_enrollment_members($instructor_id, $course_id, STUDENT_ROLE);
+        // get_enrollment_members($instructor_id, $course_id, STUDENT_ROLE);
+        $query = "SELECT m.member_id, m.login, m.email, m.first_name, m.last_name, m.website, m.gender, m.address, ".
+            "m.postal, m.city, m.province, m.country, m.phone, m.language, m.last_login, m.creation_date FROM %smembers m ".
+            "INNER JOIN %scourse_enrollment ce ".
+            "ON m.member_id = ce.member_id ".
+            "WHERE m.status = %d AND ce.course_id = %d";
+
+        $array = array(TABLE_PREFIX, TABLE_PREFIX, STUDENT_ROLE, $course_id);
+
+        $query_id_existence = "SELECT COUNT(*) FROM %scourse_enrollment WHERE course_id = %d AND member_id = %d";
+        $query_id_existence_array = array(TABLE_PREFIX, $course_id, $instructor_id);
+
+        api_backbone(array(
+            "request_type" => HTTP_GET,
+            "access_level" => INSTRUCTOR_ACCESS_LEVEL,
+            "query" => $query,
+            "query_array" => $array,
+            "query_id_existence" => $query_id_existence,
+            "query_id_existence_array" => $query_id_existence_array
+        ));
     }
 }
 
