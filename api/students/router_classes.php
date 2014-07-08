@@ -136,13 +136,51 @@ class StudentCoursesList {
             "c.cat_id" => $_GET["category_id"],
             "c.primary_language" => $_GET["primary_language"]));
 
-        get_courses_main(STUDENT_ACCESS_LEVEL, $clause, -1, $student_id);
+        $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
+            "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
+            "c.end_date, c.banner FROM %scourses c ".
+            "INNER JOIN %scourse_cats cc ON c.cat_id = cc.cat_id ".
+            "INNER JOIN %scourse_enrollment ce ON c.course_id = ce.course_id ".
+            "WHERE ce.member_id = %d";
+
+        if ($clause) {
+            $query .= " AND ";
+            $query .= $clause;
+        }
+
+        $array = array(TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, $student_id);
+
+        api_backbone(array(
+            "request_type" => HTTP_GET,
+            "access_level" => STUDENT_ACCESS_LEVEL,
+            "query" => $query,
+            "query_array" => $array,
+            "member_id" => $student_id
+        ));
     }
 }
 
 class StudentCoursesDetails {
     function get($student_id, $course_id) {
-        get_courses_main(STUDENT_ACCESS_LEVEL, NULL, $course_id, $student_id);
+        //get_courses_main(STUDENT_ACCESS_LEVEL, NULL, $course_id, $student_id);
+        $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
+            "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
+            "c.end_date, c.banner FROM %scourses c ".
+            "INNER JOIN %scourse_cats cc ON c.cat_id = cc.cat_id ".
+            "INNER JOIN %scourse_enrollment ce ON c.course_id = ce.course_id ".
+            "WHERE ce.member_id = %d ".
+            "AND c.course_id = %d";
+
+        $array = array(TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, $student_id, $course_id);
+
+        api_backbone(array(
+            "request_type" => HTTP_GET,
+            "access_level" => STUDENT_ACCESS_LEVEL,
+            "query" => $query,
+            "query_array" => $array,
+            "one_row" => true,
+            "member_id" => $student_id
+        ));
     }
 }
 
