@@ -5,6 +5,16 @@ class BoilerplateClass {
         // Make a call to the API function like this
         // Specify a request type, access level and query to be executed.
 
+        // You may want to add certain WHERE parameters to your query (which may or may not be present)
+        // An associative array is an argument - the keys are the names of the db columns as they appear in the query
+        //                                     - the values are the variables that may or may not exist in the call
+        // Uncomment the following call to generate the clause according to the variables that are present
+
+        // create_SQL_clause(array(
+        //     "title" => $_GET["title"],
+        //     "language" => $_GET["language"]
+        // ));
+
         // Uncomment the following for a sample call (make sure you set the variables first)
 
         /* api_backbone(array(
@@ -21,12 +31,15 @@ class BoilerplateClass {
         // Make a call to the API function like this
         // Specify a request type, access level and query to be executed.
         // We create an object and return the ID with this call.
+        // To get the ID of the newly created object, set returned_id_name to true
+
         // Uncomment the following for a sample call (make sure you set the variables first)
         /* api_backbone(array(
          *    "request_type" => HTTP_POST,
          *    "access_level" => INSTRUCTOR_ACCESS_LEVEL,
          *    "query" => $query,
-         *    "query_array" => $array
+         *    "query_array" => $array,
+         *    "returned_id_name" => true
          * ));
          */
         print "You are at the boilerplate home! Creating an object.";
@@ -78,6 +91,13 @@ class BoilerplateClassWithUrlParameter{
          *    "query_array" => $array
          * ));
          */
+
+        // There are chances where you might want to execute something after the API call
+        // For example, after you delete a course, you want to clear the enrollment tables
+        // For this you need to manually use queryDB after you complete the call to api_backbone
+
+        // queryDB($second_query, $second_query_array);
+
         print "Deleting boilerplace with id - ".$boilerplate_id;
     }
 }
