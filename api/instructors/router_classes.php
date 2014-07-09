@@ -9,7 +9,6 @@ class Instructors {
             "last_name" => $_GET["last_name"],
             "login" => $_GET["login"]
         ));
-        // get_members_main(INSTRUCTOR_ROLE, INSTRUCTOR_ACCESS_LEVEL -1, $clause);
 
         $query = "SELECT member_id, login, email, first_name, last_name, website, gender, address, ".
             "postal, city, province, country, phone, language, last_login, creation_date FROM %smembers ".
@@ -77,7 +76,6 @@ class Instructors {
 
 class InstructorDetails {
     function get($instructor_id) {
-        //get_members_main(INSTRUCTOR_ROLE, INSTRUCTOR_ACCESS_LEVEL, $instructor_id);
         $query = "SELECT member_id, login, email, first_name, last_name, website, gender, address, ".
             "postal, city, province, country, phone, language, last_login, creation_date FROM %smembers ".
             "WHERE status = %d AND member_id = %d";
@@ -164,7 +162,6 @@ class InstructorDetails {
 
 class CourseInstructorList {
     function get($instructor_id, $course_id) {
-        // get_enrollment_members($instructor_id, $course_id, INSTRUCTOR_ROLE);
         $query = "SELECT m.member_id, m.login, m.email, m.first_name, m.last_name, m.website, m.gender, m.address, ".
             "m.postal, m.city, m.province, m.country, m.phone, m.language, m.last_login, m.creation_date FROM %smembers m ".
             "INNER JOIN %scourse_enrollment ce ".
@@ -189,7 +186,6 @@ class CourseInstructorList {
 
 class CourseEnrolledList {
     function get($instructor_id, $course_id) {
-        // get_enrollment_members($instructor_id, $course_id, STUDENT_ROLE);
         $query = "SELECT m.member_id, m.login, m.email, m.first_name, m.last_name, m.website, m.gender, m.address, ".
             "m.postal, m.city, m.province, m.country, m.phone, m.language, m.last_login, m.creation_date FROM %smembers m ".
             "INNER JOIN %scourse_enrollment ce ".
@@ -218,7 +214,6 @@ class InstructorCoursesList {
             "c.title" => $_GET["title"],
             "c.cat_id" => $_GET["category_id"],
             "c.primary_language" => $_GET["primary_language"]));
-        // get_courses_main(INSTRUCTOR_ACCESS_LEVEL, $clause, -1, $instructor_id);
 
         $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
             "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
@@ -284,7 +279,6 @@ class InstructorCoursesList {
 
 class InstructorCoursesDetails {
     function get($instructor_id, $course_id) {
-        // get_courses_main(INSTRUCTOR_ACCESS_LEVEL, NULL, $course_id, $instructor_id);
         $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
             "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
             "c.end_date, c.banner FROM %scourses c ".

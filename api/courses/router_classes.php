@@ -8,8 +8,6 @@ class CourseList {
             "c.primary_language" => $_GET["primary_language"]
         ));
 
-        // get_courses_main(TOKEN_ACCESS_LEVEL, $clause);
-
         $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
             "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
             "c.end_date, c.banner FROM %scourses c ".
@@ -34,7 +32,6 @@ class CourseList {
 
 class CourseDetails {
     function get($course_id) {
-        // get_courses_main(TOKEN_ACCESS_LEVEL, NULL, $course_id);
         $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
             "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
             "c.end_date, c.banner FROM %scourses c ".

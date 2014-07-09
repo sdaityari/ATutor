@@ -7,7 +7,6 @@ class StudentList {
             "first_name" => $_GET["first_name"],
             "last_name" => $_GET["last_name"],
             "login" => $_GET["login"]));
-        // get_members_main(STUDENT_ROLE, STUDENT_ACCESS_LEVEL, -1, $clause);
         $query = "SELECT member_id, login, email, first_name, last_name, website, gender, address, ".
             "postal, city, province, country, phone, language, last_login, creation_date FROM %smembers ".
             "WHERE status = %d";
@@ -74,7 +73,6 @@ class StudentList {
 
 class StudentDetails {
     function get($student_id) {
-        //get_members_main(STUDENT_ROLE, STUDENT_ACCESS_LEVEL, $student_id);
         $query = "SELECT member_id, login, email, first_name, last_name, website, gender, address, ".
             "postal, city, province, country, phone, language, last_login, creation_date FROM %smembers ".
             "WHERE status = %d AND member_id = %d";
@@ -192,7 +190,6 @@ class StudentCoursesList {
 
 class StudentCoursesDetails {
     function get($student_id, $course_id) {
-        //get_courses_main(STUDENT_ACCESS_LEVEL, NULL, $course_id, $student_id);
         $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
             "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
             "c.end_date, c.banner FROM %scourses c ".
