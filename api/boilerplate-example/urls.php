@@ -8,7 +8,8 @@ if (!defined('AT_INCLUDE_PATH')) {
 $boilerplate_url_prefix = "/boilerplate";
 
 $boilerplate_base_urls = array(
-    "/" => "BoilerplateClass"
+    "/" => "BoilerplateClass",
+    "/:number" => "BoilerplateClassWithUrlParameter"
 );
 
 $boilerplate_urls = generate_urls($boilerplate_base_urls, $boilerplate_url_prefix);
