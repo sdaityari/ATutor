@@ -11,12 +11,7 @@ class CourseList {
         $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
             "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
             "c.end_date, c.banner FROM %scourses c ".
-            "INNER JOIN %scourse_cats cc ON c.cat_id = cc.cat_id";
-
-        if ($clause) {
-            $query .= " WHERE ";
-            $query .= $clause;
-        }
+            "INNER JOIN %scourse_cats cc ON c.cat_id = cc.cat_id ".$clause;
 
         $array = array(TABLE_PREFIX, TABLE_PREFIX);
 
@@ -63,7 +58,13 @@ class CourseDetails {
 
 class CourseCategories {
     function get(){
-        $query = "SELECT cat_id, cat_name, cat_parent, theme FROM %scourse_cats";
+        $clause = create_SQL_clause(array(
+            "cat_name" => $_REQUEST["name"],
+            "cat_parent" => $_REQUEST["parent"],
+            "theme" => $_REQUEST["theme"]
+        ));
+
+        $query = "SELECT cat_id, cat_name, cat_parent, theme FROM %scourse_cats ".$clause;
         $array = array(TABLE_PREFIX);
 
         api_backbone(array(
@@ -119,10 +120,15 @@ class CourseCategoryDetails {
             "cat_name" => $_REQUEST["name"],
             "cat_parent" => $_REQUEST["parent"],
             "theme" => $_REQUEST["theme"]
-        ));
+        ), "SET");
 
-        $query = "UPDATE %scourse_cats SET ".$clause. "WHERE cat_id = %d";
-        $array = array(TABLE_PREFIX, $category_id);
+        if (!$clause) {
+            $query = "UPDATE %scourse_cats ".$clause. "WHERE cat_id = %d ";
+            $array = array(TABLE_PREFIX, $category_id);
+        } else {
+            $query = "";
+            $array = array();
+        }
 
         api_backbone(array(
             "request_type" => HTTP_PUT,

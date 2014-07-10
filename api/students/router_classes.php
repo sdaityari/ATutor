@@ -6,14 +6,11 @@ class StudentList {
             "email" => $_GET["email"],
             "first_name" => $_GET["first_name"],
             "last_name" => $_GET["last_name"],
-            "login" => $_GET["login"]));
+            "login" => $_GET["login"]), "AND");
+
         $query = "SELECT member_id, login, email, first_name, last_name, website, gender, address, ".
             "postal, city, province, country, phone, language, last_login, creation_date FROM %smembers ".
-            "WHERE status = %d";
-
-        if ($clause) {
-            $query .= " AND " . $clause;
-        }
+            "WHERE status = %d ". $clause;
 
         $array = array(TABLE_PREFIX, STUDENT_ROLE);
 
@@ -96,7 +93,7 @@ class StudentDetails {
         ));
 
         if ($clause_check != "") {
-            $checks = queryDB("SELECT COUNT(*) FROM %smembers WHERE ". $clause,
+            $checks = queryDB("SELECT COUNT(*) FROM %smembers ". $clause,
                 array(TABLE_PREFIX), true);
 
             if ($checks["COUNT(*)"] != "0"){
@@ -121,13 +118,18 @@ class StudentDetails {
             country => $_REQUEST["country"],
             phone => $_REQUEST["phone"],
             language => $_REQUEST["language"]
-        ));
+        ), "SET");
 
         $query_id_existence = "SELECT COUNT(*) FROM %smembers WHERE member_id = %d AND status = %d";
         $query_id_existence_array = array(TABLE_PREFIX, $student_id, STUDENT_ROLE);
 
-        $query = "UPDATE %smembers SET " . $clause . "WHERE member_id = %d AND status = %d";
-        $array = array(TABLE_PREFIX, $student_id, STUDENT_ROLE);
+        if ($clause) {
+            $query = "UPDATE %smembers SET " . $clause . "WHERE member_id = %d AND status = %d";
+            $array = array(TABLE_PREFIX, $student_id, STUDENT_ROLE);
+        } else {
+            $query = "";
+            $array = array();
+        }
 
         api_backbone(array(
             "request_type" => HTTP_PUT,
@@ -162,19 +164,14 @@ class StudentCoursesList {
         $clause = create_SQL_clause(array(
             "c.title" => $_GET["title"],
             "c.cat_id" => $_GET["category_id"],
-            "c.primary_language" => $_GET["primary_language"]));
+            "c.primary_language" => $_GET["primary_language"]), "AND");
 
         $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
             "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
             "c.end_date, c.banner FROM %scourses c ".
             "INNER JOIN %scourse_cats cc ON c.cat_id = cc.cat_id ".
             "INNER JOIN %scourse_enrollment ce ON c.course_id = ce.course_id ".
-            "WHERE ce.member_id = %d";
-
-        if ($clause) {
-            $query .= " AND ";
-            $query .= $clause;
-        }
+            "WHERE ce.member_id = %d". $clause;
 
         $array = array(TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, $student_id);
 

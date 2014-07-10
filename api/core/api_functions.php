@@ -117,7 +117,7 @@ function return_created_id($id, $log) {
     echo $response;
 }
 
-function create_SQL_clause($terms, $sanitize = true) {
+function create_SQL_clause($terms, $prefix = "WHERE", $sanitize = true) {
     /*
      * Function to create SQL clause
      * $terms is an associative array
@@ -128,12 +128,16 @@ function create_SQL_clause($terms, $sanitize = true) {
      * "WHERE c.title = 'My Course' AND c.language = 'en'"
      */
     $query = "";
+    $prefix = $prefix ? $prefix . " " : "";
     foreach ($terms as $key => $value) {
         if ($value) {
             if ($query != "")
                 $query = $query."AND ";
             $query = $sanitize ? $query.$key." = '". addslashes($value) ."' " : $query.$key." = '". $value ."' ";
         }
+    }
+    if ($query != ""){
+        $query = $prefix . $query;
     }
     return $query;
 }
