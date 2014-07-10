@@ -1,45 +1,34 @@
 <?php
 
-class CourseList {
-    function get() {
+class Courses {
+    function get($course_id) {
+
         $clause = create_SQL_clause(array(
             "c.title" => $_GET["title"],
             "c.cat_id" => $_GET["category_id"],
             "c.primary_language" => $_GET["primary_language"]
         ));
 
+        $clause_with_id = create_SQL_clause(array(
+            "c.course_id" => $course_id
+        ));
+
         $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
             "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
             "c.end_date, c.banner FROM %scourses c ".
-            "INNER JOIN %scourse_cats cc ON c.cat_id = cc.cat_id ".$clause;
+            "INNER JOIN %scourse_cats cc ON c.cat_id = cc.cat_id ";
 
         $array = array(TABLE_PREFIX, TABLE_PREFIX);
 
-        api_backbone(array(
-            "request_type" => HTTP_GET,
-            "access_level" => TOKEN_ACCESS_LEVEL,
-            "query" => $query,
-            "query_array" => $array
-        ));
-    }
-
-}
-
-class CourseDetails {
-    function get($course_id) {
-        $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
-            "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
-            "c.end_date, c.banner FROM %scourses c ".
-            "INNER JOIN %scourse_cats cc ON c.cat_id = cc.cat_id WHERE course_id = %d";
-
-        $array = array(TABLE_PREFIX, TABLE_PREFIX, $course_id);
+        $query .= $course_id ? $clause_with_id : $clause;
+        $one_row = $course_id ? true : false;
 
         api_backbone(array(
             "request_type" => HTTP_GET,
             "access_level" => TOKEN_ACCESS_LEVEL,
             "query" => $query,
             "query_array" => $array,
-            "one_row" => true
+            "one_row" => $one_row
         ));
     }
 
@@ -57,21 +46,29 @@ class CourseDetails {
 }
 
 class CourseCategories {
-    function get(){
+    function get($category_id){
         $clause = create_SQL_clause(array(
             "cat_name" => $_REQUEST["name"],
             "cat_parent" => $_REQUEST["parent"],
             "theme" => $_REQUEST["theme"]
         ));
 
-        $query = "SELECT cat_id, cat_name, cat_parent, theme FROM %scourse_cats ".$clause;
+        $clause_with_id = create_SQL_clause(array(
+            "cat_id" => $category_id
+        ));
+
+        $query = "SELECT cat_id, cat_name, cat_parent, theme FROM %scourse_cats ";
         $array = array(TABLE_PREFIX);
+
+        $query .= $category_id ? $clause_with_id : $clause;
+        $one_row = $category_id ? true : false;
 
         api_backbone(array(
             "request_type" => HTTP_GET,
             "access_level" => TOKEN_ACCESS_LEVEL,
             "query" => $query,
-            "query_array" => $array
+            "query_array" => $array,
+            "one_row" => $one_row
         ));
     }
 
@@ -93,21 +90,6 @@ class CourseCategories {
             "query" => $query,
             "query_array" => $array,
             "returned_id_name" => true
-        ));
-    }
-}
-
-class CourseCategoryDetails {
-    function get($category_id) {
-        $query = "SELECT cat_id, cat_name, cat_parent, theme FROM %scourse_cats WHERE cat_id = %d";
-        $array = array(TABLE_PREFIX, $category_id);
-
-        api_backbone(array(
-            "request_type" => HTTP_GET,
-            "access_level" => INSTRUCTOR_ACCESS_LEVEL,
-            "query" => $query,
-            "query_array" => $array,
-            "one_row" => true
         ));
     }
 
@@ -164,5 +146,6 @@ class CourseCategoryDetails {
                     array(TABLE_PREFIX, $category_id));
     }
 }
+
 
 ?>
