@@ -1,8 +1,7 @@
 <?php
 
 class Instructors {
-    function get() {
-        // Get instructor list
+    function get($instructor_id) {
         $clause = create_SQL_clause(array(
             "email" => $_GET["email"],
             "first_name" => $_GET["first_name"],
@@ -10,9 +9,16 @@ class Instructors {
             "login" => $_GET["login"]
         ), "AND");
 
+        $clause_with_id = create_SQL_clause(array(
+            "member_id" => $instructor_id
+        ), "AND");
+
         $query = "SELECT member_id, login, email, first_name, last_name, website, gender, address, ".
             "postal, city, province, country, phone, language, last_login, creation_date FROM %smembers ".
-            "WHERE status = %d ". $clause;
+            "WHERE status = %d ";
+
+        $query .= $instructor_id ? $clause_with_id : $clause;
+        $one_row = $instructor_id ? true : false;
 
         $array = array(TABLE_PREFIX, INSTRUCTOR_ROLE);
 
@@ -20,7 +26,8 @@ class Instructors {
             "request_type" => HTTP_GET,
             "access_level" => INSTRUCTOR_ACCESS_LEVEL,
             "query" => $query,
-            "query_array" => $array
+            "query_array" => $array,
+            "one_row" => $one_row
         ));
     }
 
@@ -66,27 +73,6 @@ class Instructors {
             "query_array" => $array,
             "returned_id_name" => true
         ));
-
-    }
-}
-
-class InstructorDetails {
-    function get($instructor_id) {
-        $query = "SELECT member_id, login, email, first_name, last_name, website, gender, address, ".
-            "postal, city, province, country, phone, language, last_login, creation_date FROM %smembers ".
-            "WHERE status = %d AND member_id = %d";
-
-        $array = array(TABLE_PREFIX, INSTRUCTOR_ROLE, $instructor_id);
-
-        api_backbone(array(
-            "request_type" => HTTP_GET,
-            "access_level" => INSTRUCTOR_ACCESS_LEVEL,
-            "query" => $query,
-            "query_array" => $array,
-            "one_row" => true,
-            "member_id" => $instructor_id
-        ));
-    }
 
     function put($instructor_id) {
         $clause_check = create_SQL_clause(array(
@@ -156,6 +142,8 @@ class InstructorDetails {
             "query_id_existence_array" => $query_id_existence_array
         ));
     }
+
+    }
 }
 
 class CourseInstructorList {
@@ -206,19 +194,26 @@ class CourseEnrolledList {
     }
 }
 
-class InstructorCoursesList {
-    function get($instructor_id) {
+class InstructorCourses {
+    function get($instructor_id, $course_id) {
         $clause = create_SQL_clause(array(
             "c.title" => $_GET["title"],
             "c.cat_id" => $_GET["category_id"],
             "c.primary_language" => $_GET["primary_language"]), "AND");
+
+        $clause_with_id = create_SQL_clause(array(
+            "c.course_id" => $course_id
+        ), "AND");
 
         $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
             "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
             "c.end_date, c.banner FROM %scourses c ".
             "INNER JOIN %scourse_cats cc ON c.cat_id = cc.cat_id ".
             "INNER JOIN %scourse_enrollment ce ON c.course_id = ce.course_id ".
-            "WHERE ce.member_id = %d ". $clause;
+            "WHERE ce.member_id = %d ";
+
+        $query .= $course_id ? $clause_with_id : $clause;
+        $one_row = $course_id ? true : false;
 
         $array = array(TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, $instructor_id);
 
@@ -227,6 +222,7 @@ class InstructorCoursesList {
             "access_level" => INSTRUCTOR_ACCESS_LEVEL,
             "query" => $query,
             "query_array" => $array,
+            "one_row" => $one_row,
             "member_id" => $instructor_id
         ));
     }
@@ -266,30 +262,6 @@ class InstructorCoursesList {
         queryDB("INSERT INTO %scourse_enrollment(member_id, course_id, approved, privileges, role, last_cid) ".
             "VALUES(%d, %d, 'n', 0, 'Instructor', 0)", array(TABLE_PREFIX, $instructor_id, $course_id));
 
-    }
-
-}
-
-class InstructorCoursesDetails {
-    function get($instructor_id, $course_id) {
-        $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
-            "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
-            "c.end_date, c.banner FROM %scourses c ".
-            "INNER JOIN %scourse_cats cc ON c.cat_id = cc.cat_id ".
-            "INNER JOIN %scourse_enrollment ce ON c.course_id = ce.course_id ".
-            "WHERE ce.member_id = %d ".
-            "AND c.course_id = %d";
-
-        $array = array(TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, $instructor_id, $course_id);
-
-        api_backbone(array(
-            "request_type" => HTTP_GET,
-            "access_level" => INSTRUCTOR_ACCESS_LEVEL,
-            "query" => $query,
-            "query_array" => $array,
-            "one_row" => true,
-            "member_id" => $instructor_id
-        ));
     }
 
     function put($instructor_id, $course_id) {
