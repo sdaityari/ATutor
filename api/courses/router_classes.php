@@ -3,32 +3,33 @@
 class Courses {
     function get($course_id) {
 
-        $clause = create_SQL_clause(array(
-            "c.title" => $_GET["title"],
-            "c.cat_id" => $_GET["category_id"],
-            "c.primary_language" => $_GET["primary_language"]
-        ));
+        if ($course_id) {
+            $sql_array = array(
+                "c.course_id" => $course_id
+            );
+        } else {
+            $sql_array = array(
+                "c.title" => $_GET["title"],
+                "c.cat_id" => $_GET["category_id"],
+                "c.primary_language" => $_GET["primary_language"]
+            );
+        }
 
-        $clause_with_id = create_SQL_clause(array(
-            "c.course_id" => $course_id
-        ));
+        $clause = create_SQL_clause($sql_array);
 
         $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
             "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
             "c.end_date, c.banner FROM %scourses c ".
-            "INNER JOIN %scourse_cats cc ON c.cat_id = cc.cat_id ";
+            "INNER JOIN %scourse_cats cc ON c.cat_id = cc.cat_id ".$clause;
 
         $array = array(TABLE_PREFIX, TABLE_PREFIX);
-
-        $query .= $course_id ? $clause_with_id : $clause;
-        $one_row = $course_id ? true : false;
 
         api_backbone(array(
             "request_type" => HTTP_GET,
             "access_level" => TOKEN_ACCESS_LEVEL,
             "query" => $query,
             "query_array" => $array,
-            "one_row" => $one_row
+            "one_row" => $course_id ? true : false
         ));
     }
 
@@ -47,28 +48,31 @@ class Courses {
 
 class CourseCategories {
     function get($category_id){
-        $clause = create_SQL_clause(array(
-            "cat_name" => $_REQUEST["name"],
-            "cat_parent" => $_REQUEST["parent"],
-            "theme" => $_REQUEST["theme"]
-        ));
 
-        $clause_with_id = create_SQL_clause(array(
-            "cat_id" => $category_id
-        ));
+        if ($category_id) {
+            $sql_array = array(
+                "cat_id" => $category_id
+            );
+        } else {
+            $sql_array = array(
+                "cat_name" => $_REQUEST["name"],
+                "cat_parent" => $_REQUEST["parent"],
+                "theme" => $_REQUEST["theme"]
+            );
+        }
 
-        $query = "SELECT cat_id, cat_name, cat_parent, theme FROM %scourse_cats ";
+
+        $clause = create_SQL_clause($sql_array);
+
+        $query = "SELECT cat_id, cat_name, cat_parent, theme FROM %scourse_cats ".$clause;
         $array = array(TABLE_PREFIX);
-
-        $query .= $category_id ? $clause_with_id : $clause;
-        $one_row = $category_id ? true : false;
 
         api_backbone(array(
             "request_type" => HTTP_GET,
             "access_level" => TOKEN_ACCESS_LEVEL,
             "query" => $query,
             "query_array" => $array,
-            "one_row" => $one_row
+            "one_row" => $category_id ? true : false
         ));
     }
 

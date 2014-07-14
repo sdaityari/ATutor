@@ -2,23 +2,25 @@
 
 class Instructors {
     function get($instructor_id) {
-        $clause = create_SQL_clause(array(
-            "email" => $_GET["email"],
-            "first_name" => $_GET["first_name"],
-            "last_name" => $_GET["last_name"],
-            "login" => $_GET["login"]
-        ), "AND");
 
-        $clause_with_id = create_SQL_clause(array(
-            "member_id" => $instructor_id
-        ), "AND");
+        if ($instructor_id) {
+            $sql_array = array(
+                "member_id" => $instructor_id
+            );
+        } else {
+            $sql_array = array(
+                "email" => $_GET["email"],
+                "first_name" => $_GET["first_name"],
+                "last_name" => $_GET["last_name"],
+                "login" => $_GET["login"]
+            );
+        }
+
+        $clause = create_SQL_clause($sql_array, "AND");
 
         $query = "SELECT member_id, login, email, first_name, last_name, website, gender, address, ".
             "postal, city, province, country, phone, language, last_login, creation_date FROM %smembers ".
-            "WHERE status = %d ";
-
-        $query .= $instructor_id ? $clause_with_id : $clause;
-        $one_row = $instructor_id ? true : false;
+            "WHERE status = %d ".$clause;
 
         $array = array(TABLE_PREFIX, INSTRUCTOR_ROLE);
 
@@ -27,7 +29,7 @@ class Instructors {
             "access_level" => INSTRUCTOR_ACCESS_LEVEL,
             "query" => $query,
             "query_array" => $array,
-            "one_row" => $one_row
+            "one_row" => $instructor_id ? true : false
         ));
     }
 
@@ -196,24 +198,27 @@ class CourseEnrolledList {
 
 class InstructorCourses {
     function get($instructor_id, $course_id) {
-        $clause = create_SQL_clause(array(
-            "c.title" => $_GET["title"],
-            "c.cat_id" => $_GET["category_id"],
-            "c.primary_language" => $_GET["primary_language"]), "AND");
 
-        $clause_with_id = create_SQL_clause(array(
-            "c.course_id" => $course_id
-        ), "AND");
+        if ($course_id) {
+            $sql_array = array(
+                "c.course_id" => $course_id
+            );
+        } else {
+            $sql_array = array(
+                "c.title" => $_GET["title"],
+                "c.cat_id" => $_GET["category_id"],
+                "c.primary_language" => $_GET["primary_language"]
+            );
+        }
+
+        $clause = create_SQL_clause($sql_array, "AND");
 
         $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
             "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
             "c.end_date, c.banner FROM %scourses c ".
             "INNER JOIN %scourse_cats cc ON c.cat_id = cc.cat_id ".
             "INNER JOIN %scourse_enrollment ce ON c.course_id = ce.course_id ".
-            "WHERE ce.member_id = %d ";
-
-        $query .= $course_id ? $clause_with_id : $clause;
-        $one_row = $course_id ? true : false;
+            "WHERE ce.member_id = %d ".$clause;
 
         $array = array(TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, $instructor_id);
 
@@ -222,7 +227,7 @@ class InstructorCourses {
             "access_level" => INSTRUCTOR_ACCESS_LEVEL,
             "query" => $query,
             "query_array" => $array,
-            "one_row" => $one_row,
+            "one_row" => $course_id ? true : false,
             "member_id" => $instructor_id
         ));
     }
