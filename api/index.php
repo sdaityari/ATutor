@@ -43,6 +43,10 @@ include(AT_INCLUDE_PATH."../api/students/router_classes.php");
 include(AT_INCLUDE_PATH."../api/instructors/urls.php");
 include(AT_INCLUDE_PATH."../api/instructors/router_classes.php");
 
+// Tests
+include(AT_INCLUDE_PATH."../api/tests/urls.php");
+include(AT_INCLUDE_PATH."../api/tests/router_classes.php");
+
 // Boilerplate Example
 // Include urls and router_classes from your app
 include(AT_INCLUDE_PATH."../api/boilerplate-example/urls.php");
@@ -88,6 +92,7 @@ Toro::serve(array_merge(
     $course_urls,
     $student_urls,
     $instructor_urls,
+    $test_urls,
 
     // Include the url array of your app
     $boilerplate_urls

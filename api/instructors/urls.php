@@ -11,6 +11,8 @@ $instructor_base_urls = array(
     "/:number/" => "Instructors",
     "/:number/courses/" => "InstructorCourses",
     "/:number/courses/:number" => "InstructorCourses",
+    "/:number/courses/:number/tests" => "InstructorsTests",
+    "/:number/courses/:number/tests/:number" => "InstructorsTests",
     "/:number/courses/:number/instructors" => "CourseInstructorList",
     "/:number/courses/:number/students" => "CourseEnrolledList"
 );
