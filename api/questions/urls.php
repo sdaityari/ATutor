@@ -9,7 +9,9 @@ $question_url_prefix = "/questions";
 
 $question_base_urls = array(
     "/" => "Questions",
-    "/:number" => "Questions"
+    "/:number" => "Questions",
+    "/categories/" => "QuestionCategories",
+    "/categories/:number" => "QuestionCategories"
 );
 
 $question_urls = generate_urls($question_base_urls, $question_url_prefix);

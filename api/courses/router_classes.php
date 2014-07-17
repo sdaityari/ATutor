@@ -108,7 +108,7 @@ class CourseCategories {
             "theme" => $_REQUEST["theme"]
         ), "SET");
 
-        if (!$clause) {
+        if ($clause) {
             $query = "UPDATE %scourse_cats ".$clause. "WHERE cat_id = %d ";
             $array = array(TABLE_PREFIX, $category_id);
         } else {
@@ -139,8 +139,7 @@ class CourseCategories {
             "query" => $query,
             "query_array" => $array,
             "query_id_existence" => $query_id_existence,
-            "query_id_existence_array" => $query_id_existence_array,
-            "queries_after" => $queries_after
+            "query_id_existence_array" => $query_id_existence_array
         ));
 
         // Changing course category parents and updating courses with this course category
