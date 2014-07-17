@@ -187,4 +187,45 @@ class StudentCourses {
     }
 }
 
+class StudentTests {
+    function get($student, $course_id, $test_id) {
+        if ($test_id) {
+            $sql_array = array(
+                "test_id" => $test_id
+            );
+        } else {
+            $sql_array = array(
+                "title" => $_GET["title"],
+                "start_date" => $_GET["start_date"],
+                "else_date" => $_GET["end_date"]
+            );
+        }
+
+        $clause  = create_SQL_clause($sql_array, "AND");
+
+        $query = "SELECT test_id, course_id, title, format, start_date, end_date, num_questions ".
+            "instructions, content_id, result_release, random, difficulty, description ".
+            "FROM %stests WHERE course_id = %d ". $clause;
+
+        $array = array(TABLE_PREFIX, $course_id);
+
+        $query_id_existence = "SELECT COUNT(*) FROM %scourse_enrollment ce ".
+            "WHERE member_id = %d AND course_id = %d";
+
+        $query_id_existence_array = array(TABLE_PREFIX, $student_id, $course_id);
+
+        api_backbone(array(
+             "request_type" => HTTP_GET,
+             "access_level" => INSTRUCTOR_ACCESS_LEVEL,
+             "query_id_existence" => $query_id_existence,
+             "query_id_existence_array" => $query_id_existence_array,
+             "query" => $query,
+             "query_array" => $array,
+             "one_row" => $test_id ? true : false,
+             "member_id" => $student_id
+        ));
+    }
+}
+
+
 ?>

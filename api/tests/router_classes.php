@@ -24,7 +24,7 @@ class Tests {
 
         api_backbone(array(
              "request_type" => HTTP_GET,
-             "access_level" => STUDENT_ACCESS_LEVEL,
+             "access_level" => ADMIN_ACCESS_LEVEL,
              "query" => $query,
              "query_array" => $array,
              "one_row" => $test_id ? true : false
