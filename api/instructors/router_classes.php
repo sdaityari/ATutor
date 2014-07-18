@@ -348,3 +348,48 @@ class InstructorsTests {
         ));
     }
 }
+
+class InstructorsTestQuestions {
+    function get($instructor_id, $course_id, $test_id, $question_id) {
+
+        $query_id_existence = "SELECT COUNT(*) FROM %scourse_enrollment ce ".
+            "WHERE member_id = %d AND course_id = %d";
+
+        $query_id_existence_array = array(TABLE_PREFIX, $instructor_id, $course_id);
+
+        if ($question_id) {
+            $sql_array = array(
+                "q.question_id" => $question_id
+            );
+        } else {
+            $sql_array = array(
+                "q.question" => $_GET["question"],
+                "q.category_id" => $_GET["category_id"],
+                "q.type" => $_GET["type"]
+            );
+        }
+
+        $clause  = create_SQL_clause($sql_array, "AND");
+
+        $query = "SELECT  q.question_id, qc.title, q.course_id, q.type, q.feedback, q.question, ".
+            "q.properties, q.content_id, q.remedial_content FROM %stests_questions q ".
+            "INNER JOIN %stests_questions_categories qc ".
+            "ON q.category_id = qc.category_id WHERE q.course_id = %d AND q.question_id IN ".
+            "(SELECT question_id FROM %stests_questions_assoc WHERE test_id = %d) ". $clause;
+
+        $array = array(TABLE_PREFIX, TABLE_PREFIX, $course_id, TABLE_PREFIX, $test_id);
+
+        api_backbone(array(
+             "request_type" => HTTP_GET,
+             "access_level" => INSTRUCTOR_ACCESS_LEVEL,
+             "query" => $query,
+             "query_array" => $array,
+             "one_row" => $question_id ? true : false,
+             "query_id_existence" => $query_id_existence,
+             "query_id_existence_array" => $query_id_existence_array,
+             "member_id" => $instructor_id
+        ));
+    }
+}
+
+?>

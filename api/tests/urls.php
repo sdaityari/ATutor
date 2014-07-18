@@ -9,7 +9,9 @@ $test_url_prefix = "/tests";
 
 $test_base_urls = array(
     "/" => "Tests",
-    "/:number" => "Tests"
+    "/:number" => "Tests",
+    "/:number/questions" => "TestQuestions",
+    "/:number/questions/:number" => "TestQuestions"
 );
 
 $test_urls = generate_urls($test_base_urls, $test_url_prefix);

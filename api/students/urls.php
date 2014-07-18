@@ -12,6 +12,8 @@ $student_base_urls = array(
     "/:number/courses/" => "StudentCourses",
     "/:number/courses/:number" => "StudentCourses",
     "/:number/courses/:number/tests" => "StudentTests",
+    "/:number/courses/:number/tests/:number/questions" => "StudentsTestQuestions",
+    "/:number/courses/:number/tests/:number/questions/:number" => "StudentsTestQuestions",
     "/:number/courses/:number/tests/:number" => "StudentTests"
 );
 
