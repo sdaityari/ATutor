@@ -69,7 +69,8 @@ function get_access_token($headers, $minimum_access_level = ADMIN_ACCESS_LEVEL, 
 function print_message($type, $message, $log = array(), $http_method = HTTP_GET) {
     if (!$log) {
         $log = generate_basic_log($_SERVER);
-        $log["token"] = getallheaders()[TOKEN_NAME];
+        $headers = getallheaders();
+        $log["token"] = $headers[TOKEN_NAME];
     }
     $key = $type == ERROR ? "errorMessage" : "successMessage";
     $response = json_encode(array(
