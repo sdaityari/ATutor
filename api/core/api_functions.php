@@ -6,8 +6,18 @@ if (!defined('AT_INCLUDE_PATH')) {
 
 function api_module_status() {
     // To check if the module is activated/activated
-    $enabled = queryDB("SELECT * FROM %smodules WHERE dir_name = '%s' and status = %d",
-        array(TABLE_PREFIX, "_standard/api", 2));
+    $enabled = queryDB("SELECT
+                            *
+                        FROM
+                            %smodules
+                        WHERE
+                            dir_name = '%s'
+                        AND
+                            status = %d",
+                array(TABLE_PREFIX,
+                        "_standard/api",
+                        2));
+
     return count($enabled)?true:false;
 }
 
@@ -21,8 +31,18 @@ function generate_urls($old_array, $prefix) {
 }
 
 function check_token($token, $minimum_access_level){
-    $check = queryDB("SELECT access_level, member_id FROM %sapi WHERE token = '%s' AND expiry > CURRENT_TIMESTAMP",
-        array(TABLE_PREFIX, $token), true);
+    $check = queryDB("SELECT
+                          access_level
+                        , member_id
+                    FROM
+                        %sapi
+                    WHERE
+                        token = '%s'
+                    AND
+                        expiry > CURRENT_TIMESTAMP",
+        array(TABLE_PREFIX,
+            $token), true);
+
     if (!$check) {
         http_response_code(401);
         print_message(ERROR, TOKEN_DOES_NOT_EXIST);
@@ -33,8 +53,17 @@ function check_token($token, $minimum_access_level){
         exit;
     }
 
-    $query = "UPDATE %sapi SET modified = CURRENT_TIMESTAMP, expiry = NOW() + INTERVAL %d DAY WHERE token = '%s'";
-    $query_array = array(TABLE_PREFIX, TOKEN_EXPIRY, $token);
+    $query = "UPDATE
+                %sapi
+              SET
+                  modified = CURRENT_TIMESTAMP
+                , expiry = NOW() + INTERVAL %d DAY
+              WHERE
+                token = '%s'";
+
+    $query_array = array(TABLE_PREFIX,
+                            TOKEN_EXPIRY,
+                            $token);
 
     if (DEBUG) {
         print vsprintf($query, $query_array);
@@ -48,8 +77,18 @@ function check_token($token, $minimum_access_level){
 }
 
 function check_access_level($token, $access_level = ADMIN_ACCESS_LEVEL) {
-    $check = queryDB("SELECT COUNT(*) FROM %sapi WHERE token = '%s' AND access_level <= %d",
-        array(TABLE_PREFIX, $token, $access_level), true);
+    $check = queryDB("SELECT
+                        COUNT(*)
+                      FROM
+                        %sapi
+                      WHERE
+                        token = '%s'
+                      AND
+                        access_level <= %d",
+        array(TABLE_PREFIX,
+                $token,
+                $access_level), true);
+
     return $check > 0 ? true : false;
 }
 
@@ -97,8 +136,29 @@ function log_request($log = array(), $http_method = HTTP_GET, $error = false) {
         return;
     }
 
-    $query = "INSERT INTO %sapi_logs(ip_address, user_agent, request_uri, http_method, token, response) VALUES('%s', '%s', '%s', '%s', '%s', '%s')";
-    $query_array = array(TABLE_PREFIX, $log["ip_address"], $log["user_agent"], $log["request_uri"], $log["http_method"], $log["token"], $log["response"]);
+    $query = "INSERT INTO %sapi_logs(
+                  ip_address
+                , user_agent
+                , request_uri
+                , http_method
+                , token
+                , response)
+              VALUES(
+                  '%s'
+                , '%s'
+                , '%s'
+                , '%s'
+                , '%s'
+                , '%s')";
+
+    $query_array = array(TABLE_PREFIX,
+        $log["ip_address"],
+        $log["user_agent"],
+        $log["request_uri"],
+        $log["http_method"],
+        $log["token"],
+        $log["response"]
+    );
 
     if (DEBUG) {
         print vsprintf($query, $query_array);
