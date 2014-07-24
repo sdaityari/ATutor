@@ -17,10 +17,27 @@ class Courses {
 
         $clause = create_SQL_clause($sql_array);
 
-        $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
-            "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
-            "c.end_date, c.banner FROM %scourses c ".
-            "INNER JOIN %scourse_cats cc ON c.cat_id = cc.cat_id ".$clause;
+        $query = "SELECT
+                      c.course_id
+                    , c.cat_id
+                    , cc.cat_name
+                    , c.created_date
+                    , c.title
+                    , c.description
+                    , c.notify
+                    , c.copyright
+                    , c.icon
+                    , c.release_date
+                    , c.primary_language
+                    , c.end_date
+                    , c.banner
+                FROM
+                    %scourses c
+                LEFT OUTER JOIN
+                    %scourse_cats cc
+                    ON
+                        c.cat_id = cc.cat_id
+                ".$clause;
 
         $array = array(TABLE_PREFIX, TABLE_PREFIX);
 
@@ -34,7 +51,10 @@ class Courses {
     }
 
     function delete($course_id) {
-        $query = "DELETE FROM %scourses WHERE course_id = %d";
+        $query = "DELETE FROM
+                    %scourses
+                  WHERE
+                    course_id = %d";
         $array = array(TABLE_PREFIX, $course_id);
 
         api_backbone(array(
@@ -64,7 +84,15 @@ class CourseCategories {
 
         $clause = create_SQL_clause($sql_array);
 
-        $query = "SELECT cat_id, cat_name, cat_parent, theme FROM %scourse_cats ".$clause;
+        $query = "SELECT
+                      cat_id
+                    , cat_name
+                    , cat_parent
+                    , theme
+                  FROM
+                    %scourse_cats
+                ".$clause;
+
         $array = array(TABLE_PREFIX);
 
         api_backbone(array(
@@ -85,7 +113,18 @@ class CourseCategories {
             print_message(ERROR, INSUFFICIENT_INFORMATION_TO_CREATE_OBJECT);
         }
 
-        $query = "INSERT INTO %scourse_cats(cat_name, cat_parent, theme) VALUES('%s', %d, '%s')";
+        $query = "INSERT INTO
+                    %scourse_cats(
+                          cat_name
+                        , cat_parent
+                        , theme
+                    )
+                  VALUES(
+                          '%s'
+                        , %d
+                        , '%s'
+                    )";
+
         $array = array(TABLE_PREFIX, $name, $parent, $theme);
 
         api_backbone(array(
@@ -99,7 +138,13 @@ class CourseCategories {
 
     function put($category_id) {
 
-        $query_id_existence = "SELECT COUNT(*) FROM %scourse_cats WHERE cat_id = %d";
+        $query_id_existence =   "SELECT
+                                    COUNT(*)
+                                 FROM
+                                    %scourse_cats
+                                 WHERE
+                                    cat_id = %d";
+
         $query_id_existence_array = array(TABLE_PREFIX, $category_id);
 
         $clause = create_SQL_clause(array(
@@ -109,7 +154,12 @@ class CourseCategories {
         ), "SET");
 
         if ($clause) {
-            $query = "UPDATE %scourse_cats ".$clause. "WHERE cat_id = %d ";
+            $query = "UPDATE
+                        %scourse_cats
+                     ".$clause."
+                      WHERE
+                        cat_id = %d ";
+
             $array = array(TABLE_PREFIX, $category_id);
         } else {
             $query = "";
@@ -127,10 +177,18 @@ class CourseCategories {
     }
 
     function delete($category_id) {
-        $query_id_existence = "SELECT COUNT(*) FROM %scourse_cats WHERE cat_id = %d";
+        $query_id_existence =   "SELECT
+                                    COUNT(*)
+                                FROM
+                                    %scourse_cats
+                                WHERE
+                                    cat_id = %d";
         $query_id_existence_array = array(TABLE_PREFIX, $category_id);
 
-        $query = "DELETE FROM %scourse_cats WHERE cat_id = %d";
+        $query =    "DELETE FROM
+                        %scourse_cats
+                    WHERE
+                        cat_id = %d";
         $array = array(TABLE_PREFIX, $category_id);
 
         api_backbone(array(
@@ -143,12 +201,22 @@ class CourseCategories {
         ));
 
         // Changing course category parents and updating courses with this course category
-        queryDB("UPDATE %scourse_cats SET cat_parent = 0 WHERE cat_parent = %d",
-                    array(TABLE_PREFIX, $category_id));
-        queryDB("UPDATE %scourses SET cat_id = 0 WHERE cat_id = %d",
-                    array(TABLE_PREFIX, $category_id));
+        queryDB("UPDATE
+                    %scourse_cats
+                SET
+                    cat_parent = 0
+                WHERE
+                    cat_parent = %d",
+            array(TABLE_PREFIX, $category_id));
+
+        queryDB("UPDATE
+                    %scourses
+                SET
+                    cat_id = 0
+                WHERE
+                    cat_id = %d",
+            array(TABLE_PREFIX, $category_id));
     }
 }
-
 
 ?>
