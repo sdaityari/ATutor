@@ -4,6 +4,26 @@ if (!defined('AT_INCLUDE_PATH')) {
     exit;
 }
 
+/*
+ * Support for PHP < 5.4
+ * More info - http://stackoverflow.com/questions/3258634/php-how-to-send-http-response-code
+ */
+
+if (!function_exists('http_response_code'))
+{
+    function http_response_code($newcode = NULL)
+    {
+        static $code = 200;
+        if($newcode != NULL)
+        {
+            header('X-PHP-Response-Code: '.$newcode, true, $newcode);
+            if(!headers_sent())
+                $code = $newcode;
+        }
+        return $code;
+    }
+}
+
 function api_module_status() {
     // To check if the module is activated/activated
     $enabled = queryDB("SELECT
@@ -92,7 +112,15 @@ function check_access_level($token, $access_level = ADMIN_ACCESS_LEVEL) {
     return $check > 0 ? true : false;
 }
 
-function get_access_token($headers, $minimum_access_level = ADMIN_ACCESS_LEVEL, $return_member_id = false) {
+function get_access_token($headers, $minimum_access_level = ADMIN_ACCESS_LEVEL,
+    $return_member_id = false) {
+
+    /**
+     * $headers - assoc array of headers
+     * $minimum_access_level - the user with the lowest permissions that can access this
+     * $return_member_id - whether to return a tuple or token and member_id
+     */
+
     $token = addslashes($headers[TOKEN_NAME]);
     $member_id = check_token($token, $minimum_access_level);
 
