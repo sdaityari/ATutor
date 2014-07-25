@@ -32,9 +32,9 @@ class Courses {
                     , c.end_date
                     , c.banner
                 FROM
-                    %scourses c
+                    %scourses AS c
                 LEFT OUTER JOIN
-                    %scourse_cats cc
+                    %scourse_cats AS cc
                     ON
                         c.cat_id = cc.cat_id
                 ".$clause;

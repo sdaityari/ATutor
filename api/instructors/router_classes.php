@@ -18,9 +18,27 @@ class Instructors {
 
         $clause = create_SQL_clause($sql_array, "AND");
 
-        $query = "SELECT member_id, login, email, first_name, last_name, website, gender, address, ".
-            "postal, city, province, country, phone, language, last_login, creation_date FROM %smembers ".
-            "WHERE status = %d ".$clause;
+        $query = "SELECT
+                      member_id
+                    , login
+                    , email
+                    , first_name
+                    , last_name
+                    , website
+                    , gender
+                    , address
+                    , postal
+                    , city
+                    , province
+                    , country
+                    , phone
+                    , language
+                    , last_login
+                    , creation_date
+                FROM
+                    %smembers
+                WHERE
+                    status = %d ".$clause;
 
         $array = array(TABLE_PREFIX, INSTRUCTOR_ROLE);
 
@@ -55,18 +73,62 @@ class Instructors {
             print_message(ERROR, INSUFFICIENT_INFORMATION_TO_CREATE_OBJECT);
         }
 
-        $checks = queryDB("SELECT COUNT(*) FROM %smembers WHERE login = '%s' OR email = '%s'",
+        $checks =   queryDB("SELECT
+                                COUNT(*)
+                            FROM
+                                %smembers
+                            WHERE
+                                login = '%s'
+                                    OR
+                                email = '%s'",
             array(TABLE_PREFIX, $login, $email), true);
 
         if ($checks["COUNT(*)"] != "0"){
             print_message(ERROR, EMAIL_OR_USERNAME_EXISTS);
         };
 
-        $query = "INSERT INTO %smembers(login, password, email, website, first_name, second_name, ".
-            "last_name, gender, dob, address, postal, city, province, country, phone, language, status) VALUES(".
-            "'%s', Sha1('%s'), '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d)";
-        $array = array(TABLE_PREFIX, $login, $password, $email, $website, $first_name, $second_name, $last_name,
-            $gender, $dob, $address, $postal, $city, $province, $country, $phone, $language, INSTRUCTOR_ROLE);
+        $query =    "INSERT INTO
+                        %smembers(
+                              login
+                            , password
+                            , email
+                            , website
+                            , first_name
+                            , second_name
+                            , last_name
+                            , gender
+                            , dob
+                            , address
+                            , postal
+                            , city
+                            , province
+                            , country
+                            , phone
+                            , language
+                            , status
+                        )
+                    VALUES(
+                              '%s'
+                            , Sha1('%s')
+                            , '%s'
+                            , '%s'
+                            , '%s'
+                            , '%s'
+                            , '%s'
+                            , '%s'
+                            , '%s'
+                            , '%s'
+                            , '%s'
+                            , '%s'
+                            , '%s'
+                            , '%s'
+                            , '%s'
+                            , '%s'
+                            , %d
+                        )";
+        $array = array(TABLE_PREFIX, $login, $password, $email, $website, $first_name,
+            $second_name, $last_name, $gender, $dob, $address, $postal, $city, $province,
+            $country, $phone, $language, INSTRUCTOR_ROLE);
 
         api_backbone(array(
             "request_type" => HTTP_POST,
@@ -83,7 +145,10 @@ class Instructors {
         ));
 
         if ($clause_check != "") {
-            $checks = queryDB("SELECT COUNT(*) FROM %smembers ". $clause,
+            $checks =   queryDB("SELECT
+                                    COUNT(*)
+                                 FROM
+                                    %smembers ". $clause,
                 array(TABLE_PREFIX), true);
 
             if ($checks["COUNT(*)"] != "0"){
@@ -110,7 +175,14 @@ class Instructors {
             language => $_REQUEST["language"]
         ), "SET");
 
-        $query_id_existence = "SELECT COUNT(*) FROM %smembers WHERE member_id = %d AND status = %d";
+        $query_id_existence =   "SELECT
+                                    COUNT(*)
+                                FROM
+                                    %smembers
+                                WHERE
+                                    member_id = %d
+                                        AND
+                                    status = %d";
         $query_id_existence_array = array(TABLE_PREFIX, $instructor_id, INSTRUCTOR_ROLE);
 
         if ($clause) {
@@ -129,10 +201,20 @@ class Instructors {
     }
 
     function delete($instructor_id) {
-        $query = "DELETE FROM %smembers WHERE member_id = %d";
+        $query = "DELETE FROM
+                    %smembers
+                  WHERE
+                    member_id = %d";
         $array = array(TABLE_PREFIX, $instructor_id);
 
-        $query_id_existence = "SELECT COUNT(*) FROM %smembers WHERE member_id = %d AND status = %d";
+        $query_id_existence =   "SELECT
+                                    COUNT(*)
+                                 FROM
+                                    %smembers
+                                 WHERE
+                                    member_id = %d
+                                        AND
+                                    status = %d";
         $query_id_existence_array = array(TABLE_PREFIX, $instructor_id, INSTRUCTOR_ROLE);
 
         api_backbone(array(
@@ -150,15 +232,44 @@ class Instructors {
 
 class CourseInstructorList {
     function get($instructor_id, $course_id) {
-        $query = "SELECT m.member_id, m.login, m.email, m.first_name, m.last_name, m.website, m.gender, m.address, ".
-            "m.postal, m.city, m.province, m.country, m.phone, m.language, m.last_login, m.creation_date FROM %smembers m ".
-            "INNER JOIN %scourse_enrollment ce ".
-            "ON m.member_id = ce.member_id ".
-            "WHERE m.status = %d AND ce.course_id = %d";
+        $query = "SELECT
+                      m.member_id
+                    , m.login
+                    , m.email
+                    , m.first_name
+                    , m.last_name
+                    , m.website
+                    , m.gender
+                    , m.address
+                    , m.postal
+                    , m.city
+                    , m.province
+                    , m.country
+                    , m.phone
+                    , m.language
+                    , m.last_login
+                    , m.creation_date
+                  FROM
+                    %smembers AS m
+                  INNER JOIN
+                    %scourse_enrollment AS ce
+                    ON
+                        m.member_id = ce.member_id
+                  WHERE
+                    m.status = %d
+                        AND
+                    ce.course_id = %d";
 
         $array = array(TABLE_PREFIX, TABLE_PREFIX, INSTRUCTOR_ROLE, $course_id);
 
-        $query_id_existence = "SELECT COUNT(*) FROM %scourse_enrollment WHERE course_id = %d AND member_id = %d";
+        $query_id_existence =   "SELECT
+                                    COUNT(*)
+                                 FROM
+                                    %scourse_enrollment
+                                WHERE
+                                    course_id = %d
+                                        AND
+                                    member_id = %d";
         $query_id_existence_array = array(TABLE_PREFIX, $course_id, $instructor_id);
 
         api_backbone(array(
@@ -174,15 +285,44 @@ class CourseInstructorList {
 
 class CourseEnrolledList {
     function get($instructor_id, $course_id) {
-        $query = "SELECT m.member_id, m.login, m.email, m.first_name, m.last_name, m.website, m.gender, m.address, ".
-            "m.postal, m.city, m.province, m.country, m.phone, m.language, m.last_login, m.creation_date FROM %smembers m ".
-            "INNER JOIN %scourse_enrollment ce ".
-            "ON m.member_id = ce.member_id ".
-            "WHERE m.status = %d AND ce.course_id = %d";
+        $query = "SELECT
+                      m.member_id
+                    , m.login
+                    , m.email
+                    , m.first_name
+                    , m.last_name
+                    , m.website
+                    , m.gender
+                    , m.address
+                    , m.postal
+                    , m.city
+                    , m.province
+                    , m.country
+                    , m.phone
+                    , m.language
+                    , m.last_login
+                    , m.creation_date
+                  FROM
+                    %smembers AS m
+                  INNER JOIN
+                    %scourse_enrollment AS ce
+                        ON
+                            m.member_id = ce.member_id
+                  WHERE
+                    m.status = %d
+                        AND
+                    ce.course_id = %d";
 
         $array = array(TABLE_PREFIX, TABLE_PREFIX, STUDENT_ROLE, $course_id);
 
-        $query_id_existence = "SELECT COUNT(*) FROM %scourse_enrollment WHERE course_id = %d AND member_id = %d";
+        $query_id_existence =   "SELECT
+                                    COUNT(*)
+                                 FROM
+                                    %scourse_enrollment
+                                 WHERE
+                                    course_id = %d
+                                        AND
+                                    member_id = %d";
         $query_id_existence_array = array(TABLE_PREFIX, $course_id, $instructor_id);
 
         api_backbone(array(
@@ -213,12 +353,32 @@ class InstructorCourses {
 
         $clause = create_SQL_clause($sql_array, "AND");
 
-        $query = "SELECT c.course_id, c.cat_id, cc.cat_name, c.created_date, ".
-            "c.title, c.description, c.notify, c.copyright, c.icon, c.release_date, c.primary_language, ".
-            "c.end_date, c.banner FROM %scourses c ".
-            "INNER JOIN %scourse_cats cc ON c.cat_id = cc.cat_id ".
-            "INNER JOIN %scourse_enrollment ce ON c.course_id = ce.course_id ".
-            "WHERE ce.member_id = %d ".$clause;
+        $query = "SELECT
+                      c.course_id
+                    , c.cat_id
+                    , cc.cat_name
+                    , c.created_date
+                    , c.title
+                    , c.description
+                    , c.notify
+                    , c.copyright
+                    , c.icon
+                    , c.release_date
+                    , c.primary_language
+                    , c.end_date
+                    , c.banner
+                  FROM
+                    %scourses AS c
+                  LEFT OUTER JOIN
+                    %scourse_cats AS cc
+                        ON
+                            c.cat_id = cc.cat_id
+                  INNER JOIN
+                    %scourse_enrollment AS ce
+                        ON
+                            c.course_id = ce.course_id
+                  WHERE
+                    ce.member_id = %d ".$clause;
 
         $array = array(TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, $instructor_id);
 
@@ -250,9 +410,31 @@ class InstructorCourses {
             print_message(ERROR, INSUFFICIENT_INFORMATION_TO_CREATE_OBJECT);
         }
 
-        $query = "INSERT INTO %scourses(member_id, cat_id, access, title, ".
-            "description, primary_language, icon, release_date, end_date, banner) ".
-            "VALUES(%d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
+        $query = "INSERT INTO
+                    %scourses(
+                          member_id
+                        , cat_id
+                        , access
+                        , title
+                        , description
+                        , primary_language
+                        , icon
+                        , release_date
+                        , end_date
+                        , banner
+                    )
+                    VALUES(
+                          %d
+                        , %d
+                        , '%s'
+                        , '%s'
+                        , '%s'
+                        , '%s'
+                        , '%s'
+                        , '%s'
+                        , '%s'
+                        , '%s'
+                    )";
         $array = array(TABLE_PREFIX, $instructor_id, $category_id, $access, $title,
             $description, $primary_language, $icon, $release_date, $end_date, $banner);
 
@@ -264,17 +446,42 @@ class InstructorCourses {
             "returned_id_name" => true
         ));
 
-        queryDB("INSERT INTO %scourse_enrollment(member_id, course_id, approved, privileges, role, last_cid) ".
-            "VALUES(%d, %d, 'n', 0, 'Instructor', 0)", array(TABLE_PREFIX, $instructor_id, $course_id));
+        queryDB("INSERT INTO
+                    %scourse_enrollment(
+                          member_id
+                        , course_id
+                        , approved
+                        , privileges
+                        , role
+                        , last_cid
+                    )
+                    VALUES(
+                          %d
+                        , %d
+                        , 'n'
+                        , 0
+                        , 'Instructor'
+                        , 0
+                    )",
+            array(TABLE_PREFIX, $instructor_id, $course_id));
 
     }
 
     function put($instructor_id, $course_id) {
         $access_level = INSTRUCTOR_ACCESS_LEVEL;
 
-        $query_id_existence = "SELECT COUNT(*) FROM %scourses c".
-        "INNER JOIN course_enrollment ce ON c.course_id = cc.course_id ".
-        "WHERE c.course_id = %d AND ce.member_id = %d";
+        $query_id_existence =   "SELECT
+                                    COUNT(*)
+                                 FROM
+                                    %scourses AS c
+                                 INNER JOIN
+                                    course_enrollment AS ce
+                                        ON
+                                            c.course_id = cc.course_id
+                                 WHERE
+                                    c.course_id = %d
+                                        AND
+                                    ce.member_id = %d";
         $query_id_existence_array = array(TABLE_PREFIX, $course_id, $instructor_id);
 
         $clause = create_SQL_clause(array(
@@ -325,14 +532,35 @@ class InstructorsTests {
 
         $clause  = create_SQL_clause($sql_array, "AND");
 
-        $query = "SELECT test_id, course_id, title, format, start_date, end_date, num_questions ".
-            "instructions, content_id, result_release, random, difficulty, description ".
-            "FROM %stests WHERE course_id = %d ". $clause;
+        $query = "SELECT
+                      test_id
+                    , course_id
+                    , title
+                    , format
+                    , start_date
+                    , end_date
+                    , num_questions
+                    , instructions
+                    , content_id
+                    , result_release
+                    , random
+                    , difficulty
+                    , description
+                  FROM
+                    %stests
+                  WHERE
+                    course_id = %d ". $clause;
 
         $array = array(TABLE_PREFIX, $course_id);
 
-        $query_id_existence = "SELECT COUNT(*) FROM %scourse_enrollment ce ".
-            "WHERE member_id = %d AND course_id = %d";
+        $query_id_existence =   "SELECT
+                                    COUNT(*)
+                                 FROM
+                                    %scourse_enrollment
+                                 WHERE
+                                    member_id = %d
+                                 AND
+                                    course_id = %d";
 
         $query_id_existence_array = array(TABLE_PREFIX, $instructor_id, $course_id);
 
@@ -352,8 +580,14 @@ class InstructorsTests {
 class InstructorsTestQuestions {
     function get($instructor_id, $course_id, $test_id, $question_id) {
 
-        $query_id_existence = "SELECT COUNT(*) FROM %scourse_enrollment ce ".
-            "WHERE member_id = %d AND course_id = %d";
+        $query_id_existence =   "SELECT
+                                    COUNT(*)
+                                 FROM
+                                    %scourse_enrollment
+                                 WHERE
+                                    member_id = %d
+                                        AND
+                                    course_id = %d";
 
         $query_id_existence_array = array(TABLE_PREFIX, $instructor_id, $course_id);
 
@@ -371,11 +605,34 @@ class InstructorsTestQuestions {
 
         $clause  = create_SQL_clause($sql_array, "AND");
 
-        $query = "SELECT  q.question_id, qc.title, q.course_id, q.type, q.feedback, q.question, ".
-            "q.properties, q.content_id, q.remedial_content FROM %stests_questions q ".
-            "INNER JOIN %stests_questions_categories qc ".
-            "ON q.category_id = qc.category_id WHERE q.course_id = %d AND q.question_id IN ".
-            "(SELECT question_id FROM %stests_questions_assoc WHERE test_id = %d) ". $clause;
+        $query = "SELECT
+                      q.question_id
+                    , qc.title
+                    , q.course_id
+                    , q.type
+                    , q.feedback
+                    , q.question
+                    , q.properties
+                    , q.content_id
+                    , q.remedial_content
+                  FROM
+                    %stests_questions AS q
+                  LEFT OUTER JOIN
+                    %stests_questions_categories AS qc
+                        ON
+                            q.category_id = qc.category_id
+                  WHERE
+                    q.course_id = %d
+                        AND
+                    q.question_id
+                        IN
+                            (SELECT
+                                question_id
+                             FROM
+                                %stests_questions_assoc
+                             WHERE
+                                test_id = %d
+                            ) ". $clause;
 
         $array = array(TABLE_PREFIX, TABLE_PREFIX, $course_id, TABLE_PREFIX, $test_id);
 

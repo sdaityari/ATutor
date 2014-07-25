@@ -16,10 +16,22 @@ class Questions {
 
         $clause  = create_SQL_clause($sql_array);
 
-        $query = "SELECT  q.question_id, qc.title, q.course_id, q.type, q.feedback, q.question, ".
-            "q.properties, q.content_id, q.remedial_content FROM %stests_questions q ".
-            "INNER JOIN %stests_questions_categories qc ".
-            "ON q.category_id = qc.category_id ". $clause;
+        $query = "SELECT
+                      q.question_id
+                    , qc.title
+                    , q.course_id
+                    , q.type
+                    , q.feedback
+                    , q.question
+                    , q.properties
+                    , q.content_id
+                    , q.remedial_content
+                  FROM
+                    %stests_questions AS q
+                  LEFT OUTER JOIN
+                    %stests_questions_categories AS qc
+                        ON
+                    q.category_id = qc.category_id ". $clause;
 
         $array = array(TABLE_PREFIX, TABLE_PREFIX);
 
@@ -50,7 +62,12 @@ class QuestionCategories {
 
         $clause = create_SQL_clause($sql_array);
 
-        $query = "SELECT category_id, course_id, title FROM %stests_questions_categories ".$clause;
+        $query = "SELECT
+                      category_id
+                    , course_id
+                    , title
+                  FROM
+                    %stests_questions_categories ".$clause;
         $array = array(TABLE_PREFIX);
 
         api_backbone(array(
@@ -70,7 +87,15 @@ class QuestionCategories {
             print_message(ERROR, INSUFFICIENT_INFORMATION_TO_CREATE_OBJECT);
         }
 
-        $query = "INSERT INTO %stests_questions_categories(course_id, title) VALUES(%d, '%s')";
+        $query = "INSERT INTO
+                    %stests_questions_categories(
+                          course_id
+                        , title
+                    )
+                    VALUES(
+                          %d
+                        , '%s'
+                    )";
         $array = array(TABLE_PREFIX, $course_id, $title);
 
         api_backbone(array(
@@ -83,7 +108,12 @@ class QuestionCategories {
     }
 
     function put($category_id) {
-        $query_id_existence = "SELECT COUNT(*) FROM %stests_questions_categories WHERE category_id = %d";
+        $query_id_existence =   "SELECT
+                                    COUNT(*)
+                                 FROM
+                                    %stests_questions_categories
+                                 WHERE
+                                    category_id = %d";
         $query_id_existence_array = array(TABLE_PREFIX, $category_id);
 
         $clause = create_SQL_clause(array(
@@ -92,7 +122,8 @@ class QuestionCategories {
         ), "SET");
 
         if ($clause) {
-            $query = "UPDATE %stests_questions_categories ".$clause. "WHERE category_id = %d ";
+            $query = "UPDATE %stests_questions_categories ".
+                        $clause. "WHERE category_id = %d ";
             $array = array(TABLE_PREFIX, $category_id);
         } else {
             $query = "";
@@ -110,10 +141,18 @@ class QuestionCategories {
     }
 
     function delete($category_id) {
-        $query_id_existence = "SELECT COUNT(*) FROM %stests_questions_categories WHERE category_id = %d";
+        $query_id_existence =   "SELECT
+                                    COUNT(*)
+                                 FROM
+                                    %stests_questions_categories
+                                 WHERE
+                                    category_id = %d";
         $query_id_existence_array = array(TABLE_PREFIX, $category_id);
 
-        $query = "DELETE FROM %stests_questions_categories WHERE category_id = %d";
+        $query = "DELETE FROM
+                    %stests_questions_categories
+                  WHERE
+                    category_id = %d";
         $array = array(TABLE_PREFIX, $category_id);
 
         api_backbone(array(
@@ -125,8 +164,13 @@ class QuestionCategories {
             "query_id_existence_array" => $query_id_existence_array
         ));
 
-        queryDB("UPDATE %stests_questions SET category_id = 0 WHERE category_id = %d",
-                    array(TABLE_PREFIX, $category_id));
+        queryDB("UPDATE
+                    %stests_questions
+                 SET
+                    category_id = 0
+                 WHERE
+                    category_id = %d",
+            array(TABLE_PREFIX, $category_id));
     }
 }
 

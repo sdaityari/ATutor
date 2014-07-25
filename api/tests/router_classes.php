@@ -16,9 +16,22 @@ class Tests {
 
         $clause  = create_SQL_clause($sql_array);
 
-        $query = "SELECT test_id, course_id, title, format, start_date, end_date, num_questions ".
-            "instructions, content_id, result_release, random, difficulty, description ".
-            "FROM %stests ". $clause;
+        $query = "SELECT
+                      test_id
+                    , course_id
+                    , title
+                    , format
+                    , start_date
+                    , end_date
+                    , num_questions
+                    , instructions
+                    , content_id
+                    , result_release
+                    , random
+                    , difficulty
+                    , description
+                  FROM
+                    %stests ". $clause;
 
         $array = array(TABLE_PREFIX);
 
@@ -48,11 +61,32 @@ class TestQuestions {
 
         $clause  = create_SQL_clause($sql_array, "AND");
 
-        $query = "SELECT  q.question_id, qc.title, q.course_id, q.type, q.feedback, q.question, ".
-            "q.properties, q.content_id, q.remedial_content FROM %stests_questions q ".
-            "INNER JOIN %stests_questions_categories qc ".
-            "ON q.category_id = qc.category_id WHERE q.question_id IN ".
-            "(SELECT question_id FROM %stests_questions_assoc WHERE test_id = %d) ". $clause;
+        $query = "SELECT
+                      q.question_id
+                    , qc.title
+                    , q.course_id
+                    , q.type
+                    , q.feedback
+                    , q.question
+                    , q.properties
+                    , q.content_id
+                    , q.remedial_content
+                  FROM
+                    %stests_questions AS q
+                  INNER JOIN
+                    %stests_questions_categories AS qc
+                        ON
+                            q.category_id = qc.category_id
+                  WHERE
+                    q.question_id
+                        IN
+                            (SELECT
+                                question_id
+                             FROM
+                                %stests_questions_assoc
+                             WHERE
+                                test_id = %d
+                            ) ". $clause;
 
         $array = array(TABLE_PREFIX, TABLE_PREFIX, TABLE_PREFIX, $test_id);
 
