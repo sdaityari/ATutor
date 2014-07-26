@@ -393,8 +393,6 @@ class InstructorCourses {
     }
 
     function post($instructor_id) {
-        $access_level = INSTRUCTOR_ACCESS_LEVEL;
-
         $title = $_REQUEST["title"];
         $access = $_REQUEST["access"];
         $category_id = $_REQUEST["category_id"];
@@ -440,7 +438,7 @@ class InstructorCourses {
 
         $course_id = api_backbone(array(
             "request_type" => HTTP_POST,
-            "access_level" => $access_level,
+            "access_level" => INSTRUCTOR_ACCESS_LEVEL,
             "query" => $query,
             "query_array" => $array,
             "returned_id_name" => true
@@ -468,8 +466,6 @@ class InstructorCourses {
     }
 
     function put($instructor_id, $course_id) {
-        $access_level = INSTRUCTOR_ACCESS_LEVEL;
-
         $query_id_existence =   "SELECT
                                     COUNT(*)
                                  FROM
@@ -507,7 +503,7 @@ class InstructorCourses {
 
         api_backbone(array(
             "request_type" => HTTP_PUT,
-            "access_level" => $access_level,
+            "access_level" => INSTRUCTOR_ACCESS_LEVEL,
             "query" => $query,
             "query_array" => $array,
             "query_id_existence" => $query_id_existence,
@@ -574,6 +570,180 @@ class InstructorsTests {
              "one_row" => $test_id ? true : false,
              "member_id" => $instructor_id
         ));
+    }
+
+    function post($instructor_id, $course_id){
+        $title = $_POST["title"];
+        $format = $_POST["format"];
+        $start_date = $_POST["start_date"];
+        $end_date = $_POST["end_date"];
+        $num_questions = 0;
+        $instructions = $_POST["instructions"];
+        $content_id = $_POST["content_id"];
+        $result_release = $_POST["result_release"];
+        $random = $_POST["random"];
+        $difficulty = $_POST["difficulty"];
+        $description = $_POST["description"];
+
+        $query_id_existence =   "SELECT
+                            COUNT(*)
+                         FROM
+                            %scourses AS c
+                         INNER JOIN
+                            course_enrollment AS ce
+                                ON
+                                    c.course_id = cc.course_id
+                         WHERE
+                            c.course_id = %d
+                                AND
+                            ce.member_id = %d";
+
+        $query_id_existence_array = array(TABLE_PREFIX, $course_id, $instructor_id);
+
+        if (!$title || !$course_id || !$instructor_id) {
+            print_message(ERROR, INSUFFICIENT_INFORMATION_TO_CREATE_OBJECT);
+        }
+
+        $query =    "INSERT INTO
+                        %stests(
+                              course_id
+                            , title
+                            , format
+                            , start_date
+                            , end_date
+                            , num_questions
+                            , instructions
+                            , content_id
+                            , result_release
+                            , random
+                            , difficulty
+                            , description
+                        )
+                        VALUES(
+                              %d
+                            , '%s'
+                            , '%s'
+                            , '%s'
+                            , '%s'
+                            , %d
+                            , '%s'
+                            , %d
+                            , '%s'
+                            , '%s'
+                            , '%s'
+                            , '%s'
+                        )";
+        $query_array = (TABLE_PREFIX, $course_id, $title, $format, $start_date, $end_date,
+            $num_questions, $instructions, $content_id, $result_release, $random,
+            $difficulty, $description);
+
+        api_backbone(array(
+             "request_type" => HTTP_POST,
+             "access_level" => INSTRUCTOR_ACCESS_LEVEL,
+             "query_id_existence" => $query_id_existence,
+             "query_id_existence_array" => $query_id_existence_array,
+             "query" => $query,
+             "query_array" => $array,
+             "returned_id_name" => true,
+             "member_id" => $instructor_id
+        ));
+    }
+
+    function put($instructor_id, $course_id, $test_id) {
+
+        $clause = create_SQL_clause(array(
+            "title" => $_REQUEST["title"],
+            "format" => $_REQUEST["format"],
+            "start_date" => $_REQUEST["start_date"],
+            "end_date" => $_REQUEST["end_date"],
+            "num_questions" => 0,
+            "instructions" => $_REQUEST["instructions"],
+            "content_id" => $_REQUEST["content_id"],
+            "result_release" => $_REQUEST["result_release"],
+            "random" => $_REQUEST["random"],
+            "difficulty" => $_REQUEST["difficulty"],
+            "description" => $_REQUEST["description"],
+        ), "SET");
+
+        $query_id_existence =   "SELECT
+                                    COUNT(*)
+                                 FROM
+                                    %stests AS t
+                                 INNER JOIN
+                                    %scourse_enrollment AS ce
+                                        ON
+                                    t.course_id = ce.course_id
+                                 WHERE
+                                    t.course_id = %d
+                                        AND
+                                    t.test_id = %d
+                                        AND
+                                    ce.member_id = %d";
+
+        $query_id_existence_array = array(TABLE_PREFIX, TABLE_PREFIX, $course_id, $test_id,
+            $instructor_id);
+
+        if ($clause){
+            $query = "UPDATE %stests ". $clause . "WHERE test_id = %d";
+            $query_array = array(TABLE_PREFIX, $test_id);
+        } else {
+            $query = "";
+            $query_array = array();
+        };
+
+        api_backbone(array(
+             "request_type" => HTTP_PUT,
+             "access_level" => INSTRUCTOR_ACCESS_LEVEL,
+             "query_id_existence" => $query_id_existence,
+             "query_id_existence_array" => $query_id_existence_array,
+             "query" => $query,
+             "query_array" => $array,
+             "member_id" => $instructor_id
+        ));
+    }
+
+    function delete($instructor_id, $course_id, $test_id) {
+        $query_id_existence =   "SELECT
+                                    COUNT(*)
+                                 FROM
+                                    %stests AS t
+                                 INNER JOIN
+                                    %scourse_enrollment AS ce
+                                        ON
+                                    t.course_id = ce.course_id
+                                 WHERE
+                                    t.course_id = %d
+                                        AND
+                                    t.test_id = %d
+                                        AND
+                                    ce.member_id = %d";
+
+        $query_id_existence_array = array(TABLE_PREFIX, TABLE_PREFIX, $course_id, $test_id,
+            $instructor_id);
+
+        $query = "DELETE FROM
+                    %stests
+                  WHERE
+                    test_id = %d";
+        $query_array = array(TABLE_PREFIX, $test_id);
+
+        api_backbone(array(
+             "request_type" => HTTP_DELETE,
+             "access_level" => ADMIN_ACCESS_LEVEL,
+             "query_id_existence" => $query_id_existence,
+             "query_id_existence_array" => $query_id_existence_array,
+             "query" => $query,
+             "query_array" => $array,
+             "member_id" => $instructor_id
+        ));
+
+        // Deleting question associations with this test
+        queryDB("DELETE FROM
+                    %stests_questions_assoc
+                 WHERE
+                    test_id = %d",
+                array(TABLE_PREFIX, $test_id));
+
     }
 }
 
