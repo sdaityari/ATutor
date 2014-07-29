@@ -100,4 +100,63 @@ class TestQuestions {
     }
 }
 
+class TestQuestionsAssociation {
+    function get($test_id, $question_id, $action) {
+        $query_id_existence =   "SELECT
+                                    COUNT(*)
+                                FROM
+                                    %stests_questions
+                                WHERE
+                                    question_id = %d
+                                ";
+
+        $query_id_existence_array = array(TABLE_PREFIX, $question_id);
+
+        if ($action == "remove") {
+            $query = "DELETE FROM
+                        %stests_questions_assoc
+                      WHERE
+                        question_id = %d
+                            AND
+                        test_id = %d";
+            $query_array = array(TABLE_PREFIX, $question_id, $test_id);
+        } else if ($action == "add") {
+            $weight = $_GET["weight"];
+            $ordering = $_GET["ordering"];
+            $required = $_GET["required"];
+
+            $query = "INSERT INTO
+                        %stests_questions_assoc(
+                              test_id
+                            , question_id
+                            , weight
+                            , ordering
+                            , required
+                        ) VALUES (
+                              %d
+                            , %d
+                            , '%s'
+                            , %d
+                            , %d
+                        )
+                     ";
+            $query_array = array(TABLE_PREFIX, $test_id, $question_id, $weight, $ordering,
+                $required);
+        } else {
+            http_response_code(404);
+            exit;
+        }
+
+        api_backbone(array(
+             "request_type" => HTTP_GET,
+             "access_level" => INSTRUCTOR_ACCESS_LEVEL,
+             "query" => $query,
+             "query_array" => $array,
+             "query_id_existence" => $query_id_existence,
+             "query_id_existence_array" => $query_id_existence_array
+        ));
+
+    }
+}
+
 ?>

@@ -633,7 +633,7 @@ class InstructorsTests {
                             , '%s'
                             , '%s'
                         )";
-        $query_array = (TABLE_PREFIX, $course_id, $title, $format, $start_date, $end_date,
+        $query_array = array(TABLE_PREFIX, $course_id, $title, $format, $start_date, $end_date,
             $num_questions, $instructions, $content_id, $result_release, $random,
             $difficulty, $description);
 

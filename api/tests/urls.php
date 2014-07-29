@@ -11,7 +11,8 @@ $test_base_urls = array(
     "/" => "Tests",
     "/:number" => "Tests",
     "/:number/questions" => "TestQuestions",
-    "/:number/questions/:number" => "TestQuestions"
+    "/:number/questions/:number" => "TestQuestions",
+    "/:number/questions/:number/:alpha/" => "TestQuestionsAssociation"
 );
 
 $test_urls = generate_urls($test_base_urls, $test_url_prefix);
