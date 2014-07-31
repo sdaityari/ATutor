@@ -43,6 +43,39 @@ class Questions {
              "one_row" => $question_id ? true : false
         ));
     }
+
+    function delete($question_id) {
+        $query_id_existence =   "SELECT
+                                    COUNT(*)
+                                 FROM
+                                    %stests_questions
+                                 WHERE
+                                    question_id = %d";
+
+        $query_id_existence_array = array(TABLE_PREFIX, $question_id);
+
+        $query = "DELETE FROM
+                    %stests_questions
+                  WHERE
+                    question_id = %d;
+                ";
+        $query_array = array(TABLE_PREFIX, $question_id);
+
+        api_backbone(array(
+             "request_type" => HTTP_DELETE,
+             "access_level" => ADMIN_ACCESS_LEVEL,
+             "query_id_existence" => $query_id_existence,
+             "query_id_existence_array" => $query_id_existence_array,
+             "query" => $query,
+             "query_array" => $array
+        ));
+
+        queryDB("DELETE FROM
+                    %stests_questions_assoc
+                 WHERE
+                    question_id = %d
+            ", array(TABLE_PREFIX, $question_id));
+    }
 }
 
 class QuestionCategories {

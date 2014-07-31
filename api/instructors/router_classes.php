@@ -817,6 +817,110 @@ class InstructorsTestQuestions {
              "member_id" => $instructor_id
         ));
     }
+
+    function post($instructor_id, $course_id, $test_id) {
+        $query_id_existence =   "SELECT
+                                    COUNT(*)
+                                 FROM
+                                    %scourse_enrollment
+                                 WHERE
+                                    member_id = %d
+                                        AND
+                                    course_id = %d";
+
+        $query_id_existence_array = array(TABLE_PREFIX, $instructor_id, $course_id);
+
+        $category_id = $_POST["category_id"];
+        $type = $_POST["type"];
+        $feedback = $_POST["feedback"];
+        $question = $_POST["question"];
+        $properties = $_POST["properties"];
+        $content_id = $_POST["content_id"];
+        $remedial_content = $_POST["remedial_content"];
+
+        if (!$category_id || !$type || !$title) {
+            print_message(ERROR, INSUFFICIENT_INFORMATION_TO_CREATE_OBJECT);
+        }
+
+        $query = "INSERT INTO
+                    %stests_questions(
+                          course_id
+                        , category_id
+                        , type
+                        , feedback
+                        , question
+                        , properties
+                        , content_id
+                        , remedial_content
+                    ) VALUES (
+                          %d
+                        , %d
+                        , %d,
+                        , '%s'
+                        , '%s'
+                        , '%s'
+                        , %d
+                        , '%s'
+                    )
+            ";
+
+        $question_id = api_backbone(array(
+             "request_type" => HTTP_POST,
+             "access_level" => INSTRUCTOR_ACCESS_LEVEL,
+             "query_id_existence" => $query_id_existence,
+             "query_id_existence_array" => $query_id_existence_array,
+             "query" => $query,
+             "query_array" => $array,
+             "returned_id_name" => true,
+             "member_id" => $instructor_id
+        ));
+
+        // do something with returned question_id to add choices, options and answers
+
+    }
+
+    function put($instructor_id, $course_id, $test_id, $question_id) {
+        $query_id_existence =   "SELECT
+                                    COUNT(*)
+                                 FROM
+                                    %scourse_enrollment
+                                 WHERE
+                                    member_id = %d
+                                        AND
+                                    course_id = %d";
+
+        $query_id_existence_array = array(TABLE_PREFIX, $instructor_id, $course_id);
+
+        $clause = create_SQL_clause(array(
+                "category_id" => $_REQUEST["category_id"],
+                "type" => $_REQUEST["type"],
+                "feedback" => $_REQUEST["feedback"],
+                "question" => $_REQUEST["question"],
+                "properties" => $_REQUEST["properties"],
+                "content_id" => $_REQUEST["content_id"],
+                "remedial_content" => $_REQUEST["remedial_content"]
+            ), "SET");
+
+        if ($clause) {
+            $query = "UPDATE %stests_questions ".$clause."WHERE question_id = %d";
+            $query_array = arrya(TABLE_PREFIX, $question_id);
+        } else {
+            $query = "";
+            $query_array = array();
+        }
+
+        api_backbone(array(
+             "request_type" => HTTP_PUT,
+             "access_level" => INSTRUCTOR_ACCESS_LEVEL,
+             "query_id_existence" => $query_id_existence,
+             "query_id_existence_array" => $query_id_existence_array,
+             "query" => $query,
+             "query_array" => $array,
+             "member_id" => $instructor_id
+        ));
+
+    }
+
 }
 
 ?>

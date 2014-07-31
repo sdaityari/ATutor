@@ -84,4 +84,8 @@ function api_backbone($options) {
 
 }
 
+function set_multiple_options(){
+    // Yet to decide on the functionality
+}
+
 ?>
