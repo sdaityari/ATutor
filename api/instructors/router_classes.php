@@ -927,13 +927,15 @@ class InstructorsTestQuestions {
 }
 
 class InstructorsTestQuestionsDetails {
-    function put($instructor_id, $course_id, $test_id, $question_id) {
+    function put($instructor_id, $course_id, $question_id) {
         $query_id_existence =   "SELECT
                                     COUNT(*)
                                  FROM
                                     %scourse_enrollment AS ce
                                  INNER JOIN
                                     %stests_questions AS tq
+                                        ON
+                                            ce.course_id = ce.course_id
                                  WHERE
                                     ce.member_id = %d
                                         AND
@@ -943,8 +945,6 @@ class InstructorsTestQuestionsDetails {
 
         $query_id_existence_array = array(TABLE_PREFIX, TABLE_PREFIX, $instructor_id,
             $course_id, $question_id);
-
-        print "yay";
 
         $options = json_decode($_REQUEST["options"]);
         $choices = json_decode($_REQUEST["choices"]);
