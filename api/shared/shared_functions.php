@@ -84,8 +84,13 @@ function api_backbone($options) {
 
 }
 
-function set_multiple_options(){
-    // Yet to decide on the functionality
+function set_question_details($options, $choices, $answers){
+    $clause = "SET ";
+    for ($i = 1; $i < 10; $i++) {
+        $clause .= "option_" . $i. " = " .addslashes($options[$i-1]). ", ";
+        $clause .= "choice_" . $i. " = " .addslashes($choices[$i-1]). ", ";
+        $clause .= "answer_" . $i. " = " .addslashes($answers[$i-1]). ", ";
+    }
 }
 
 ?>

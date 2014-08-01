@@ -818,7 +818,7 @@ class InstructorsTestQuestions {
         ));
     }
 
-    function post($instructor_id, $course_id, $test_id) {
+    function post($instructor_id, $course_id) {
         $query_id_existence =   "SELECT
                                     COUNT(*)
                                  FROM
@@ -838,7 +838,7 @@ class InstructorsTestQuestions {
         $content_id = $_POST["content_id"];
         $remedial_content = $_POST["remedial_content"];
 
-        if (!$category_id || !$type || !$title) {
+        if (!$category_id || !$type || !$question) {
             print_message(ERROR, INSUFFICIENT_INFORMATION_TO_CREATE_OBJECT);
         }
 
@@ -855,7 +855,7 @@ class InstructorsTestQuestions {
                     ) VALUES (
                           %d
                         , %d
-                        , %d,
+                        , %d
                         , '%s'
                         , '%s'
                         , '%s'
@@ -864,7 +864,10 @@ class InstructorsTestQuestions {
                     )
             ";
 
-        $question_id = api_backbone(array(
+        $array = array(TABLE_PREFIX, $course_id, $category_id, $type,
+            $feedback, $question, $properties, $content_id, $remedial_content);
+
+        api_backbone(array(
              "request_type" => HTTP_POST,
              "access_level" => INSTRUCTOR_ACCESS_LEVEL,
              "query_id_existence" => $query_id_existence,
@@ -875,7 +878,7 @@ class InstructorsTestQuestions {
              "member_id" => $instructor_id
         ));
 
-        // do something with returned question_id to add choices, options and answers
+        // Add options, choices and answers through PUT call in question details
 
     }
 
@@ -921,6 +924,48 @@ class InstructorsTestQuestions {
 
     }
 
+}
+
+class InstructorsTestQuestionsDetails {
+    function put($instructor_id, $course_id, $test_id, $question_id) {
+        $query_id_existence =   "SELECT
+                                    COUNT(*)
+                                 FROM
+                                    %scourse_enrollment AS ce
+                                 INNER JOIN
+                                    %stests_questions AS tq
+                                 WHERE
+                                    ce.member_id = %d
+                                        AND
+                                    ce.course_id = %d
+                                        AND
+                                    tq.question_id = %d";
+
+        $query_id_existence_array = array(TABLE_PREFIX, TABLE_PREFIX, $instructor_id,
+            $course_id, $question_id);
+
+        print "yay";
+
+        $options = json_decode($_REQUEST["options"]);
+        $choices = json_decode($_REQUEST["choices"]);
+        $answers = json_decode($_REQUEST["answers"]);
+
+        $clause = set_question_details($options, $choices, $answers);
+
+        $query = "UPDATE %stests_questions ".$clause." WHERE question_id = %d";
+        $array = array(TABLE_PREFIX, $question_id);
+
+        api_backbone(array(
+             "request_type" => HTTP_PUT,
+             "access_level" => INSTRUCTOR_ACCESS_LEVEL,
+             "query_id_existence" => $query_id_existence,
+             "query_id_existence_array" => $query_id_existence_array,
+             "query" => $query,
+             "query_array" => $array,
+             "member_id" => $instructor_id
+        ));
+
+    }
 }
 
 ?>
