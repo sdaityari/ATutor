@@ -867,7 +867,7 @@ class InstructorsTestQuestions {
         $array = array(TABLE_PREFIX, $course_id, $category_id, $type,
             $feedback, $question, $properties, $content_id, $remedial_content);
 
-        api_backbone(array(
+        $question_id = api_backbone(array(
              "request_type" => HTTP_POST,
              "access_level" => INSTRUCTOR_ACCESS_LEVEL,
              "query_id_existence" => $query_id_existence,
@@ -878,7 +878,16 @@ class InstructorsTestQuestions {
              "member_id" => $instructor_id
         ));
 
-        // Add options, choices and answers through PUT call in question details
+        // Setting options, choices and answers
+
+        $options = json_decode($_POST["options"]);
+        $choices = json_decode($_POST["choices"]);
+        $answers = json_decode($_POST["answers"]);
+
+        $clause = set_question_details($options, $choices, $answers);
+
+        queryDB("UPDATE %stests_questions ".$clause." WHERE question_id = %d",
+            array(TABLE_PREFIX, $question_id));
 
     }
 
@@ -927,6 +936,71 @@ class InstructorsTestQuestions {
 }
 
 class InstructorsTestQuestionsDetails {
+    function get($instructor_id, $course_id, $question_id) {
+        $query_id_existence =   "SELECT
+                                    COUNT(*)
+                                 FROM
+                                    %scourse_enrollment AS ce
+                                 INNER JOIN
+                                    %stests_questions AS tq
+                                        ON
+                                            ce.course_id = ce.course_id
+                                 WHERE
+                                    ce.member_id = %d
+                                        AND
+                                    ce.course_id = %d
+                                        AND
+                                    tq.question_id = %d";
+
+        $query_id_existence_array = array(TABLE_PREFIX, TABLE_PREFIX, $instructor_id,
+            $course_id, $question_id);
+
+        $query = "SELECT
+                      option1
+                    , option2
+                    , option3
+                    , option4
+                    , option5
+                    , option6
+                    , option7
+                    , option8
+                    , option9
+                    , choice1
+                    , choice2
+                    , choice3
+                    , choice4
+                    , choice5
+                    , choice6
+                    , choice7
+                    , choice8
+                    , choice9
+                    , answer1
+                    , answer2
+                    , answer3
+                    , answer4
+                    , answer5
+                    , answer6
+                    , answer7
+                    , answer8
+                    , answer9
+                  FROM
+                    %stests_questions
+                  WHERE
+                    question_id = %d";
+        $array = array(TABLE_PREFIX, $question_id);
+
+        api_backbone(array(
+             "request_type" => HTTP_GET,
+             "access_level" => INSTRUCTOR_ACCESS_LEVEL,
+             "query" => $query,
+             "query_array" => $array,
+             "query_id_existence" => $query_id_existence,
+             "query_id_existence_array" => $query_id_existence_array,
+             "member_id" => $instructor_id
+        ));
+
+    }
+
     function put($instructor_id, $course_id, $question_id) {
         $query_id_existence =   "SELECT
                                     COUNT(*)

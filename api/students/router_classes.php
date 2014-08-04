@@ -424,4 +424,62 @@ class StudentsTestQuestions {
     }
 }
 
+class StudentsTestQuestionsDetails {
+    function get($student_id, $course_id, $question_id) {
+        $query_id_existence =   "SELECT
+                                    COUNT(*)
+                                 FROM
+                                    %scourse_enrollment AS ce
+                                 INNER JOIN
+                                    %stests_questions AS tq
+                                        ON
+                                            ce.course_id = ce.course_id
+                                 WHERE
+                                    ce.member_id = %d
+                                        AND
+                                    ce.course_id = %d
+                                        AND
+                                    tq.question_id = %d";
+
+        $query_id_existence_array = array(TABLE_PREFIX, TABLE_PREFIX, $student_id,
+            $course_id, $question_id);
+
+        $query = "SELECT
+                      option1
+                    , option2
+                    , option3
+                    , option4
+                    , option5
+                    , option6
+                    , option7
+                    , option8
+                    , option9
+                    , choice1
+                    , choice2
+                    , choice3
+                    , choice4
+                    , choice5
+                    , choice6
+                    , choice7
+                    , choice8
+                    , choice9
+                  FROM
+                    %stests_questions
+                  WHERE
+                    question_id = %d";
+        $array = array(TABLE_PREFIX, $question_id);
+
+        api_backbone(array(
+             "request_type" => HTTP_GET,
+             "access_level" => STUDENT_ACCESS_LEVEL,
+             "query" => $query,
+             "query_array" => $array,
+             "query_id_existence" => $query_id_existence,
+             "query_id_existence_array" => $query_id_existence_array,
+             "member_id" => $student_id
+        ));
+
+    }
+}
+
 ?>
