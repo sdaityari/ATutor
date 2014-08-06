@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?> 
+<module version="0.1"> 
+    <name lang="en">API</name> 
+    <description lang="en">API service for ATutor.</description> 
+    <maintainers>
+        <maintainer>
+            <name>ATutor Team</name> 
+            <email>info@atutor.ca</email> 
+        </maintainer>
+        <maintainer>
+            <name>Shaumik Daityari</name> 
+            <email>sdaityari@gmail.com</email> 
+        </maintainer>
+        <maintainer>
+            <name>Alexey Novak</name> 
+            <email>alexey.novak.mail@gmail.com</email> 
+        </maintainer>
+    </maintainers> 
+    <url>http://www.atutor.ca</url> 
+    <license>BSD</license> 
+    <release> 
+        <version>0.1</version> 
+        <date>2014-05-01</date> 
+        <state>unstable</state> 
+        <notes>Initialized the module.</notes> 
+    </release> 
+    <private>
+        <subsite>mysubsite.atutor.com</subsite>
+        <subsite>mysubsite1.atutor.com</subsite>
+    </private>
+</module>
