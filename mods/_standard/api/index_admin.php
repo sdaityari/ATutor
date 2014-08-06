@@ -22,40 +22,49 @@ if ($_POST) {
     }
 }
 
+require (AT_INCLUDE_PATH."header.inc.php");
+
 ?>
 
-<div>
-    <a href="custom/download_log.php">Download API Log</a>
-</div>
 
-<div>
-    <a href="custom/clear_log.php">Clear API logs</a>
-</div>
-
-<div>
-    <a href="custom/clear_log.php?status=inactive">Clear inactive API tokens</a>
-</div>
-
-<div>
-    <form method="post">
-        Token Expiry (Days): <input type="text" name="token-expiry" value="<?php echo $_config['api_token_expiry']; ?>" /><br />
-        Logging Level: <select name="logging-level">
-            <option value="1" <?php
-                if ($_config['api_logging_level'] == 1) {
-                    echo "selected = 'true'";
-                }
-            ?> >Log all requests</option>
-            <option value="2" <?php
-                if ($_config['api_logging_level'] == 2) {
-                    echo "selected = 'true'";
-                }
-            ?>>Log all requests except GET</option>
-            <option value="3" <?php
-                if ($_config['api_logging_level'] == 3) {
-                    echo "selected = 'true'";
-                }
-            ?> >No Logging</option>
-        </select><br />
-        <input type="submit" value="Submit">
+<div class="input-form">
+    <legend>API Settings</legend>
+    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="form">
+        <fieldset>
+            <div class="row">
+                Token Expiry (Days): <input type="text" name="token-expiry" value="<?php echo $_config['api_token_expiry']; ?>" /><br />
+            </div>
+            <div class="row">
+                Logging Level: <select name="logging-level">
+                    <option value="1" <?php
+                        if ($_config['api_logging_level'] == 1) {
+                            echo "selected = 'true'";
+                        }
+                    ?> >Log all requests</option>
+                    <option value="2" <?php
+                        if ($_config['api_logging_level'] == 2) {
+                            echo "selected = 'true'";
+                        }
+                    ?>>Log all requests except GET</option>
+                    <option value="3" <?php
+                        if ($_config['api_logging_level'] == 3) {
+                            echo "selected = 'true'";
+                        }
+                    ?> >No Logging</option>
+                </select><br />
+            </div>
+            <input type="submit" value="Save Settings">
+        </fieldset>
     </form>
 </div>
+
+<div class="input-form">
+    <legend>API Actions</legend>
+    <ul>
+        <li><a href="<?php echo $_SERVER['PHP_SELF']; ?>/../custom/download_log.php">Download API Log</a></li>
+        <li><a href="<?php echo $_SERVER['PHP_SELF']; ?>/../custom/clear_log.php">Clear API logs</a></li>
+        <li><a href="<?php echo $_SERVER['PHP_SELF']; ?>/../custom/clear_log.php?status=inactive">Clear inactive API tokens</a></li>
+    </ul>
+</div>
+
+<?php require (AT_INCLUDE_PATH."footer.inc.php"); ?>
